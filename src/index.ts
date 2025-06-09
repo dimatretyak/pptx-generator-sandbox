@@ -303,8 +303,15 @@ class PresentationBuilder {
   addCardsSlide() {
     const BORDER_SIZE = 1;
     const SPACE_SIZE = 0.25;
+    const MARGIN_SIZE = 0.25;
     const COUNT = 3;
-    const CELL_SIZE = (SLIDE_WIDTH - SPACE_SIZE * (COUNT - 1)) / COUNT;
+
+    const WIDTH = SLIDE_WIDTH - MARGIN_SIZE * 2;
+    const HEIGHT = SLIDE_HEIGHT - MARGIN_SIZE * 2;
+    const SPACERS_TOTAL_SIZE = SPACE_SIZE * (COUNT - 1);
+
+    const CELL_SIZE = (WIDTH - SPACERS_TOTAL_SIZE) / COUNT;
+    const X_OFFSET = CELL_SIZE + SPACE_SIZE;
 
     const align: pptxgen.HAlign = "center";
     const valign: pptxgen.VAlign = "middle";
@@ -339,10 +346,10 @@ class PresentationBuilder {
           ],
         ],
         {
-          x: 0,
-          y: 0,
+          x: MARGIN_SIZE,
+          y: MARGIN_SIZE,
           w: CELL_SIZE,
-          h: SLIDE_HEIGHT,
+          h: HEIGHT,
           color,
           border,
           align,
@@ -374,10 +381,10 @@ class PresentationBuilder {
           ],
         ],
         {
-          x: CELL_SIZE + SPACE_SIZE,
-          y: 0,
+          x: X_OFFSET + MARGIN_SIZE,
+          y: MARGIN_SIZE,
           w: CELL_SIZE,
-          h: SLIDE_HEIGHT,
+          h: HEIGHT,
           color,
           border,
           align,
@@ -409,10 +416,10 @@ class PresentationBuilder {
           ],
         ],
         {
-          x: 2 * (CELL_SIZE + SPACE_SIZE),
-          y: 0,
+          x: 2 * X_OFFSET + MARGIN_SIZE,
+          y: MARGIN_SIZE,
           w: CELL_SIZE,
-          h: SLIDE_HEIGHT,
+          h: HEIGHT,
           color,
           border,
           align,
