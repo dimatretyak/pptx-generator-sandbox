@@ -300,6 +300,91 @@ class PresentationBuilder {
     return this;
   }
 
+  addCardsSlide() {
+    const BORDER_SIZE = 5;
+
+    this.slideGenerators.push((slide) => {
+      slide.addTable(
+        [
+          [
+            {
+              text: [
+                {
+                  text: "Impressions",
+                  options: {
+                    fontSize: 14,
+                    breakLine: true,
+                  },
+                },
+                {
+                  text: "177M",
+                  options: {
+                    fontSize: 24,
+                    bold: true,
+                  },
+                },
+              ],
+            },
+            {
+              text: [
+                {
+                  text: "Clicks",
+                  options: {
+                    fontSize: 14,
+                    breakLine: true,
+                  },
+                },
+                {
+                  text: "269K",
+                  options: {
+                    fontSize: 24,
+                    bold: true,
+                  },
+                },
+              ],
+            },
+            {
+              text: [
+                {
+                  text: "CTR(%)",
+                  options: {
+                    fontSize: 14,
+                    breakLine: true,
+                  },
+                },
+                {
+                  text: "0.15%",
+                  options: {
+                    fontSize: 24,
+                    bold: true,
+                  },
+                },
+              ],
+            },
+          ],
+        ],
+        {
+          x: 0,
+          y: 0,
+          w: SLIDE_WIDTH,
+          h: SLIDE_HEIGHT,
+          color: "3D3D3D",
+          fill: {
+            color: "F9F9F9",
+          },
+          border: {
+            pt: BORDER_SIZE,
+            color: "ffffff",
+          },
+          align: "center",
+          valign: "middle",
+        }
+      );
+    });
+
+    return this;
+  }
+
   buildAndSave(fileName: string) {
     for (const generateSlide of this.slideGenerators) {
       const slide = this.presentation.addSlide();
@@ -310,12 +395,6 @@ class PresentationBuilder {
   }
 }
 
-const builder = new PresentationBuilder()
-  .addWelcomeSlide()
-  .addMediaSlide()
-  .addShapeSlide()
-  .addSimpleTableSlide()
-  .addTableSlide()
-  .addChartSlide();
+const builder = new PresentationBuilder().addCardsSlide();
 
 builder.buildAndSave("output/demo.pptx");
