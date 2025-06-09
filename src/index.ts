@@ -305,58 +305,63 @@ class PresentationBuilder {
     return this;
   }
 
-  addCardsSlide(cards: Card[]) {
+  addCardsSlide(cards: Card[][]) {
     const BORDER_SIZE = 1;
     const SPACE_SIZE = 0.25;
     const MARGIN_SIZE = 0.25;
-    const COUNT = cards.length;
-
     const WIDTH = SLIDE_WIDTH - MARGIN_SIZE * 2;
     const HEIGHT = SLIDE_HEIGHT - MARGIN_SIZE * 2;
-    const SPACERS_TOTAL_SIZE = SPACE_SIZE * (COUNT - 1);
-
-    const CELL_SIZE = (WIDTH - SPACERS_TOTAL_SIZE) / COUNT;
-    const X_OFFSET = CELL_SIZE + SPACE_SIZE;
 
     this.slideGenerators.push((slide) => {
-      cards.forEach((card, index) => {
-        slide.addTable(
-          [
+      cards.forEach((row, rowIndex) => {
+        const ROWS_COUNT = row.length;
+        const COLS_COUNT = cards.length;
+
+        const CELL_SIZE = (WIDTH - SPACE_SIZE * (ROWS_COUNT - 1)) / ROWS_COUNT;
+        const COL_SIZE = (HEIGHT - SPACE_SIZE * (COLS_COUNT - 1)) / COLS_COUNT;
+
+        const X_OFFSET = CELL_SIZE + SPACE_SIZE;
+        const Y_OFFSET = COL_SIZE + SPACE_SIZE;
+
+        row.forEach((col, colIndex) => {
+          slide.addTable(
             [
-              {
-                text: [
-                  {
-                    text: card.title,
-                    options: {
-                      fontSize: 14,
-                      breakLine: true,
+              [
+                {
+                  text: [
+                    {
+                      text: col.title,
+                      options: {
+                        fontSize: 14,
+                        breakLine: true,
+                      },
                     },
-                  },
-                  {
-                    text: card.value,
-                    options: {
-                      fontSize: 24,
-                      bold: true,
+                    {
+                      text: col.value,
+                      options: {
+                        fontSize: 24,
+                        bold: true,
+                      },
                     },
-                  },
-                ],
-              },
+                  ],
+                },
+              ],
             ],
-          ],
-          {
-            x: index * X_OFFSET + MARGIN_SIZE,
-            y: MARGIN_SIZE,
-            w: CELL_SIZE,
-            h: HEIGHT,
-            color: "3D3D3D",
-            border: {
-              color: "cccccc",
-              pt: BORDER_SIZE,
-            },
-            align: "center",
-            valign: "middle",
-          }
-        );
+            {
+              x: colIndex * X_OFFSET + MARGIN_SIZE,
+              y: rowIndex * Y_OFFSET + MARGIN_SIZE,
+              w: CELL_SIZE,
+              h: COL_SIZE,
+              color: "3D3D3D",
+              border: {
+                color: "cccccc",
+                pt: BORDER_SIZE,
+              },
+              align: "center",
+              valign: "middle",
+            }
+          );
+        });
       });
     });
 
@@ -374,9 +379,20 @@ class PresentationBuilder {
 }
 
 const builder = new PresentationBuilder().addCardsSlide([
-  { title: "Impressions", value: "177M" },
-  { title: "Clicks", value: "269K" },
-  { title: "CTR(%)", value: "0.15%" },
+  [
+    { title: "Impressions", value: "177M" },
+    { title: "Clicks", value: "269K" },
+    { title: "CTR(%)", value: "0.15%" },
+  ],
+  [
+    { title: "111", value: "269K" },
+    { title: "222", value: "0.15%" },
+  ],
+  [
+    { title: "333", value: "269K" },
+    { title: "444", value: "0.15%" },
+    { title: "555", value: "0.15%" },
+  ],
 ]);
 
 builder.buildAndSave("output/demo.pptx");
