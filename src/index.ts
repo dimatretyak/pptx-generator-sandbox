@@ -308,12 +308,25 @@ class PresentationBuilder {
   addCardsSlide(cards: Card[][]) {
     const BORDER_SIZE = 1;
     const SPACER_SIZE = 0.25;
-    const MARGIN_SIZE = 0.25;
-    const WIDTH = SLIDE_WIDTH - MARGIN_SIZE * 2;
-    const HEIGHT = SLIDE_HEIGHT - MARGIN_SIZE * 2;
+
+    let HORIZONTAL_MARGIN_SIZE = 0.25;
+    let VERTICAL_MARGIN_SIZE = HORIZONTAL_MARGIN_SIZE;
 
     this.slideGenerators.push((slide) => {
       cards.forEach((row, rowIndex) => {
+        // Center the card horizontally if there's only one row and column
+        if (row.length === 1 && cards.length === 1) {
+          HORIZONTAL_MARGIN_SIZE = 1.5;
+        }
+
+        // Center the cards vertically if there's only one row
+        if (cards.length === 1) {
+          VERTICAL_MARGIN_SIZE = 1.5;
+        }
+
+        const WIDTH = SLIDE_WIDTH - HORIZONTAL_MARGIN_SIZE * 2;
+        const HEIGHT = SLIDE_HEIGHT - VERTICAL_MARGIN_SIZE * 2;
+
         const ROWS_COUNT = row.length;
         const COLS_COUNT = cards.length;
 
@@ -352,8 +365,8 @@ class PresentationBuilder {
               ],
             ],
             {
-              x: colIndex * X_OFFSET + MARGIN_SIZE,
-              y: rowIndex * Y_OFFSET + MARGIN_SIZE,
+              x: colIndex * X_OFFSET + HORIZONTAL_MARGIN_SIZE,
+              y: rowIndex * Y_OFFSET + VERTICAL_MARGIN_SIZE,
               w: CELL_SIZE,
               h: COL_SIZE,
               color: "3D3D3D",
