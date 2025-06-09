@@ -6,6 +6,11 @@ const LAYOUT_NAME = "APP";
 const SLIDE_WIDTH = 10;
 const SLIDE_HEIGHT = 5.625;
 
+type Card = {
+  title: string;
+  value: string;
+};
+
 class PresentationBuilder {
   private slideGenerators: Array<(slide: pptxgen.Slide) => void> = [];
 
@@ -300,11 +305,11 @@ class PresentationBuilder {
     return this;
   }
 
-  addCardsSlide() {
+  addCardsSlide(cards: Card[]) {
     const BORDER_SIZE = 1;
     const SPACE_SIZE = 0.25;
     const MARGIN_SIZE = 0.25;
-    const COUNT = 3;
+    const COUNT = cards.length;
 
     const WIDTH = SLIDE_WIDTH - MARGIN_SIZE * 2;
     const HEIGHT = SLIDE_HEIGHT - MARGIN_SIZE * 2;
@@ -313,119 +318,46 @@ class PresentationBuilder {
     const CELL_SIZE = (WIDTH - SPACERS_TOTAL_SIZE) / COUNT;
     const X_OFFSET = CELL_SIZE + SPACE_SIZE;
 
-    const align: pptxgen.HAlign = "center";
-    const valign: pptxgen.VAlign = "middle";
-    const color = "3D3D3D";
-    const border: pptxgen.BorderProps = {
-      color: "cccccc",
-      pt: BORDER_SIZE,
-    };
-
     this.slideGenerators.push((slide) => {
-      slide.addTable(
-        [
+      cards.forEach((card, index) => {
+        slide.addTable(
           [
-            {
-              text: [
-                {
-                  text: "Impressions",
-                  options: {
-                    fontSize: 14,
-                    breakLine: true,
+            [
+              {
+                text: [
+                  {
+                    text: card.title,
+                    options: {
+                      fontSize: 14,
+                      breakLine: true,
+                    },
                   },
-                },
-                {
-                  text: "177M",
-                  options: {
-                    fontSize: 24,
-                    bold: true,
+                  {
+                    text: card.value,
+                    options: {
+                      fontSize: 24,
+                      bold: true,
+                    },
                   },
-                },
-              ],
-            },
+                ],
+              },
+            ],
           ],
-        ],
-        {
-          x: MARGIN_SIZE,
-          y: MARGIN_SIZE,
-          w: CELL_SIZE,
-          h: HEIGHT,
-          color,
-          border,
-          align,
-          valign,
-        }
-      );
-
-      slide.addTable(
-        [
-          [
-            {
-              text: [
-                {
-                  text: "Clicks",
-                  options: {
-                    fontSize: 14,
-                    breakLine: true,
-                  },
-                },
-                {
-                  text: "269K",
-                  options: {
-                    fontSize: 24,
-                    bold: true,
-                  },
-                },
-              ],
+          {
+            x: index * X_OFFSET + MARGIN_SIZE,
+            y: MARGIN_SIZE,
+            w: CELL_SIZE,
+            h: HEIGHT,
+            color: "3D3D3D",
+            border: {
+              color: "cccccc",
+              pt: BORDER_SIZE,
             },
-          ],
-        ],
-        {
-          x: X_OFFSET + MARGIN_SIZE,
-          y: MARGIN_SIZE,
-          w: CELL_SIZE,
-          h: HEIGHT,
-          color,
-          border,
-          align,
-          valign,
-        }
-      );
-
-      slide.addTable(
-        [
-          [
-            {
-              text: [
-                {
-                  text: "CTR(%)",
-                  options: {
-                    fontSize: 14,
-                    breakLine: true,
-                  },
-                },
-                {
-                  text: "0.15%",
-                  options: {
-                    fontSize: 24,
-                    bold: true,
-                  },
-                },
-              ],
-            },
-          ],
-        ],
-        {
-          x: 2 * X_OFFSET + MARGIN_SIZE,
-          y: MARGIN_SIZE,
-          w: CELL_SIZE,
-          h: HEIGHT,
-          color,
-          border,
-          align,
-          valign,
-        }
-      );
+            align: "center",
+            valign: "middle",
+          }
+        );
+      });
     });
 
     return this;
@@ -441,6 +373,10 @@ class PresentationBuilder {
   }
 }
 
-const builder = new PresentationBuilder().addCardsSlide();
+const builder = new PresentationBuilder().addCardsSlide([
+  { title: "Impressions", value: "177M" },
+  { title: "Clicks", value: "269K" },
+  { title: "CTR(%)", value: "0.15%" },
+]);
 
 builder.buildAndSave("output/demo.pptx");
