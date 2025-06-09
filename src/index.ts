@@ -317,9 +317,13 @@ class PresentationBuilder {
         const ROWS_COUNT = row.length;
         const COLS_COUNT = cards.length;
 
+        // Calculate cell size based on the number of rows
         const CELL_SIZE = (WIDTH - SPACER_SIZE * (ROWS_COUNT - 1)) / ROWS_COUNT;
+
+        // Calculate column size based on the number of columns
         const COL_SIZE = (HEIGHT - SPACER_SIZE * (COLS_COUNT - 1)) / COLS_COUNT;
 
+        // Calculate offsets for positioning the cells
         const X_OFFSET = CELL_SIZE + SPACER_SIZE;
         const Y_OFFSET = COL_SIZE + SPACER_SIZE;
 
