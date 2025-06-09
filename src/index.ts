@@ -314,20 +314,33 @@ class PresentationBuilder {
 
     this.slideGenerators.push((slide) => {
       cards.forEach((row, rowIndex) => {
-        const ROWS_COUNT = row.length;
-        const COLS_COUNT = cards.length;
+        const ROWS_COUNT = Math.max(2, row.length);
+        const COLS_COUNT = Math.max(2, cards.length);
 
         // Calculate cell size based on the number of rows
         const CELL_SIZE = (WIDTH - SPACER_SIZE * (ROWS_COUNT - 1)) / ROWS_COUNT;
 
         // Calculate column size based on the number of columns
-        const COL_SIZE = (HEIGHT - SPACER_SIZE * (COLS_COUNT - 1)) / COLS_COUNT;
+        let COL_SIZE = (HEIGHT - SPACER_SIZE * (COLS_COUNT - 1)) / COLS_COUNT;
 
         // Calculate offsets for positioning the cells
         const X_OFFSET = CELL_SIZE + SPACER_SIZE;
         const Y_OFFSET = COL_SIZE + SPACER_SIZE;
 
+        let Y_BASE = rowIndex * Y_OFFSET;
+
+        // Center the cards vertically if there's only one row
+        if (cards.length === 1) {
+          Y_BASE = (HEIGHT - COL_SIZE) / 2;
+        }
+
         row.forEach((col, colIndex) => {
+          let X_BASE = colIndex * X_OFFSET;
+
+          if (row.length === 1) {
+            X_BASE = (WIDTH - CELL_SIZE) / 2;
+          }
+
           slide.addTable(
             [
               [
@@ -352,8 +365,8 @@ class PresentationBuilder {
               ],
             ],
             {
-              x: colIndex * X_OFFSET + MARGIN_SIZE,
-              y: rowIndex * Y_OFFSET + MARGIN_SIZE,
+              x: MARGIN_SIZE + X_BASE,
+              y: MARGIN_SIZE + Y_BASE,
               w: CELL_SIZE,
               h: COL_SIZE,
               color: "3D3D3D",
@@ -388,15 +401,15 @@ const builder = new PresentationBuilder().addCardsSlide([
     { title: "Clicks", value: "269K" },
     { title: "CTR(%)", value: "0.15%" },
   ],
-  [
-    { title: "111", value: "269K" },
-    { title: "222", value: "0.15%" },
-  ],
-  [
-    { title: "333", value: "269K" },
-    { title: "444", value: "0.15%" },
-    { title: "555", value: "0.15%" },
-  ],
+  // [
+  //   { title: "111", value: "269K" },
+  //   { title: "222", value: "0.15%" },
+  // ],
+  // [
+  //   { title: "333", value: "269K" },
+  //   { title: "444", value: "0.15%" },
+  //   { title: "555", value: "0.15%" },
+  // ],
 ]);
 
 builder.buildAndSave("output/demo.pptx");
