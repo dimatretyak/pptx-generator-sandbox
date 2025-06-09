@@ -7,9 +7,21 @@ const SLIDE_WIDTH = 10;
 const SLIDE_HEIGHT = 5.625;
 
 class PresentationBuilder {
-  private slideGenerators: Array<
-    (slide: pptxgen.Slide, presentation: pptxgen) => void
-  > = [];
+  private slideGenerators: Array<(slide: pptxgen.Slide) => void> = [];
+
+  private presentation: pptxgen;
+
+  constructor() {
+    this.presentation = new pptxgen();
+
+    this.presentation.defineLayout({
+      name: LAYOUT_NAME,
+      width: SLIDE_WIDTH,
+      height: SLIDE_HEIGHT,
+    });
+
+    this.presentation.layout = LAYOUT_NAME;
+  }
 
   addWelcomeSlide() {
     this.slideGenerators.push((slide) => {
@@ -36,8 +48,8 @@ class PresentationBuilder {
   }
 
   addShapeSlide() {
-    this.slideGenerators.push((slide, presentation) => {
-      slide.addShape(presentation.ShapeType.hexagon, {
+    this.slideGenerators.push((slide) => {
+      slide.addShape(this.presentation.ShapeType.hexagon, {
         x: 1,
         y: 1,
         w: 3,
@@ -230,23 +242,71 @@ class PresentationBuilder {
     return this;
   }
 
-  buildAndSave(fileName: string) {
-    const presentation = new pptxgen();
+  addChartSlide() {
+    this.slideGenerators.push((slide) => {
+      let dataChartAreaLine = [
+        {
+          name: "Actual Sales",
+          labels: [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+          ],
+          values: [
+            1500, 4600, 5156, 3167, 8510, 8009, 6006, 7855, 12102, 12789, 10123,
+            15121,
+          ],
+        },
+        {
+          name: "Projected Sales",
+          labels: [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+          ],
+          values: [
+            1000, 2600, 3456, 4567, 5010, 6009, 7006, 8855, 9102, 10789, 11123,
+            12121,
+          ],
+        },
+      ];
 
-    presentation.defineLayout({
-      name: LAYOUT_NAME,
-      width: SLIDE_WIDTH,
-      height: SLIDE_HEIGHT,
+      slide.addChart(this.presentation.ChartType.line, dataChartAreaLine, {
+        x: 1,
+        y: 1,
+        w: 8,
+        h: 4,
+      });
     });
 
-    presentation.layout = LAYOUT_NAME;
+    return this;
+  }
 
+  buildAndSave(fileName: string) {
     for (const generateSlide of this.slideGenerators) {
-      const slide = presentation.addSlide();
-      generateSlide(slide, presentation);
+      const slide = this.presentation.addSlide();
+      generateSlide(slide);
     }
 
-    presentation.writeFile({ fileName });
+    this.presentation.writeFile({ fileName });
   }
 }
 
@@ -255,6 +315,7 @@ const builder = new PresentationBuilder()
   .addMediaSlide()
   .addShapeSlide()
   .addSimpleTableSlide()
-  .addTableSlide();
+  .addTableSlide()
+  .addChartSlide();
 
 builder.buildAndSave("output/demo.pptx");
