@@ -1,4 +1,5 @@
 import pptxgen from "pptxgenjs";
+import path from "node:path";
 
 const getWelcomeSlide = (slide: pptxgen.Slide) => {
   slide.addText("Hello World from PptxGenJS!", {
@@ -8,7 +9,17 @@ const getWelcomeSlide = (slide: pptxgen.Slide) => {
   });
 };
 
-const slides = [getWelcomeSlide];
+const getMediaSlide = (slide: pptxgen.Slide) => {
+  console.log("path", path.join(__dirname, "assets", "images", "avatar.jpeg"));
+
+  slide.addImage({
+    path: path.join(__dirname, "assets", "images", "avatar.jpeg"),
+    x: 1,
+    y: 1,
+  });
+};
+
+const slides = [getWelcomeSlide, getMediaSlide];
 
 const execute = () => {
   // 1. Create a Presentation
@@ -23,7 +34,7 @@ const execute = () => {
 
   // 4. Save the Presentation
   presentation.writeFile({
-    fileName: "assets/demo.pptx",
+    fileName: "output/demo.pptx",
   });
 };
 
