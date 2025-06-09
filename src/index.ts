@@ -401,15 +401,15 @@ const builder = new PresentationBuilder().addCardsSlide([
     { title: "Clicks", value: "269K" },
     { title: "CTR(%)", value: "0.15%" },
   ],
-  // [
-  //   { title: "111", value: "269K" },
-  //   { title: "222", value: "0.15%" },
-  // ],
-  // [
-  //   { title: "333", value: "269K" },
-  //   { title: "444", value: "0.15%" },
-  //   { title: "555", value: "0.15%" },
-  // ],
+  [
+    { title: "111", value: "269K" },
+    { title: "222", value: "0.15%" },
+  ],
+  [
+    { title: "333", value: "269K" },
+    { title: "444", value: "0.15%" },
+    { title: "555", value: "0.15%" },
+  ],
 ]);
 
 builder.buildAndSave("output/demo.pptx");
