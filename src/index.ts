@@ -302,21 +302,16 @@ class PresentationBuilder {
 
   addCardsSlide() {
     const BORDER_SIZE = 1;
-    const EMPTY_CELL_SIZE = 0.25;
+    const SPACE_SIZE = 0.25;
     const COUNT = 3;
-    const COL_SIZE = (SLIDE_WIDTH - EMPTY_CELL_SIZE * (COUNT - 1)) / COUNT;
+    const CELL_SIZE = (SLIDE_WIDTH - SPACE_SIZE * (COUNT - 1)) / COUNT;
 
-    const EMPTY_CELL: pptxgen.TableCell = {
-      options: {
-        fill: {
-          color: "ffffff",
-        },
-        border: {
-          color: "ffffff",
-          pt: 0,
-          type: "none",
-        },
-      },
+    const align: pptxgen.HAlign = "center";
+    const valign: pptxgen.VAlign = "middle";
+    const color = "3D3D3D";
+    const border: pptxgen.BorderProps = {
+      color: "cccccc",
+      pt: BORDER_SIZE,
     };
 
     this.slideGenerators.push((slide) => {
@@ -341,7 +336,23 @@ class PresentationBuilder {
                 },
               ],
             },
-            EMPTY_CELL,
+          ],
+        ],
+        {
+          x: 0,
+          y: 0,
+          w: CELL_SIZE,
+          h: SLIDE_HEIGHT,
+          color,
+          border,
+          align,
+          valign,
+        }
+      );
+
+      slide.addTable(
+        [
+          [
             {
               text: [
                 {
@@ -360,7 +371,23 @@ class PresentationBuilder {
                 },
               ],
             },
-            EMPTY_CELL,
+          ],
+        ],
+        {
+          x: CELL_SIZE + SPACE_SIZE,
+          y: 0,
+          w: CELL_SIZE,
+          h: SLIDE_HEIGHT,
+          color,
+          border,
+          align,
+          valign,
+        }
+      );
+
+      slide.addTable(
+        [
+          [
             {
               text: [
                 {
@@ -382,25 +409,14 @@ class PresentationBuilder {
           ],
         ],
         {
-          x: 0,
+          x: 2 * (CELL_SIZE + SPACE_SIZE),
           y: 0,
-          w: SLIDE_WIDTH,
+          w: CELL_SIZE,
           h: SLIDE_HEIGHT,
-          colW: [
-            COL_SIZE,
-            EMPTY_CELL_SIZE,
-            COL_SIZE,
-            EMPTY_CELL_SIZE,
-            COL_SIZE,
-          ],
-          color: "3D3D3D",
-          border: {
-            color: "cccccc",
-            pt: BORDER_SIZE,
-          },
-          align: "center",
-          valign: "middle",
-          margin: 0,
+          color,
+          border,
+          align,
+          valign,
         }
       );
     });
