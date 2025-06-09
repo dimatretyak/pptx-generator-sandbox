@@ -301,7 +301,23 @@ class PresentationBuilder {
   }
 
   addCardsSlide() {
-    const BORDER_SIZE = 5;
+    const BORDER_SIZE = 1;
+    const EMPTY_CELL_SIZE = 0.25;
+    const COUNT = 3;
+    const COL_SIZE = (SLIDE_WIDTH - EMPTY_CELL_SIZE * (COUNT - 1)) / COUNT;
+
+    const EMPTY_CELL: pptxgen.TableCell = {
+      options: {
+        fill: {
+          color: "ffffff",
+        },
+        border: {
+          color: "ffffff",
+          pt: 0,
+          type: "none",
+        },
+      },
+    };
 
     this.slideGenerators.push((slide) => {
       slide.addTable(
@@ -325,6 +341,7 @@ class PresentationBuilder {
                 },
               ],
             },
+            EMPTY_CELL,
             {
               text: [
                 {
@@ -343,6 +360,7 @@ class PresentationBuilder {
                 },
               ],
             },
+            EMPTY_CELL,
             {
               text: [
                 {
@@ -368,16 +386,21 @@ class PresentationBuilder {
           y: 0,
           w: SLIDE_WIDTH,
           h: SLIDE_HEIGHT,
+          colW: [
+            COL_SIZE,
+            EMPTY_CELL_SIZE,
+            COL_SIZE,
+            EMPTY_CELL_SIZE,
+            COL_SIZE,
+          ],
           color: "3D3D3D",
-          fill: {
-            color: "F9F9F9",
-          },
           border: {
+            color: "cccccc",
             pt: BORDER_SIZE,
-            color: "ffffff",
           },
           align: "center",
           valign: "middle",
+          margin: 0,
         }
       );
     });
