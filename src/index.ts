@@ -10,8 +10,6 @@ const getWelcomeSlide = (slide: pptxgen.Slide) => {
 };
 
 const getMediaSlide = (slide: pptxgen.Slide) => {
-  console.log("path", path.join(__dirname, "assets", "images", "avatar.jpeg"));
-
   slide.addImage({
     path: path.join(__dirname, "assets", "images", "avatar.jpeg"),
     x: 1,
