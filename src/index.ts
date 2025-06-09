@@ -307,7 +307,7 @@ class PresentationBuilder {
 
   addCardsSlide(cards: Card[][]) {
     const BORDER_SIZE = 1;
-    const SPACE_SIZE = 0.25;
+    const SPACER_SIZE = 0.25;
     const MARGIN_SIZE = 0.25;
     const WIDTH = SLIDE_WIDTH - MARGIN_SIZE * 2;
     const HEIGHT = SLIDE_HEIGHT - MARGIN_SIZE * 2;
@@ -317,11 +317,11 @@ class PresentationBuilder {
         const ROWS_COUNT = row.length;
         const COLS_COUNT = cards.length;
 
-        const CELL_SIZE = (WIDTH - SPACE_SIZE * (ROWS_COUNT - 1)) / ROWS_COUNT;
-        const COL_SIZE = (HEIGHT - SPACE_SIZE * (COLS_COUNT - 1)) / COLS_COUNT;
+        const CELL_SIZE = (WIDTH - SPACER_SIZE * (ROWS_COUNT - 1)) / ROWS_COUNT;
+        const COL_SIZE = (HEIGHT - SPACER_SIZE * (COLS_COUNT - 1)) / COLS_COUNT;
 
-        const X_OFFSET = CELL_SIZE + SPACE_SIZE;
-        const Y_OFFSET = COL_SIZE + SPACE_SIZE;
+        const X_OFFSET = CELL_SIZE + SPACER_SIZE;
+        const Y_OFFSET = COL_SIZE + SPACER_SIZE;
 
         row.forEach((col, colIndex) => {
           slide.addTable(
