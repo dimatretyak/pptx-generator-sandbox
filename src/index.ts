@@ -2,8 +2,8 @@ import pptxgen from "pptxgenjs";
 import {
   Card,
   Formatter,
-  TableCellEntity,
-  TableCellEntityValue,
+  PowerPointTableCellEntity,
+  PowerPointValue,
   TableHeaderEntity,
 } from "./types/common";
 import {
@@ -29,9 +29,9 @@ import {
 const LAYOUT_NAME = "APP";
 const SLIDE_WIDTH = 10;
 const SLIDE_HEIGHT = 5.625;
-const FALLBACK_TABLE_CELL_VALUE = "-";
+const FALLBACK_POWER_POINT_VALUE = "-";
 
-const formatTableCellNumber = (value: TableCellEntityValue) => {
+const formatPowerPointNumber = (value: PowerPointValue) => {
   if (isNumber(value)) {
     return formatNumber(value);
   }
@@ -40,10 +40,10 @@ const formatTableCellNumber = (value: TableCellEntityValue) => {
     return value;
   }
 
-  return FALLBACK_TABLE_CELL_VALUE;
+  return FALLBACK_POWER_POINT_VALUE;
 };
 
-const formatTableCellPercent = (value: TableCellEntityValue) => {
+const formatPowerPointPercent = (value: PowerPointValue) => {
   if (isNumber(value)) {
     return formatPercent(value);
   }
@@ -52,7 +52,7 @@ const formatTableCellPercent = (value: TableCellEntityValue) => {
     return value;
   }
 
-  return FALLBACK_TABLE_CELL_VALUE;
+  return FALLBACK_POWER_POINT_VALUE;
 };
 
 class PresentationBuilder {
@@ -85,7 +85,7 @@ class PresentationBuilder {
     };
   }
 
-  private formatValue(value: TableCellEntityValue, formatter?: Formatter) {
+  private formatValue(value: PowerPointValue, formatter?: Formatter) {
     if (typeof formatter === "function") {
       return formatter(value);
     }
@@ -98,7 +98,7 @@ class PresentationBuilder {
       return value;
     }
 
-    return FALLBACK_TABLE_CELL_VALUE;
+    return FALLBACK_POWER_POINT_VALUE;
   }
 
   addCardsSlide(cards: Card[][]) {
@@ -254,7 +254,7 @@ class PresentationBuilder {
 
   addTableSlide(payload: {
     headers: TableHeaderEntity[];
-    data: TableCellEntity[][];
+    data: PowerPointTableCellEntity[][];
   }) {
     const { width } = this.getSizes();
 
@@ -380,12 +380,12 @@ builder.addTableSlide({
     },
   ],
   data: displayProductPerformance.map((entity) => {
-    const result: TableCellEntity[] = [
+    const result: PowerPointTableCellEntity[] = [
       { value: entity._id.subProduct },
-      { value: entity.impressions, format: formatTableCellNumber },
-      { value: entity.clicks, format: formatTableCellNumber },
-      { value: entity.ctr, format: formatTableCellPercent },
-      { value: entity.conversions, format: formatTableCellNumber },
+      { value: entity.impressions, format: formatPowerPointNumber },
+      { value: entity.clicks, format: formatPowerPointNumber },
+      { value: entity.ctr, format: formatPowerPointPercent },
+      { value: entity.conversions, format: formatPowerPointNumber },
     ];
 
     return result;
@@ -421,13 +421,13 @@ builder.addTableSlide({
     },
   ],
   data: videoProductPerformance.map((entity) => {
-    const result: TableCellEntity[] = [
+    const result: PowerPointTableCellEntity[] = [
       { value: entity._id.subProduct },
-      { value: entity.impressions, format: formatTableCellNumber },
-      { value: entity.videoCompletions, format: formatTableCellNumber },
-      { value: entity.vcr, format: formatTableCellPercent },
-      { value: entity.clicks, format: formatTableCellNumber },
-      { value: entity.ctr, format: formatTableCellPercent },
+      { value: entity.impressions, format: formatPowerPointNumber },
+      { value: entity.videoCompletions, format: formatPowerPointNumber },
+      { value: entity.vcr, format: formatPowerPointPercent },
+      { value: entity.clicks, format: formatPowerPointNumber },
+      { value: entity.ctr, format: formatPowerPointPercent },
     ];
 
     return result;
@@ -449,7 +449,7 @@ builder.addBoxesSlide([
     {
       title: "CTR(%)",
       value: 0.15261760710334837,
-      format: formatTableCellPercent,
+      format: formatPowerPointPercent,
     },
   ],
   [

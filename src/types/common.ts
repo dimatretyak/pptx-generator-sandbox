@@ -1,9 +1,9 @@
-export type TableCellEntityValue = string | number | undefined;
-export type Formatter = (value: TableCellEntityValue) => string;
+export type PowerPointValue = string | number | undefined;
+export type Formatter = (value: PowerPointValue) => string;
 
 export type Card = {
   title: string;
-  value: TableCellEntityValue;
+  value: PowerPointValue;
   format?: Formatter;
 };
 
@@ -16,7 +16,7 @@ export type TableHeaderEntity = {
   };
 };
 
-export type TableCellEntity = {
-  value: TableCellEntityValue;
+export type PowerPointTableCellEntity = {
+  value: PowerPointValue;
   format?: Formatter;
 };
