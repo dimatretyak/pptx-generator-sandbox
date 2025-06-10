@@ -5,7 +5,11 @@ import {
   TableCellEntityValue,
   TableHeaderEntity,
 } from "./types/common";
-import { cards, displayProductPerformance } from "./data/constants";
+import {
+  cards,
+  displayProductPerformance,
+  videoProductPerformance,
+} from "./data/constants";
 import {
   generateHeatmapColor,
   getMinMax,
@@ -377,6 +381,46 @@ builder.addTableSlide({
       { value: entity.clicks, normalizer: formatTableCellNumber },
       { value: entity.ctr, normalizer: formatTableCellPercent },
       { value: entity.conversions, normalizer: formatTableCellNumber },
+    ];
+  }),
+});
+
+const videoComletes = getMinMax(videoProductPerformance, "videoCompletions");
+const videoClicks = getMinMax(videoProductPerformance, "clicks");
+
+builder.addTableSlide({
+  headers: [
+    { text: "Product" },
+    { text: "Impressions" },
+    {
+      text: "Video Completes",
+      heatMap: {
+        colorPalette: ["#a2f5aa", "#0e9c1c"],
+        maxValue: videoComletes.max,
+        minValue: videoComletes.min,
+      },
+    },
+    { text: "VCR(%)" },
+    {
+      text: "Clicks",
+      heatMap: {
+        colorPalette: ["#e3f2fd", "#0d47a1"],
+        maxValue: videoClicks.max,
+        minValue: videoClicks.min,
+      },
+    },
+    {
+      text: "CTR(%)",
+    },
+  ],
+  data: videoProductPerformance.map((entity) => {
+    return [
+      { value: entity._id.subProduct },
+      { value: entity.impressions, normalizer: formatTableCellNumber },
+      { value: entity.videoCompletions, normalizer: formatTableCellNumber },
+      { value: entity.vcr, normalizer: formatTableCellPercent },
+      { value: entity.clicks, normalizer: formatTableCellNumber },
+      { value: entity.ctr, normalizer: formatTableCellPercent },
     ];
   }),
 });
