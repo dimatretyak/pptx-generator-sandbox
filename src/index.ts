@@ -1,6 +1,12 @@
 import pptxgen from "pptxgenjs";
-import { Card } from "./types/common";
-import { cards } from "./data/constants";
+import { Card, TableCellEntity, TableHeaderEntity } from "./types/common";
+import { cards, displayProductPerformance } from "./data/constants";
+import {
+  generateHeatmapColor,
+  getMinMax,
+  getTextColorByBackground,
+  stripHexHash,
+} from "./utils/common";
 
 // 16:9 aspect ratio
 const LAYOUT_NAME = "APP";
@@ -35,6 +41,15 @@ class PresentationBuilder {
       width: SLIDE_WIDTH - this.config.margin * 2,
       height: SLIDE_HEIGHT - this.config.margin * 2,
     };
+  }
+
+  private normalizeTableCellValue(value: TableCellEntity["value"]) {
+    // TODO: Format numbers with commas
+    if (typeof value === "number") {
+      return value.toString();
+    }
+
+    return value;
   }
 
   addCardsSlide(cards: Card[][]) {
@@ -188,121 +203,25 @@ class PresentationBuilder {
     return this;
   }
 
-  addTableSlide() {
+  addTableSlide(payload: {
+    headers: TableHeaderEntity[];
+    data: TableCellEntity[][];
+  }) {
     const { width } = this.getSizes();
 
-    const data = [
-      [
-        { text: "Targeted Display" },
-        { text: "111,126,221" },
-        { text: "138,572" },
-        { text: "0.12" },
-        { text: "100,682" },
-      ],
-      [
-        { text: "Addressable Display" },
-        { text: "34,403,897" },
-        { text: "67,073" },
-        { text: "0.19" },
-        { text: "2,910" },
-      ],
-      [
-        { text: "Geo-Fencing w/ Foot Traffic" },
-        { text: "26,429,698" },
-        { text: "51,249" },
-        { text: "0.19" },
-        { text: "5,570" },
-      ],
-      [
-        { text: "Social Display" },
-        { text: "2,836,394" },
-        { text: "8,214" },
-        { text: "0.29" },
-        { text: "1,265" },
-      ],
-      [
-        { text: "Targeted Native" },
-        { text: "2,217,828" },
-        { text: "3,848" },
-        { text: "0.17" },
-        { text: "259" },
-      ],
-      [
-        { text: "Targeted Display" },
-        { text: "111,126,221" },
-        { text: "138,572" },
-        { text: "0.12" },
-        { text: "100,682" },
-      ],
-      [
-        { text: "Addressable Display" },
-        { text: "34,403,897" },
-        { text: "67,073" },
-        { text: "0.19" },
-        { text: "2,910" },
-      ],
-      [
-        { text: "Geo-Fencing w/ Foot Traffic" },
-        { text: "26,429,698" },
-        { text: "51,249" },
-        { text: "0.19" },
-        { text: "5,570" },
-      ],
-      [
-        { text: "Social Display" },
-        { text: "2,836,394" },
-        { text: "8,214" },
-        { text: "0.29" },
-        { text: "1,265" },
-      ],
-      [
-        { text: "Targeted Native" },
-        { text: "2,217,828" },
-        { text: "3,848" },
-        { text: "0.17" },
-        { text: "259" },
-      ],
-      [
-        { text: "Targeted Display" },
-        { text: "111,126,221" },
-        { text: "138,572" },
-        { text: "0.12" },
-        { text: "100,682" },
-      ],
-      [
-        { text: "Addressable Display" },
-        { text: "34,403,897" },
-        { text: "67,073" },
-        { text: "0.19" },
-        { text: "2,910" },
-      ],
-      [
-        { text: "Geo-Fencing w/ Foot Traffic" },
-        { text: "26,429,698" },
-        { text: "51,249" },
-        { text: "0.19" },
-        { text: "5,570" },
-      ],
-      [
-        { text: "Social Display" },
-        { text: "2,836,394" },
-        { text: "8,214" },
-        { text: "0.29" },
-        { text: "1,265" },
-      ],
-      [
-        { text: "Targeted Native" },
-        { text: "2,217,828" },
-        { text: "3,848" },
-        { text: "0.17" },
-        { text: "259" },
-      ],
-    ];
+    const headers: pptxgen.TableCell[] = payload.headers.map((header) => {
+      return {
+        text: header.text,
+      };
+    });
 
-    const content = data.map((row, index) => {
-      return row.map((cell) => {
+    const content = payload.data.map((row, index) => {
+      return row.map((column, columnIndex) => {
+        const heatMap = payload.headers[columnIndex].heatMap;
+        const text = this.normalizeTableCellValue(column.value);
+
         const entity: pptxgen.TableCell = {
-          text: cell.text,
+          text,
           options: {},
         };
 
@@ -313,6 +232,31 @@ class PresentationBuilder {
           };
         }
 
+        // Check if heatmap is defined and the value is a number
+        // Otherwise, log a warning
+        if (heatMap && typeof column.value !== "number") {
+          console.warn(
+            `Heatmap color is defined for column "${column.value}" but the value is not a number.`
+          );
+        }
+
+        // Apply heatmap color if defined
+        if (typeof column.value === "number" && heatMap) {
+          const color = generateHeatmapColor(
+            column.value,
+            heatMap.minValue,
+            heatMap.maxValue,
+            heatMap.colorPalette
+          );
+          const textColor = getTextColorByBackground(color);
+
+          entity.options!.fill = {
+            color: stripHexHash(color),
+          };
+
+          entity.options!.color = stripHexHash(textColor);
+        }
+
         return entity;
       });
     });
@@ -321,13 +265,7 @@ class PresentationBuilder {
       slide.addTable(
         [
           // Header
-          [
-            { text: "Product" },
-            { text: "Impressions" },
-            { text: "Clicks" },
-            { text: "CTR(%)" },
-            { text: "Total Conversions" },
-          ],
+          headers,
 
           // Content
           ...content,
@@ -370,6 +308,40 @@ const builder = new PresentationBuilder();
 //   builder.addBoxesSlide(data);
 // }
 
-builder.addTableSlide();
+const clicks = getMinMax(displayProductPerformance, "clicks");
+const totalConversions = getMinMax(displayProductPerformance, "conversions");
+
+builder.addTableSlide({
+  headers: [
+    { text: "Product" },
+    { text: "Impressions" },
+    {
+      text: "Clicks",
+      heatMap: {
+        colorPalette: ["#e3f2fd", "#0d47a1"],
+        maxValue: clicks.max,
+        minValue: clicks.min,
+      },
+    },
+    { text: "CTR(%)" },
+    {
+      text: "Total Conversions",
+      heatMap: {
+        colorPalette: ["#fadcb4", "#f29111"],
+        maxValue: totalConversions.max,
+        minValue: totalConversions.min,
+      },
+    },
+  ],
+  data: displayProductPerformance.map((entity) => {
+    return [
+      { value: entity._id.subProduct },
+      { value: entity.impressions },
+      { value: entity.clicks },
+      { value: entity.ctr },
+      { value: entity.conversions },
+    ];
+  }),
+});
 
 builder.buildAndSave("output/demo.pptx");

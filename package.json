@@ -14,12 +14,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/chroma-js": "^3.1.1",
     "@types/node": "^22.15.30",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "chroma-js": "^3.1.2",
     "pptxgenjs": "^4.0.0"
   }
 }
