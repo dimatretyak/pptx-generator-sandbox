@@ -85,10 +85,7 @@ class PresentationBuilder {
     };
   }
 
-  private formatTableCellValue(
-    value: TableCellEntityValue,
-    formatter?: Formatter
-  ) {
+  private formatValue(value: TableCellEntityValue, formatter?: Formatter) {
     if (typeof formatter === "function") {
       return formatter(value);
     }
@@ -151,7 +148,7 @@ class PresentationBuilder {
                       },
                     },
                     {
-                      text: this.formatTableCellValue(col.value, col.format),
+                      text: this.formatValue(col.value, col.format),
                       options: {
                         fontSize: 24,
                         bold: true,
@@ -226,7 +223,7 @@ class PresentationBuilder {
                 },
               },
               {
-                text: this.formatTableCellValue(col.value, col.format),
+                text: this.formatValue(col.value, col.format),
                 options: {
                   fontSize: 24,
                   bold: true,
@@ -275,7 +272,7 @@ class PresentationBuilder {
         const heatMap = payload.headers[columnIndex].heatMap;
 
         const entity: pptxgen.TableCell = {
-          text: this.formatTableCellValue(column.value, column.format),
+          text: this.formatValue(column.value, column.format),
           options: {},
         };
 
