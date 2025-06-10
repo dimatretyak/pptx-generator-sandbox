@@ -1,14 +1,11 @@
 import pptxgen from "pptxgenjs";
+import { Card } from "./types/common";
+import { cards } from "./data/constants";
 
 // 16:9 aspect ratio
 const LAYOUT_NAME = "APP";
 const SLIDE_WIDTH = 10;
 const SLIDE_HEIGHT = 5.625;
-
-type Card = {
-  title: string;
-  value: string;
-};
 
 class PresentationBuilder {
   private slideGenerators: Array<(slide: pptxgen.Slide) => void> = [];
@@ -222,93 +219,11 @@ class PresentationBuilder {
   }
 }
 
-const builder = new PresentationBuilder()
-  .addCardsSlide([
-    [
-      { title: "Impressions", value: "177M" },
-      { title: "Clicks", value: "269K" },
-      { title: "CTR(%)", value: "0.15%" },
-    ],
-    [
-      { title: "Impressions", value: "33.3M" },
-      { title: "Site Conversions", value: "2.7K" },
-    ],
-    [
-      { title: "Foot Traffic Visits", value: "4.4K" },
-      { title: "Video Start(s)", value: "2.6M" },
-      { title: "Video Complete(s)", value: "1.3M" },
-    ],
-  ])
-  .addCardsSlide([
-    [
-      { title: "Impressions", value: "177M" },
-      { title: "Clicks", value: "269K" },
-      { title: "CTR(%)", value: "0.15%" },
-    ],
-    [
-      { title: "VCR(%)", value: "50.41%" },
-      { title: "Impressions", value: "33.3M" },
-      { title: "Site Conversions", value: "2.7K" },
-    ],
-    [
-      { title: "Foot Traffic Visits", value: "4.4K" },
-      { title: "Video Start(s)", value: "2.6M" },
-      { title: "Video Complete(s)", value: "1.3M" },
-    ],
-  ])
-  .addCardsSlide([
-    [
-      { title: "Impressions", value: "177M" },
-      { title: "Clicks", value: "269K" },
-      { title: "CTR(%)", value: "0.15%" },
-      { title: "VCR(%)", value: "50.41%" },
-    ],
-    [
-      { title: "Impressions", value: "33.3M" },
-      { title: "Site Conversions", value: "2.7K" },
-      { title: "Foot Traffic Visits", value: "4.4K" },
-      { title: "Video Start(s)", value: "2.6M" },
-    ],
-  ])
-  .addCardsSlide([
-    [
-      { title: "Impressions", value: "177M" },
-      { title: "Clicks", value: "269K" },
-      { title: "CTR(%)", value: "0.15%" },
-    ],
-    [
-      { title: "Impressions", value: "33.3M" },
-      { title: "Total Calls", value: "17.7K" },
-      { title: "Site Conversions", value: "2.7K" },
-    ],
-    [
-      { title: "Foot Traffic Visits", value: "4.4K" },
-      { title: "Video Start(s)", value: "2.6M" },
-      { title: "Video Complete(s)", value: "1.3M" },
-    ],
-    [
-      { title: "First Calls", value: "12.2K" },
-      { title: "Answered Calls", value: "15.7K" },
-      { title: "Answered (%)", value: "88.70%" },
-    ],
-  ])
-  .addCardsSlide([
-    [{ title: "Impressions", value: "177M" }],
-    [
-      { title: "Impressions", value: "33.3M" },
-      { title: "Total Calls", value: "17.7K" },
-      { title: "Site Conversions", value: "2.7K" },
-    ],
-    [
-      { title: "Foot Traffic Visits", value: "4.4K" },
-      { title: "Video Start(s)", value: "2.6M" },
-      { title: "Video Complete(s)", value: "1.3M" },
-    ],
-    [
-      { title: "First Calls", value: "12.2K" },
-      { title: "Answered Calls", value: "15.7K" },
-      { title: "Answered (%)", value: "88.70%" },
-    ],
-  ]);
+const builder = new PresentationBuilder();
+
+// Add slides with cards
+for (const data of cards) {
+  builder.addCardsSlide(data);
+}
 
 builder.buildAndSave("output/demo.pptx");
