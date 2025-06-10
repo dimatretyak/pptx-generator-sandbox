@@ -239,6 +239,9 @@ class PresentationBuilder {
     const headers: pptxgen.TableCell[] = payload.headers.map((header) => {
       return {
         text: header.text,
+        options: {
+          bold: true,
+        },
       };
     });
 
