@@ -12,7 +12,7 @@ export type TableHeaderEntity = {
   };
 };
 
-export type TableCellEntityValue = string | number;
+export type TableCellEntityValue = string | number | undefined;
 
 export type TableCellEntity = {
   value: TableCellEntityValue;
