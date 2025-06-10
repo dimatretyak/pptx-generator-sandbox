@@ -1,5 +1,10 @@
 import pptxgen from "pptxgenjs";
-import { Card, TableCellEntity, TableHeaderEntity } from "./types/common";
+import {
+  Card,
+  TableCellEntity,
+  TableCellEntityValue,
+  TableHeaderEntity,
+} from "./types/common";
 import { cards, displayProductPerformance } from "./data/constants";
 import {
   generateHeatmapColor,
@@ -43,13 +48,17 @@ class PresentationBuilder {
     };
   }
 
-  private normalizeTableCellValue(value: TableCellEntity["value"]) {
-    // TODO: Format numbers with commas
-    if (typeof value === "number") {
-      return value.toString();
+  private normalizeTableCellValue(cell: TableCellEntity) {
+    if (typeof cell.normalizer === "function") {
+      return cell.normalizer(cell.value);
     }
 
-    return value;
+    // TODO: Format numbers with commas
+    if (typeof cell.value === "number") {
+      return cell.value.toString();
+    }
+
+    return cell.value;
   }
 
   addCardsSlide(cards: Card[][]) {
@@ -218,10 +227,9 @@ class PresentationBuilder {
     const content = payload.data.map((row, index) => {
       return row.map((column, columnIndex) => {
         const heatMap = payload.headers[columnIndex].heatMap;
-        const text = this.normalizeTableCellValue(column.value);
 
         const entity: pptxgen.TableCell = {
-          text,
+          text: this.normalizeTableCellValue(column),
           options: {},
         };
 

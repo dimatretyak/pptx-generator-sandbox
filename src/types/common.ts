@@ -12,6 +12,9 @@ export type TableHeaderEntity = {
   };
 };
 
+export type TableCellEntityValue = string | number;
+
 export type TableCellEntity = {
-  value: string | number;
+  value: TableCellEntityValue;
+  normalizer?: (value: TableCellEntityValue) => string;
 };
