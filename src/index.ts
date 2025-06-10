@@ -80,9 +80,9 @@ class PresentationBuilder {
     };
   }
 
-  private normalizeTableCellValue(cell: TableCellEntity) {
-    if (typeof cell.normalizer === "function") {
-      return cell.normalizer(cell.value);
+  private formatTableCellValue(cell: TableCellEntity) {
+    if (typeof cell.format === "function") {
+      return cell.format(cell.value);
     }
 
     if (isNumber(cell.value)) {
@@ -267,7 +267,7 @@ class PresentationBuilder {
         const heatMap = payload.headers[columnIndex].heatMap;
 
         const entity: pptxgen.TableCell = {
-          text: this.normalizeTableCellValue(column),
+          text: this.formatTableCellValue(column),
           options: {},
         };
 
@@ -375,13 +375,15 @@ builder.addTableSlide({
     },
   ],
   data: displayProductPerformance.map((entity) => {
-    return [
+    const result: TableCellEntity[] = [
       { value: entity._id.subProduct },
-      { value: entity.impressions, normalizer: formatTableCellNumber },
-      { value: entity.clicks, normalizer: formatTableCellNumber },
-      { value: entity.ctr, normalizer: formatTableCellPercent },
-      { value: entity.conversions, normalizer: formatTableCellNumber },
+      { value: entity.impressions, format: formatTableCellNumber },
+      { value: entity.clicks, format: formatTableCellNumber },
+      { value: entity.ctr, format: formatTableCellPercent },
+      { value: entity.conversions, format: formatTableCellNumber },
     ];
+
+    return result;
   }),
 });
 
@@ -414,14 +416,16 @@ builder.addTableSlide({
     },
   ],
   data: videoProductPerformance.map((entity) => {
-    return [
+    const result: TableCellEntity[] = [
       { value: entity._id.subProduct },
-      { value: entity.impressions, normalizer: formatTableCellNumber },
-      { value: entity.videoCompletions, normalizer: formatTableCellNumber },
-      { value: entity.vcr, normalizer: formatTableCellPercent },
-      { value: entity.clicks, normalizer: formatTableCellNumber },
-      { value: entity.ctr, normalizer: formatTableCellPercent },
+      { value: entity.impressions, format: formatTableCellNumber },
+      { value: entity.videoCompletions, format: formatTableCellNumber },
+      { value: entity.vcr, format: formatTableCellPercent },
+      { value: entity.clicks, format: formatTableCellNumber },
+      { value: entity.ctr, format: formatTableCellPercent },
     ];
+
+    return result;
   }),
 });
 

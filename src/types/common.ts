@@ -16,5 +16,5 @@ export type TableCellEntityValue = string | number | undefined;
 
 export type TableCellEntity = {
   value: TableCellEntityValue;
-  normalizer?: (value: TableCellEntityValue) => string;
+  format?: (value: TableCellEntityValue) => string;
 };
