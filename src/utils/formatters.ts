@@ -1,3 +1,5 @@
+import { isNumber } from "./common";
+
 export const formatNumber = (value: number) => {
   const formatter = new Intl.NumberFormat("en-US", {
     maximumFractionDigits: 2,
@@ -20,3 +22,32 @@ export const formatPercent = (
   // Преобразуем из 0–100 в 0–1
   return formatter.format(value / 100);
 };
+
+// TODO: Reuse this function from Lumina in the future
+export function formatNumberWithSuffix(value: unknown) {
+  if (isNumber(value)) {
+    if (value % 1 !== 0) {
+      return `${value.toFixed(2)}%`;
+    }
+
+    if (value >= 1_000_000) {
+      return (value / 1_000_000).toFixed(1).replace(/\.0$/, "") + "M";
+    }
+
+    if (value >= 1_000) {
+      return (value / 1_000).toFixed(1).replace(/\.0$/, "") + "K";
+    }
+
+    if (value >= 10) {
+      return value.toFixed(0);
+    }
+
+    return value.toString();
+  }
+
+  if (value) {
+    return value.toString();
+  }
+
+  return "";
+}

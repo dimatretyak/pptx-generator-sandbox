@@ -1,6 +1,7 @@
 import pptxgen from "pptxgenjs";
 import {
   Card,
+  Formatter,
   TableCellEntity,
   TableCellEntityValue,
   TableHeaderEntity,
@@ -18,7 +19,11 @@ import {
   isString,
   stripHexHash,
 } from "./utils/common";
-import { formatNumber, formatPercent } from "./utils/formatters";
+import {
+  formatNumber,
+  formatNumberWithSuffix,
+  formatPercent,
+} from "./utils/formatters";
 
 // 16:9 aspect ratio
 const LAYOUT_NAME = "APP";
@@ -80,17 +85,20 @@ class PresentationBuilder {
     };
   }
 
-  private formatTableCellValue(cell: TableCellEntity) {
-    if (typeof cell.format === "function") {
-      return cell.format(cell.value);
+  private formatTableCellValue(
+    value: TableCellEntityValue,
+    formatter?: Formatter
+  ) {
+    if (typeof formatter === "function") {
+      return formatter(value);
     }
 
-    if (isNumber(cell.value)) {
-      return cell.value.toString();
+    if (isNumber(value)) {
+      return value.toString();
     }
 
-    if (isString(cell.value)) {
-      return cell.value;
+    if (isString(value)) {
+      return value;
     }
 
     return FALLBACK_TABLE_CELL_VALUE;
@@ -143,7 +151,7 @@ class PresentationBuilder {
                       },
                     },
                     {
-                      text: col.value,
+                      text: this.formatTableCellValue(col.value, col.format),
                       options: {
                         fontSize: 24,
                         bold: true,
@@ -218,7 +226,7 @@ class PresentationBuilder {
                 },
               },
               {
-                text: col.value,
+                text: this.formatTableCellValue(col.value, col.format),
                 options: {
                   fontSize: 24,
                   bold: true,
@@ -267,7 +275,7 @@ class PresentationBuilder {
         const heatMap = payload.headers[columnIndex].heatMap;
 
         const entity: pptxgen.TableCell = {
-          text: this.formatTableCellValue(column),
+          text: this.formatTableCellValue(column.value, column.format),
           options: {},
         };
 
@@ -429,9 +437,58 @@ builder.addTableSlide({
   }),
 });
 
+builder.addBoxesSlide([
+  [
+    {
+      title: "Impressions",
+      value: 177000000,
+      format: formatNumberWithSuffix,
+    },
+    {
+      title: "Clicks",
+      value: 269000,
+      format: formatNumberWithSuffix,
+    },
+    {
+      title: "CTR(%)",
+      value: 0.15261760710334837,
+      format: formatTableCellPercent,
+    },
+  ],
+  [
+    {
+      title: "Impressions",
+      value: 33300000,
+      format: formatNumberWithSuffix,
+    },
+    {
+      title: "Site Conversions",
+      value: 2700,
+      format: formatNumberWithSuffix,
+    },
+  ],
+  [
+    {
+      title: "Foot Traffic Visits",
+      value: 4400,
+      format: formatNumberWithSuffix,
+    },
+    {
+      title: "Video Start(s)",
+      value: 2600000,
+      format: formatNumberWithSuffix,
+    },
+    {
+      title: "Video Complete(s)",
+      value: 1300000,
+      format: formatNumberWithSuffix,
+    },
+  ],
+]);
+
 // Add slides with cards
-for (const data of cards) {
-  builder.addBoxesSlide(data);
-}
+// for (const data of cards) {
+//   builder.addBoxesSlide(data);
+// }
 
 builder.buildAndSave("output/demo.pptx");

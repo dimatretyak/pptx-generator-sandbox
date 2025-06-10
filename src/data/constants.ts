@@ -3,93 +3,93 @@ import { Card } from "../types/common";
 export const cards: Array<Card[][]> = [
   [
     [
-      { title: "Impressions", value: "177M" },
-      { title: "Clicks", value: "269K" },
-      { title: "CTR(%)", value: "0.15%" },
+      { title: "Impressions", value: 177000000 },
+      { title: "Clicks", value: 269000 },
+      { title: "CTR(%)", value: 0.15261760710334837 },
     ],
     [
-      { title: "Impressions", value: "33.3M" },
-      { title: "Site Conversions", value: "2.7K" },
+      { title: "Impressions", value: 33300000 },
+      { title: "Site Conversions", value: 2700 },
     ],
     [
-      { title: "Foot Traffic Visits", value: "4.4K" },
-      { title: "Video Start(s)", value: "2.6M" },
-      { title: "Video Complete(s)", value: "1.3M" },
-    ],
-  ],
-
-  [
-    [
-      { title: "Impressions", value: "177M" },
-      { title: "Clicks", value: "269K" },
-      { title: "CTR(%)", value: "0.15%" },
-    ],
-    [
-      { title: "VCR(%)", value: "50.41%" },
-      { title: "Impressions", value: "33.3M" },
-      { title: "Site Conversions", value: "2.7K" },
-    ],
-    [
-      { title: "Foot Traffic Visits", value: "4.4K" },
-      { title: "Video Start(s)", value: "2.6M" },
-      { title: "Video Complete(s)", value: "1.3M" },
+      { title: "Foot Traffic Visits", value: 4400 },
+      { title: "Video Start(s)", value: 2600000 },
+      { title: "Video Complete(s)", value: 1300000 },
     ],
   ],
 
   [
     [
-      { title: "Impressions", value: "177M" },
-      { title: "Clicks", value: "269K" },
-      { title: "CTR(%)", value: "0.15%" },
-      { title: "VCR(%)", value: "50.41%" },
+      { title: "Impressions", value: 177000000 },
+      { title: "Clicks", value: 269000 },
+      { title: "CTR(%)", value: 0.15261760710334837 },
     ],
     [
-      { title: "Impressions", value: "33.3M" },
-      { title: "Site Conversions", value: "2.7K" },
-      { title: "Foot Traffic Visits", value: "4.4K" },
-      { title: "Video Start(s)", value: "2.6M" },
+      { title: "VCR(%)", value: 45.68488558696288 },
+      { title: "Impressions", value: 23370064 },
+      { title: "Site Conversions", value: 2750 },
+    ],
+    [
+      { title: "Foot Traffic Visits", value: 4789 },
+      { title: "Video Start(s)", value: 2653123 },
+      { title: "Video Complete(s)", value: 1353111 },
+    ],
+  ],
+
+  [
+    [
+      { title: "Impressions", value: 177000000 },
+      { title: "Clicks", value: 269000 },
+      { title: "CTR(%)", value: 0.15261760710334837 },
+      { title: "VCR(%)", value: 45.68488558696288 },
+    ],
+    [
+      { title: "Impressions", value: 33300000 },
+      { title: "Site Conversions", value: 2700 },
+      { title: "Foot Traffic Visits", value: 4400 },
+      { title: "Video Start(s)", value: 2600000 },
     ],
   ],
 
   [
     [
-      { title: "Impressions", value: "177M" },
-      { title: "Clicks", value: "269K" },
-      { title: "CTR(%)", value: "0.15%" },
+      { title: "Impressions", value: 177000000 },
+      { title: "Clicks", value: 269000 },
+      { title: "CTR(%)", value: 0.15261760710334837 },
     ],
     [
-      { title: "Impressions", value: "33.3M" },
-      { title: "Total Calls", value: "17.7K" },
-      { title: "Site Conversions", value: "2.7K" },
+      { title: "Impressions", value: 33300000 },
+      { title: "Total Calls", value: 17731 },
+      { title: "Site Conversions", value: 2751 },
     ],
     [
-      { title: "Foot Traffic Visits", value: "4.4K" },
-      { title: "Video Start(s)", value: "2.6M" },
-      { title: "Video Complete(s)", value: "1.3M" },
+      { title: "Foot Traffic Visits", value: 4512 },
+      { title: "Video Start(s)", value: 2561233 },
+      { title: "Video Complete(s)", value: 1342111 },
     ],
     [
-      { title: "First Calls", value: "12.2K" },
-      { title: "Answered Calls", value: "15.7K" },
-      { title: "Answered (%)", value: "88.70%" },
+      { title: "First Calls", value: 12199 },
+      { title: "Answered Calls", value: 15731 },
+      { title: "Answered (%)", value: 88.67712 },
     ],
   ],
 
   [
-    [{ title: "Impressions", value: "177M" }],
+    [{ title: "Impressions", value: 177333222 }],
     [
-      { title: "Impressions", value: "33.3M" },
-      { title: "Total Calls", value: "17.7K" },
-      { title: "Site Conversions", value: "2.7K" },
+      { title: "Impressions", value: 33300000 },
+      { title: "Total Calls", value: 17650 },
+      { title: "Site Conversions", value: 2650 },
     ],
     [
-      { title: "Foot Traffic Visits", value: "4.4K" },
-      { title: "Video Start(s)", value: "2.6M" },
-      { title: "Video Complete(s)", value: "1.3M" },
+      { title: "Foot Traffic Visits", value: 4300 },
+      { title: "Video Start(s)", value: 2650000 },
+      { title: "Video Complete(s)", value: 1250000 },
     ],
     [
-      { title: "First Calls", value: "12.2K" },
-      { title: "Answered Calls", value: "15.7K" },
-      { title: "Answered (%)", value: "88.70%" },
+      { title: "First Calls", value: 12199 },
+      { title: "Answered Calls", value: 15699 },
+      { title: "Answered (%)", value: 88.12323 },
     ],
   ],
 ];

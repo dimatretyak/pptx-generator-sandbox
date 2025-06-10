@@ -1,6 +1,10 @@
+export type TableCellEntityValue = string | number | undefined;
+export type Formatter = (value: TableCellEntityValue) => string;
+
 export type Card = {
   title: string;
-  value: string;
+  value: TableCellEntityValue;
+  format?: Formatter;
 };
 
 export type TableHeaderEntity = {
@@ -12,9 +16,7 @@ export type TableHeaderEntity = {
   };
 };
 
-export type TableCellEntityValue = string | number | undefined;
-
 export type TableCellEntity = {
   value: TableCellEntityValue;
-  format?: (value: TableCellEntityValue) => string;
+  format?: Formatter;
 };
