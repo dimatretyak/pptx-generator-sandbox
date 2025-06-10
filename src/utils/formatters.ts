@@ -19,7 +19,6 @@ export const formatPercent = (
     useGrouping: options.useGrouping ?? true,
   });
 
-  // Преобразуем из 0–100 в 0–1
   return formatter.format(value / 100);
 };
 
