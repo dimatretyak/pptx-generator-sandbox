@@ -10,13 +10,31 @@ import {
   generateHeatmapColor,
   getMinMax,
   getTextColorByBackground,
+  isNumber,
   stripHexHash,
 } from "./utils/common";
+import { formatNumber, formatPercent } from "./utils/formatters";
 
 // 16:9 aspect ratio
 const LAYOUT_NAME = "APP";
 const SLIDE_WIDTH = 10;
 const SLIDE_HEIGHT = 5.625;
+
+const formatTableCellNumber = (value: TableCellEntityValue) => {
+  if (isNumber(value)) {
+    return formatNumber(value);
+  }
+
+  return value;
+};
+
+const formatTableCellPercent = (value: TableCellEntityValue) => {
+  if (isNumber(value)) {
+    return formatPercent(value);
+  }
+
+  return value;
+};
 
 class PresentationBuilder {
   private slideGenerators: Array<(slide: pptxgen.Slide) => void> = [];
@@ -54,7 +72,7 @@ class PresentationBuilder {
     }
 
     // TODO: Format numbers with commas
-    if (typeof cell.value === "number") {
+    if (isNumber(cell.value)) {
       return cell.value.toString();
     }
 
@@ -249,7 +267,7 @@ class PresentationBuilder {
         }
 
         // Apply heatmap color if defined
-        if (typeof column.value === "number" && heatMap) {
+        if (isNumber(column.value) && heatMap) {
           const color = generateHeatmapColor(
             column.value,
             heatMap.minValue,
@@ -344,10 +362,10 @@ builder.addTableSlide({
   data: displayProductPerformance.map((entity) => {
     return [
       { value: entity._id.subProduct },
-      { value: entity.impressions },
-      { value: entity.clicks },
-      { value: entity.ctr },
-      { value: entity.conversions },
+      { value: entity.impressions, normalizer: formatTableCellNumber },
+      { value: entity.clicks, normalizer: formatTableCellNumber },
+      { value: entity.ctr, normalizer: formatTableCellPercent },
+      { value: entity.conversions, normalizer: formatTableCellNumber },
     ];
   }),
 });
