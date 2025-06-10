@@ -11,6 +11,7 @@ import {
   getMinMax,
   getTextColorByBackground,
   isNumber,
+  isString,
   stripHexHash,
 } from "./utils/common";
 import { formatNumber, formatPercent } from "./utils/formatters";
@@ -19,13 +20,18 @@ import { formatNumber, formatPercent } from "./utils/formatters";
 const LAYOUT_NAME = "APP";
 const SLIDE_WIDTH = 10;
 const SLIDE_HEIGHT = 5.625;
+const FALLBACK_TABLE_CELL_VALUE = "-";
 
 const formatTableCellNumber = (value: TableCellEntityValue) => {
   if (isNumber(value)) {
     return formatNumber(value);
   }
 
-  return value;
+  if (isString(value)) {
+    return value;
+  }
+
+  return FALLBACK_TABLE_CELL_VALUE;
 };
 
 const formatTableCellPercent = (value: TableCellEntityValue) => {
@@ -33,7 +39,11 @@ const formatTableCellPercent = (value: TableCellEntityValue) => {
     return formatPercent(value);
   }
 
-  return value;
+  if (isString(value)) {
+    return value;
+  }
+
+  return FALLBACK_TABLE_CELL_VALUE;
 };
 
 class PresentationBuilder {
@@ -71,12 +81,15 @@ class PresentationBuilder {
       return cell.normalizer(cell.value);
     }
 
-    // TODO: Format numbers with commas
     if (isNumber(cell.value)) {
       return cell.value.toString();
     }
 
-    return cell.value;
+    if (isString(cell.value)) {
+      return cell.value;
+    }
+
+    return FALLBACK_TABLE_CELL_VALUE;
   }
 
   addCardsSlide(cards: Card[][]) {
