@@ -188,6 +188,171 @@ class PresentationBuilder {
     return this;
   }
 
+  addTableSlide() {
+    const { width } = this.getSizes();
+
+    const data = [
+      [
+        { text: "Targeted Display" },
+        { text: "111,126,221" },
+        { text: "138,572" },
+        { text: "0.12" },
+        { text: "100,682" },
+      ],
+      [
+        { text: "Addressable Display" },
+        { text: "34,403,897" },
+        { text: "67,073" },
+        { text: "0.19" },
+        { text: "2,910" },
+      ],
+      [
+        { text: "Geo-Fencing w/ Foot Traffic" },
+        { text: "26,429,698" },
+        { text: "51,249" },
+        { text: "0.19" },
+        { text: "5,570" },
+      ],
+      [
+        { text: "Social Display" },
+        { text: "2,836,394" },
+        { text: "8,214" },
+        { text: "0.29" },
+        { text: "1,265" },
+      ],
+      [
+        { text: "Targeted Native" },
+        { text: "2,217,828" },
+        { text: "3,848" },
+        { text: "0.17" },
+        { text: "259" },
+      ],
+      [
+        { text: "Targeted Display" },
+        { text: "111,126,221" },
+        { text: "138,572" },
+        { text: "0.12" },
+        { text: "100,682" },
+      ],
+      [
+        { text: "Addressable Display" },
+        { text: "34,403,897" },
+        { text: "67,073" },
+        { text: "0.19" },
+        { text: "2,910" },
+      ],
+      [
+        { text: "Geo-Fencing w/ Foot Traffic" },
+        { text: "26,429,698" },
+        { text: "51,249" },
+        { text: "0.19" },
+        { text: "5,570" },
+      ],
+      [
+        { text: "Social Display" },
+        { text: "2,836,394" },
+        { text: "8,214" },
+        { text: "0.29" },
+        { text: "1,265" },
+      ],
+      [
+        { text: "Targeted Native" },
+        { text: "2,217,828" },
+        { text: "3,848" },
+        { text: "0.17" },
+        { text: "259" },
+      ],
+      [
+        { text: "Targeted Display" },
+        { text: "111,126,221" },
+        { text: "138,572" },
+        { text: "0.12" },
+        { text: "100,682" },
+      ],
+      [
+        { text: "Addressable Display" },
+        { text: "34,403,897" },
+        { text: "67,073" },
+        { text: "0.19" },
+        { text: "2,910" },
+      ],
+      [
+        { text: "Geo-Fencing w/ Foot Traffic" },
+        { text: "26,429,698" },
+        { text: "51,249" },
+        { text: "0.19" },
+        { text: "5,570" },
+      ],
+      [
+        { text: "Social Display" },
+        { text: "2,836,394" },
+        { text: "8,214" },
+        { text: "0.29" },
+        { text: "1,265" },
+      ],
+      [
+        { text: "Targeted Native" },
+        { text: "2,217,828" },
+        { text: "3,848" },
+        { text: "0.17" },
+        { text: "259" },
+      ],
+    ];
+
+    const content = data.map((row, index) => {
+      return row.map((cell) => {
+        const entity: pptxgen.TableCell = {
+          text: cell.text,
+          options: {},
+        };
+
+        // Apply background color for odd rows
+        if (index % 2 === 0) {
+          entity.options!.fill = {
+            color: "f5f5f5",
+          };
+        }
+
+        return entity;
+      });
+    });
+
+    this.slideGenerators.push((slide) => {
+      slide.addTable(
+        [
+          // Header
+          [
+            { text: "Product" },
+            { text: "Impressions" },
+            { text: "Clicks" },
+            { text: "CTR(%)" },
+            { text: "Total Conversions" },
+          ],
+
+          // Content
+          ...content,
+        ],
+        {
+          x: this.config.margin,
+          y: this.config.margin,
+          w: width,
+          autoPage: true,
+          autoPageRepeatHeader: true,
+          autoPageSlideStartY: this.config.margin,
+          valign: "middle",
+          border: {
+            pt: 1,
+            color: "cccccc",
+          },
+          margin: 0.1,
+          fontSize: 14,
+        }
+      );
+    });
+
+    return this;
+  }
+
   buildAndSave(fileName: string) {
     for (const generateSlide of this.slideGenerators) {
       const slide = this.presentation.addSlide();
@@ -201,8 +366,10 @@ class PresentationBuilder {
 const builder = new PresentationBuilder();
 
 // Add slides with cards
-for (const data of cards) {
-  builder.addBoxesSlide(data);
-}
+// for (const data of cards) {
+//   builder.addBoxesSlide(data);
+// }
+
+builder.addTableSlide();
 
 builder.buildAndSave("output/demo.pptx");
