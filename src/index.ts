@@ -9,8 +9,10 @@ const SLIDE_HEIGHT = 5.625;
 
 class PresentationBuilder {
   private slideGenerators: Array<(slide: pptxgen.Slide) => void> = [];
-
   private presentation: pptxgen;
+  private config: {
+    margin: number;
+  };
 
   constructor() {
     this.presentation = new pptxgen();
@@ -22,14 +24,23 @@ class PresentationBuilder {
     });
 
     this.presentation.layout = LAYOUT_NAME;
+
+    this.config = {
+      margin: 0.25,
+    };
+  }
+
+  private getSizes() {
+    return {
+      width: SLIDE_WIDTH - this.config.margin * 2,
+      height: SLIDE_HEIGHT - this.config.margin * 2,
+    };
   }
 
   addCardsSlide(cards: Card[][]) {
     const BORDER_SIZE = 1;
     const SPACER_SIZE = 0.25;
-    const MARGIN_SIZE = 0.25;
-    const WIDTH = SLIDE_WIDTH - MARGIN_SIZE * 2;
-    const HEIGHT = SLIDE_HEIGHT - MARGIN_SIZE * 2;
+    const { width, height } = this.getSizes();
 
     this.slideGenerators.push((slide) => {
       cards.forEach((row, rowIndex) => {
@@ -37,10 +48,10 @@ class PresentationBuilder {
         const COLS_COUNT = Math.max(2, cards.length);
 
         // Calculate cell size based on the number of rows
-        const CELL_SIZE = (WIDTH - SPACER_SIZE * (ROWS_COUNT - 1)) / ROWS_COUNT;
+        const CELL_SIZE = (width - SPACER_SIZE * (ROWS_COUNT - 1)) / ROWS_COUNT;
 
         // Calculate column size based on the number of columns
-        let COL_SIZE = (HEIGHT - SPACER_SIZE * (COLS_COUNT - 1)) / COLS_COUNT;
+        let COL_SIZE = (height - SPACER_SIZE * (COLS_COUNT - 1)) / COLS_COUNT;
 
         // Calculate offsets for positioning the cells
         const X_OFFSET = CELL_SIZE + SPACER_SIZE;
@@ -50,14 +61,14 @@ class PresentationBuilder {
 
         // Center the cards vertically if there's only one row
         if (cards.length === 1) {
-          Y_BASE = (HEIGHT - COL_SIZE) / 2;
+          Y_BASE = (height - COL_SIZE) / 2;
         }
 
         row.forEach((col, colIndex) => {
           let X_BASE = colIndex * X_OFFSET;
 
           if (row.length === 1) {
-            X_BASE = (WIDTH - CELL_SIZE) / 2;
+            X_BASE = (width - CELL_SIZE) / 2;
           }
 
           slide.addTable(
@@ -84,8 +95,8 @@ class PresentationBuilder {
               ],
             ],
             {
-              x: MARGIN_SIZE + X_BASE,
-              y: MARGIN_SIZE + Y_BASE,
+              x: this.config.margin + X_BASE,
+              y: this.config.margin + Y_BASE,
               w: CELL_SIZE,
               h: COL_SIZE,
               color: "3D3D3D",
@@ -107,9 +118,7 @@ class PresentationBuilder {
   addBoxesSlide(cards: Card[][]) {
     const BORDER_SIZE = 1;
     const SPACER_SIZE = 0.25;
-    const MARGIN_SIZE = 0.25;
-    const WIDTH = SLIDE_WIDTH - MARGIN_SIZE * 2;
-    const HEIGHT = SLIDE_HEIGHT - MARGIN_SIZE * 2;
+    const { width, height } = this.getSizes();
 
     this.slideGenerators.push((slide) => {
       cards.forEach((row, rowIndex) => {
@@ -117,10 +126,10 @@ class PresentationBuilder {
         const COLS_COUNT = Math.max(2, cards.length);
 
         // Calculate cell size based on the number of rows
-        const CELL_SIZE = (WIDTH - SPACER_SIZE * (ROWS_COUNT - 1)) / ROWS_COUNT;
+        const CELL_SIZE = (width - SPACER_SIZE * (ROWS_COUNT - 1)) / ROWS_COUNT;
 
         // Calculate column size based on the number of columns
-        let COL_SIZE = (HEIGHT - SPACER_SIZE * (COLS_COUNT - 1)) / COLS_COUNT;
+        let COL_SIZE = (height - SPACER_SIZE * (COLS_COUNT - 1)) / COLS_COUNT;
 
         // Calculate offsets for positioning the cells
         const X_OFFSET = CELL_SIZE + SPACER_SIZE;
@@ -130,14 +139,14 @@ class PresentationBuilder {
 
         // Center the cards vertically if there's only one row
         if (cards.length === 1) {
-          Y_BASE = (HEIGHT - COL_SIZE) / 2;
+          Y_BASE = (height - COL_SIZE) / 2;
         }
 
         row.forEach((col, colIndex) => {
           let X_BASE = colIndex * X_OFFSET;
 
           if (row.length === 1) {
-            X_BASE = (WIDTH - CELL_SIZE) / 2;
+            X_BASE = (width - CELL_SIZE) / 2;
           }
 
           slide.addText(
@@ -159,8 +168,8 @@ class PresentationBuilder {
             ],
             {
               shape: this.presentation.ShapeType.roundRect,
-              x: MARGIN_SIZE + X_BASE,
-              y: MARGIN_SIZE + Y_BASE,
+              x: this.config.margin + X_BASE,
+              y: this.config.margin + Y_BASE,
               w: CELL_SIZE,
               h: COL_SIZE,
               align: "center",
