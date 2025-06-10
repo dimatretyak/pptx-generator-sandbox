@@ -329,11 +329,6 @@ class PresentationBuilder {
 
 const builder = new PresentationBuilder();
 
-// Add slides with cards
-// for (const data of cards) {
-//   builder.addBoxesSlide(data);
-// }
-
 const clicks = getMinMax(displayProductPerformance, "clicks");
 const totalConversions = getMinMax(displayProductPerformance, "conversions");
 
@@ -369,5 +364,10 @@ builder.addTableSlide({
     ];
   }),
 });
+
+// Add slides with cards
+for (const data of cards) {
+  builder.addBoxesSlide(data);
+}
 
 builder.buildAndSave("output/demo.pptx");
