@@ -24,6 +24,7 @@ import {
   formatNumberWithSuffix,
   formatPercent,
 } from "./utils/formatters";
+import splitArrayIntoChunks from "./utils/splitArrayIntoChunks";
 
 // 16:9 aspect ratio
 const LAYOUT_NAME = "APP";
@@ -524,6 +525,39 @@ builder.addBoxesSlide({
       },
     ],
   ],
+});
+
+const videoTopKPIData = [
+  {
+    title: "Impressions",
+    value: 24150000,
+    format: formatNumberWithSuffix,
+  },
+  {
+    title: "Video Completes",
+    value: 10500000,
+    format: formatNumberWithSuffix,
+  },
+  {
+    title: "VCR(%)",
+    value: 45.0,
+    format: formatPowerPointPercent,
+  },
+  {
+    title: "Clicks",
+    value: 42000,
+    format: formatNumberWithSuffix,
+  },
+  {
+    title: "CTR(%)",
+    value: 0.17,
+    format: formatPowerPointPercent,
+  },
+];
+
+builder.addBoxesSlide({
+  title: "Video - Top KPIs",
+  data: splitArrayIntoChunks(videoTopKPIData, 4),
 });
 
 // Add slides with cards
