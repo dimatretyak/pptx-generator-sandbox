@@ -60,6 +60,8 @@ class PresentationBuilder {
   private slideGenerators: Array<(slide: pptxgen.Slide) => void> = [];
   private presentation: pptxgen;
   private config: {
+    borderSize: number;
+    roundess: number;
     margin: {
       top: number;
       left: number;
@@ -80,6 +82,8 @@ class PresentationBuilder {
     this.presentation.layout = LAYOUT_NAME;
 
     this.config = {
+      borderSize: 1,
+      roundess: 0.025,
       margin: {
         top: 0.75,
         left: 0.25,
@@ -128,7 +132,6 @@ class PresentationBuilder {
   }
 
   addCardsSlide(cards: Card[][]) {
-    const BORDER_SIZE = 1;
     const SPACER_SIZE = 0.25;
     const { width, height } = this.getSizes();
 
@@ -192,7 +195,7 @@ class PresentationBuilder {
               color: "3D3D3D",
               border: {
                 color: "cccccc",
-                pt: BORDER_SIZE,
+                pt: this.config.borderSize,
               },
               align: "center",
               valign: "middle",
@@ -260,7 +263,7 @@ class PresentationBuilder {
               h: COL_SIZE,
               align: "center",
               fontSize: 14,
-              rectRadius: 0.025,
+              rectRadius: this.config.roundess,
               line: {
                 color: "cccccc",
                 size: BORDER_SIZE,
@@ -367,6 +370,64 @@ class PresentationBuilder {
     return this;
   }
 
+  addBarChartSlide(payload: { title: string }) {
+    const { width, height } = this.getSizes();
+    const PADDING = 0.25;
+
+    this.slideGenerators.push((slide) => {
+      this.addSlideTitle(slide, payload.title);
+
+      slide.addShape("roundRect", {
+        x: this.config.margin.left,
+        y: this.config.margin.top,
+        w: width,
+        h: height,
+        rectRadius: this.config.roundess,
+        line: {
+          color: "cccccc",
+          size: this.config.borderSize,
+        },
+      });
+
+      slide.addChart(
+        "bar",
+        [
+          {
+            labels: [
+              "2024-12",
+              "2025-01",
+              "2025-02",
+              "2025-03",
+              "2025-04",
+              "2025-05",
+            ],
+            values: [0.00093, 0.00127, 0.00127, 0.00115, 0.00145, 0.00145],
+          },
+        ],
+        {
+          x: this.config.margin.left + PADDING,
+          y: this.config.margin.top + PADDING,
+          w: width - PADDING,
+          h: height - PADDING,
+          barDir: "col",
+          chartColors: ["cdd8f2"],
+          valAxisLabelFormatCode: "0.00%",
+          barGapWidthPct: 25,
+          valGridLine: {
+            style: "none",
+          },
+          // showCatAxisTitle: true,
+          // catAxisLabelColor: "000000",
+          // catAxisTitleColor: "cdd8f2",
+          // catAxisTitle: payload.title,
+          // catAxisTitleFontSize: 16,
+        }
+      );
+    });
+
+    return this;
+  }
+
   buildAndSave(fileName: string) {
     for (const generateSlide of this.slideGenerators) {
       const slide = this.presentation.addSlide();
@@ -378,6 +439,11 @@ class PresentationBuilder {
 }
 
 const builder = new PresentationBuilder();
+
+// Render charts
+builder.addBarChartSlide({
+  title: "Display - CTR Last 6 Months",
+});
 
 const clicks = getMinMax(displayProductPerformance, "clicks");
 const totalConversions = getMinMax(displayProductPerformance, "conversions");
