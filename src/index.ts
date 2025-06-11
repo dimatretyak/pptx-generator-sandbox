@@ -80,7 +80,7 @@ class PresentationBuilder {
 
     this.config = {
       margin: {
-        top: 0.25,
+        top: 0.75,
         left: 0.25,
         right: 0.25,
         bottom: 0.25,
@@ -109,6 +109,21 @@ class PresentationBuilder {
     }
 
     return FALLBACK_POWER_POINT_VALUE;
+  }
+
+  addSlideTitle(slide: pptxgen.Slide, title: string) {
+    const sizes = this.getSizes();
+
+    slide.addText(title, {
+      x: this.config.margin.left,
+      y: 0,
+      h: this.config.margin.top,
+      valign: "middle",
+      bold: true,
+      fontSize: 18,
+      margin: 0,
+      w: sizes.width,
+    });
   }
 
   addCardsSlide(cards: Card[][]) {
@@ -189,15 +204,17 @@ class PresentationBuilder {
     return this;
   }
 
-  addBoxesSlide(cards: Card[][]) {
+  addBoxesSlide(payload: { title: string; data: Card[][] }) {
     const BORDER_SIZE = 1;
     const SPACER_SIZE = 0.25;
     const { width, height } = this.getSizes();
 
     this.slideGenerators.push((slide) => {
-      cards.forEach((row, rowIndex) => {
+      this.addSlideTitle(slide, payload.title);
+
+      payload.data.forEach((row, rowIndex) => {
         const ROWS_COUNT = Math.max(2, row.length);
-        const COLS_COUNT = Math.max(2, cards.length);
+        const COLS_COUNT = Math.max(2, payload.data.length);
 
         // Calculate cell size based on the number of rows
         const CELL_SIZE = (width - SPACER_SIZE * (ROWS_COUNT - 1)) / ROWS_COUNT;
@@ -324,13 +341,7 @@ class PresentationBuilder {
     });
 
     this.slideGenerators.push((slide) => {
-      slide.addText(payload.title, {
-        x: this.config.margin.top,
-        h: this.config.margin.bottom,
-        valign: "middle",
-        bold: true,
-        fontSize: 18,
-      });
+      this.addSlideTitle(slide, payload.title);
 
       slide.addTable(
         [
@@ -454,54 +465,57 @@ builder.addTableSlide({
   }),
 });
 
-builder.addBoxesSlide([
-  [
-    {
-      title: "Impressions",
-      value: 177000000,
-      format: formatNumberWithSuffix,
-    },
-    {
-      title: "Clicks",
-      value: 269000,
-      format: formatNumberWithSuffix,
-    },
-    {
-      title: "CTR(%)",
-      value: 0.15261760710334837,
-      format: formatPowerPointPercent,
-    },
+builder.addBoxesSlide({
+  title: "Display - Top KPIs",
+  data: [
+    [
+      {
+        title: "Impressions",
+        value: 177000000,
+        format: formatNumberWithSuffix,
+      },
+      {
+        title: "Clicks",
+        value: 269000,
+        format: formatNumberWithSuffix,
+      },
+      {
+        title: "CTR(%)",
+        value: 0.15261760710334837,
+        format: formatPowerPointPercent,
+      },
+    ],
+    [
+      {
+        title: "Impressions",
+        value: 33300000,
+        format: formatNumberWithSuffix,
+      },
+      {
+        title: "Site Conversions",
+        value: 2700,
+        format: formatNumberWithSuffix,
+      },
+    ],
+    [
+      {
+        title: "Foot Traffic Visits",
+        value: 4400,
+        format: formatNumberWithSuffix,
+      },
+      {
+        title: "Video Start(s)",
+        value: 2600000,
+        format: formatNumberWithSuffix,
+      },
+      {
+        title: "Video Complete(s)",
+        value: 1300000,
+        format: formatNumberWithSuffix,
+      },
+    ],
   ],
-  [
-    {
-      title: "Impressions",
-      value: 33300000,
-      format: formatNumberWithSuffix,
-    },
-    {
-      title: "Site Conversions",
-      value: 2700,
-      format: formatNumberWithSuffix,
-    },
-  ],
-  [
-    {
-      title: "Foot Traffic Visits",
-      value: 4400,
-      format: formatNumberWithSuffix,
-    },
-    {
-      title: "Video Start(s)",
-      value: 2600000,
-      format: formatNumberWithSuffix,
-    },
-    {
-      title: "Video Complete(s)",
-      value: 1300000,
-      format: formatNumberWithSuffix,
-    },
-  ],
-]);
+});
 
 // Add slides with cards
 // for (const data of cards) {
