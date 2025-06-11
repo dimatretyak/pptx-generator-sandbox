@@ -425,6 +425,18 @@ builder.addTableSlide({
 
 const videoComletes = getMinMax(videoProductPerformance, "videoCompletions");
 const videoClicks = getMinMax(videoProductPerformance, "clicks");
+const entities = videoProductPerformance.map((entity) => {
+  const result: PowerPointTableCellEntity[] = [
+    { value: entity._id.subProduct },
+    { value: entity.impressions, format: formatPowerPointNumber },
+    { value: entity.videoCompletions, format: formatPowerPointNumber },
+    { value: entity.vcr, format: formatPowerPointPercent },
+    { value: entity.clicks, format: formatPowerPointNumber },
+    { value: entity.ctr, format: formatPowerPointPercent },
+  ];
+
+  return result;
+});
 
 builder.addTableSlide({
   title: "Video - Product Performance",
@@ -452,18 +464,14 @@ builder.addTableSlide({
       text: "CTR(%)",
     },
   ],
-  data: videoProductPerformance.map((entity) => {
-    const result: PowerPointTableCellEntity[] = [
-      { value: entity._id.subProduct },
-      { value: entity.impressions, format: formatPowerPointNumber },
-      { value: entity.videoCompletions, format: formatPowerPointNumber },
-      { value: entity.vcr, format: formatPowerPointPercent },
-      { value: entity.clicks, format: formatPowerPointNumber },
-      { value: entity.ctr, format: formatPowerPointPercent },
-    ];
-
-    return result;
-  }),
+  data: [
+    ...entities,
+    ...entities,
+    ...entities,
+    ...entities,
+    ...entities,
+    ...entities,
+  ],
 });
 
 builder.addBoxesSlide({
