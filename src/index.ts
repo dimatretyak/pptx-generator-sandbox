@@ -253,6 +253,7 @@ class PresentationBuilder {
   }
 
   addTableSlide(payload: {
+    title: string;
     headers: TableHeaderEntity[];
     data: PowerPointTableCellEntity[][];
   }) {
@@ -313,6 +314,14 @@ class PresentationBuilder {
     });
 
     this.slideGenerators.push((slide) => {
+      slide.addText(payload.title, {
+        x: this.config.margin,
+        h: this.config.margin,
+        valign: "middle",
+        bold: true,
+        fontSize: 18,
+      });
+
       slide.addTable(
         [
           // Header
@@ -357,6 +366,7 @@ const clicks = getMinMax(displayProductPerformance, "clicks");
 const totalConversions = getMinMax(displayProductPerformance, "conversions");
 
 builder.addTableSlide({
+  title: "Display - Product Performance",
   headers: [
     { text: "Product" },
     { text: "Impressions" },
@@ -395,6 +405,7 @@ const videoComletes = getMinMax(videoProductPerformance, "videoCompletions");
 const videoClicks = getMinMax(videoProductPerformance, "clicks");
 
 builder.addTableSlide({
+  title: "Video - Product Performance",
   headers: [
     { text: "Product" },
     { text: "Impressions" },
