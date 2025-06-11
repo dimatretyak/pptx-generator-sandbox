@@ -59,7 +59,12 @@ class PresentationBuilder {
   private slideGenerators: Array<(slide: pptxgen.Slide) => void> = [];
   private presentation: pptxgen;
   private config: {
-    margin: number;
+    margin: {
+      top: number;
+      left: number;
+      right: number;
+      bottom: number;
+    };
   };
 
   constructor() {
@@ -74,14 +79,19 @@ class PresentationBuilder {
     this.presentation.layout = LAYOUT_NAME;
 
     this.config = {
-      margin: 0.25,
+      margin: {
+        top: 0.25,
+        left: 0.25,
+        right: 0.25,
+        bottom: 0.25,
+      },
     };
   }
 
   private getSizes() {
     return {
-      width: SLIDE_WIDTH - this.config.margin * 2,
-      height: SLIDE_HEIGHT - this.config.margin * 2,
+      width: SLIDE_WIDTH - this.config.margin.left - this.config.margin.right,
+      height: SLIDE_HEIGHT - this.config.margin.top - this.config.margin.bottom,
     };
   }
 
@@ -159,8 +169,8 @@ class PresentationBuilder {
               ],
             ],
             {
-              x: this.config.margin + X_BASE,
-              y: this.config.margin + Y_BASE,
+              x: this.config.margin.left + X_BASE,
+              y: this.config.margin.top + Y_BASE,
               w: CELL_SIZE,
               h: COL_SIZE,
               color: "3D3D3D",
@@ -232,8 +242,8 @@ class PresentationBuilder {
             ],
             {
               shape: this.presentation.ShapeType.roundRect,
-              x: this.config.margin + X_BASE,
-              y: this.config.margin + Y_BASE,
+              x: this.config.margin.left + X_BASE,
+              y: this.config.margin.top + Y_BASE,
               w: CELL_SIZE,
               h: COL_SIZE,
               align: "center",
@@ -315,8 +325,8 @@ class PresentationBuilder {
 
     this.slideGenerators.push((slide) => {
       slide.addText(payload.title, {
-        x: this.config.margin,
-        h: this.config.margin,
+        x: this.config.margin.top,
+        h: this.config.margin.bottom,
         valign: "middle",
         bold: true,
         fontSize: 18,
@@ -331,11 +341,11 @@ class PresentationBuilder {
           ...content,
         ],
         {
-          x: this.config.margin,
-          y: this.config.margin,
+          x: this.config.margin.left,
+          y: this.config.margin.top,
           w: width,
           autoPage: true,
-          autoPageSlideStartY: this.config.margin,
+          autoPageSlideStartY: this.config.margin.top,
           valign: "middle",
           border: {
             pt: 1,
