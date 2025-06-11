@@ -214,7 +214,7 @@ class PresentationBuilder {
       this.addSlideTitle(slide, payload.title);
 
       payload.data.forEach((row, rowIndex) => {
-        const ROWS_COUNT = Math.max(2, row.length);
+        const ROWS_COUNT = row.length;
         const COLS_COUNT = Math.max(2, payload.data.length);
 
         // Calculate cell size based on the number of rows
@@ -235,12 +235,6 @@ class PresentationBuilder {
         }
 
         row.forEach((col, colIndex) => {
-          let X_BASE = colIndex * X_OFFSET;
-
-          if (row.length === 1) {
-            X_BASE = (width - CELL_SIZE) / 2;
-          }
-
           slide.addText(
             [
               {
@@ -260,7 +254,7 @@ class PresentationBuilder {
             ],
             {
               shape: this.presentation.ShapeType.roundRect,
-              x: this.config.margin.left + X_BASE,
+              x: this.config.margin.left + colIndex * X_OFFSET,
               y: this.config.margin.top + Y_BASE,
               w: CELL_SIZE,
               h: COL_SIZE,
@@ -557,7 +551,7 @@ const videoTopKPIData = [
 
 builder.addBoxesSlide({
   title: "Video - Top KPIs",
-  data: splitArrayIntoChunks(videoTopKPIData, 4),
+  data: splitArrayIntoChunks(videoTopKPIData, 3),
 });
 
 // Add slides with cards
