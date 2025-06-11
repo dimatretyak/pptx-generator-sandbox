@@ -326,7 +326,6 @@ class PresentationBuilder {
           y: this.config.margin,
           w: width,
           autoPage: true,
-          autoPageRepeatHeader: true,
           autoPageSlideStartY: this.config.margin,
           valign: "middle",
           border: {
