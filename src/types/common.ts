@@ -20,3 +20,8 @@ export type PowerPointTableCellEntity = {
   value: PowerPointValue;
   format?: Formatter;
 };
+
+export type PowerPointChartDataEntity = {
+  labels: string[];
+  values: number[];
+};

@@ -2,6 +2,7 @@ import pptxgen from "pptxgenjs";
 import {
   Card,
   Formatter,
+  PowerPointChartDataEntity,
   PowerPointTableCellEntity,
   PowerPointValue,
   TableHeaderEntity,
@@ -370,7 +371,10 @@ class PresentationBuilder {
     return this;
   }
 
-  addBarChartSlide(payload: { title: string }) {
+  addBarChartSlide(payload: {
+    title: string;
+    data: PowerPointChartDataEntity[];
+  }) {
     const { width, height } = this.getSizes();
     const PADDING = 0.25;
 
@@ -389,40 +393,24 @@ class PresentationBuilder {
         },
       });
 
-      slide.addChart(
-        "bar",
-        [
-          {
-            labels: [
-              "2024-12",
-              "2025-01",
-              "2025-02",
-              "2025-03",
-              "2025-04",
-              "2025-05",
-            ],
-            values: [0.00093, 0.00127, 0.00127, 0.00115, 0.00145, 0.00145],
-          },
-        ],
-        {
-          x: this.config.margin.left + PADDING,
-          y: this.config.margin.top + PADDING,
-          w: width - PADDING,
-          h: height - PADDING,
-          barDir: "col",
-          chartColors: ["cdd8f2"],
-          valAxisLabelFormatCode: "0.00%",
-          barGapWidthPct: 25,
-          valGridLine: {
-            style: "none",
-          },
-          // showCatAxisTitle: true,
-          // catAxisLabelColor: "000000",
-          // catAxisTitleColor: "cdd8f2",
-          // catAxisTitle: payload.title,
-          // catAxisTitleFontSize: 16,
-        }
-      );
+      slide.addChart("bar", payload.data, {
+        x: this.config.margin.left + PADDING,
+        y: this.config.margin.top + PADDING,
+        w: width - PADDING,
+        h: height - PADDING,
+        barDir: "col",
+        chartColors: ["cdd8f2"],
+        valAxisLabelFormatCode: "0.00%",
+        barGapWidthPct: 25,
+        valGridLine: {
+          style: "none",
+        },
+        // showCatAxisTitle: true,
+        // catAxisLabelColor: "000000",
+        // catAxisTitleColor: "cdd8f2",
+        // catAxisTitle: payload.title,
+        // catAxisTitleFontSize: 16,
+      });
     });
 
     return this;
@@ -443,6 +431,19 @@ const builder = new PresentationBuilder();
 // Render charts
 builder.addBarChartSlide({
   title: "Display - CTR Last 6 Months",
+  data: [
+    {
+      labels: [
+        "2024-12",
+        "2025-01",
+        "2025-02",
+        "2025-03",
+        "2025-04",
+        "2025-05",
+      ],
+      values: [0.00093, 0.00127, 0.00127, 0.00115, 0.00145, 0.00145],
+    },
+  ],
 });
 
 const clicks = getMinMax(displayProductPerformance, "clicks");
