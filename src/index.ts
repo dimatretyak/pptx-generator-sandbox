@@ -374,6 +374,8 @@ class PresentationBuilder {
   addBarChartSlide(payload: {
     title: string;
     data: PowerPointChartDataEntity[];
+    labelFormatCode?: string;
+    colors?: string[];
   }) {
     const { width, height } = this.getSizes();
     const PADDING = 0.25;
@@ -396,20 +398,20 @@ class PresentationBuilder {
       slide.addChart("bar", payload.data, {
         x: this.config.margin.left + PADDING,
         y: this.config.margin.top + PADDING,
-        w: width - PADDING,
-        h: height - PADDING,
+        w: width - 2 * PADDING,
+        h: height - 2 * PADDING,
         barDir: "col",
-        chartColors: ["cdd8f2"],
-        valAxisLabelFormatCode: "0.00%",
+        chartColors: payload.data.map((entity) => entity.color),
+        valAxisLabelFormatCode: payload.labelFormatCode,
         barGapWidthPct: 25,
         valGridLine: {
           style: "none",
         },
-        // showCatAxisTitle: true,
-        // catAxisLabelColor: "000000",
-        // catAxisTitleColor: "cdd8f2",
-        // catAxisTitle: payload.title,
-        // catAxisTitleFontSize: 16,
+        showLegend: true,
+        legendPos: "b",
+        legendFontSize: 12,
+        showValue: true,
+        dataLabelFormatCode: payload.labelFormatCode,
       });
     });
 
@@ -431,8 +433,11 @@ const builder = new PresentationBuilder();
 // Render charts
 builder.addBarChartSlide({
   title: "Display - CTR Last 6 Months",
+  labelFormatCode: "0.00%",
   data: [
     {
+      name: "Display - CTR Last 6 Months",
+      color: "cdd8f2",
       labels: [
         "2024-12",
         "2025-01",
@@ -442,6 +447,31 @@ builder.addBarChartSlide({
         "2025-05",
       ],
       values: [0.00093, 0.00127, 0.00127, 0.00115, 0.00145, 0.00145],
+    },
+  ],
+});
+
+builder.addBarChartSlide({
+  title: "Video - CTR & VCR Last 6 Months",
+  labelFormatCode: "00.00%",
+  data: [
+    {
+      name: "VCR(%)",
+      color: "0f5870",
+      labels: [],
+      values: [
+        0.4148591213281817, 0.4094513582939654, 0.4153409448813366,
+        0.4350247806410749, 0.4744703179457573, 0.45896916784347686,
+      ],
+    },
+    {
+      name: "CTR(%)",
+      color: "cdd8f2",
+      labels: [],
+      values: [
+        0.0015293595212766042, 0.0016850330036453868, 0.0026369641917544347,
+        0.0017700485579938046, 0.0014604458661489576, 0.0018036372656733593,
+      ],
     },
   ],
 });

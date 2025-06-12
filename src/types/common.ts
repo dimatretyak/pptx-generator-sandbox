@@ -24,4 +24,6 @@ export type PowerPointTableCellEntity = {
 export type PowerPointChartDataEntity = {
   labels: string[];
   values: number[];
+  name: string;
+  color: string;
 };
