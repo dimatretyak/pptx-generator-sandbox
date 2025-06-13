@@ -421,6 +421,11 @@ class PresentationBuilder {
   addPieChartSlide(payload: { title: string; data: PowerPointPieChartData }) {
     const { width, height } = this.getSizes();
     const PADDING = 0.25;
+
+    const labels = payload.data.labels.map((label, index) => {
+      return `${label} - ${payload.data.values[index]}`;
+    });
+
     const colors = payload.data.values.map(
       (_value, index) => payload.data.colors[index % payload.data.colors.length]
     );
@@ -433,7 +438,7 @@ class PresentationBuilder {
         [
           {
             name: payload.data.name,
-            labels: payload.data.labels,
+            labels: labels,
             values: payload.data.values,
           },
         ],
@@ -450,9 +455,7 @@ class PresentationBuilder {
           legendPos: "r",
           showLegend: true,
           showLeaderLines: true,
-          showValue: true,
-          dataLabelColor: "FFFFFF",
-          dataLabelPosition: "bestFit",
+          showValue: false,
         }
       );
     });
@@ -477,7 +480,7 @@ builder.addPieChartSlide({
   title: "Impressions by Device",
   data: {
     name: "Project Status",
-    labels: ["Red", "Yellow", "Green", "Complete", "Cancelled", "Unknown"],
+    labels: ["mobile_app", "mobile_web", "desktop", "Smartphone", "Desktop"],
     values: [2265852, 12640, 33414, 40621, 1953],
     colors: ["0088FE", "00C49F", "FFBB28", "FF8042"],
   },
