@@ -375,7 +375,6 @@ class PresentationBuilder {
     title: string;
     data: PowerPointChartDataEntity[];
     labelFormatCode?: string;
-    colors?: string[];
   }) {
     const { width, height } = this.getSizes();
     const PADDING = 0.25;
