@@ -27,3 +27,10 @@ export type PowerPointChartDataEntity = {
   name: string;
   color: string;
 };
+
+export type PowerPointPieChartData = {
+  name: string;
+  labels: string[];
+  values: number[];
+  colors: string[];
+};

@@ -3,6 +3,7 @@ import {
   Card,
   Formatter,
   PowerPointChartDataEntity,
+  PowerPointPieChartData,
   PowerPointTableCellEntity,
   PowerPointValue,
   TableHeaderEntity,
@@ -417,6 +418,48 @@ class PresentationBuilder {
     return this;
   }
 
+  addPieChartSlide(payload: { title: string; data: PowerPointPieChartData }) {
+    const { width, height } = this.getSizes();
+    const PADDING = 0.25;
+    const colors = payload.data.values.map(
+      (_value, index) => payload.data.colors[index % payload.data.colors.length]
+    );
+
+    this.slideGenerators.push((slide) => {
+      this.addSlideTitle(slide, payload.title);
+
+      slide.addChart(
+        "pie",
+        [
+          {
+            name: payload.data.name,
+            labels: payload.data.labels,
+            values: payload.data.values,
+          },
+        ],
+        {
+          x: this.config.margin.left + PADDING,
+          y: this.config.margin.top + PADDING,
+          w: width - 2 * PADDING,
+          h: height - 2 * PADDING,
+          chartColors: colors,
+          dataBorder: {
+            pt: 2,
+            color: "ffffff",
+          },
+          legendPos: "r",
+          showLegend: true,
+          showLeaderLines: true,
+          showValue: true,
+          dataLabelColor: "FFFFFF",
+          dataLabelPosition: "bestFit",
+        }
+      );
+    });
+
+    return this;
+  }
+
   buildAndSave(fileName: string) {
     for (const generateSlide of this.slideGenerators) {
       const slide = this.presentation.addSlide();
@@ -430,6 +473,16 @@ class PresentationBuilder {
 const builder = new PresentationBuilder();
 
 // Render charts
+builder.addPieChartSlide({
+  title: "Impressions by Device",
+  data: {
+    name: "Project Status",
+    labels: ["Red", "Yellow", "Green", "Complete", "Cancelled", "Unknown"],
+    values: [2265852, 12640, 33414, 40621, 1953],
+    colors: ["0088FE", "00C49F", "FFBB28", "FF8042"],
+  },
+});
+
 builder.addBarChartSlide({
   title: "Display - CTR Last 6 Months",
   labelFormatCode: "0.00%",
