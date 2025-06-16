@@ -26,8 +26,6 @@ export class PowerPointLayout {
     const { rowsCount, colsCount, rowIndex, colIndex } = payload;
     const slide = this.getSlideSizes();
 
-    console.log("slide", slide);
-
     // Calculate cell size based on the number of rows
     const CELL_SIZE =
       (slide.width - this.config.spacer * (rowsCount - 1)) / rowsCount;
