@@ -6,12 +6,21 @@ const getAllValues = (data: pptxgen.IChartMulti[]) => {
   });
 };
 
-export function normalizeBarsChartData(
-  data: pptxgen.IChartMulti[]
-): pptxgen.IChartMulti[] {
+const getMaxValuesInfo = (data: pptxgen.IChartMulti[]) => {
   const allValues = getAllValues(data);
   const maxValues = allValues.map((values) => Math.max(...values));
   const maxValue = Math.max(...maxValues);
+
+  return {
+    max: maxValue,
+    maxByArray: maxValues,
+  };
+};
+
+export function normalizeBarsChartData(
+  data: pptxgen.IChartMulti[]
+): pptxgen.IChartMulti[] {
+  const info = getMaxValuesInfo(data);
 
   const results = data.map((dataEntity, index) => {
     return {
@@ -19,7 +28,7 @@ export function normalizeBarsChartData(
       data: dataEntity.data.map((entity, entityIndex) => {
         const offset = index + entityIndex;
         const values = entity.values ?? [];
-        const scale = maxValue / maxValues[offset];
+        const scale = info.max / info.maxByArray[offset];
 
         return {
           ...entity,

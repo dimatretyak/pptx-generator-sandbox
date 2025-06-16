@@ -439,9 +439,11 @@ class PresentationBuilder {
       ];
 
       if (shouldRenderLines) {
+        const lines = payload.lines!;
+
         entities.push({
           type: "line",
-          data: payload.lines!.map((entity) => {
+          data: lines.map((entity) => {
             return {
               name: entity.name,
               values: entity.values,
@@ -449,7 +451,7 @@ class PresentationBuilder {
             };
           }),
           options: {
-            chartColors: payload.lines!.map((entity) => entity.color),
+            chartColors: lines.map((entity) => entity.color),
             showValue: false,
           },
         });
