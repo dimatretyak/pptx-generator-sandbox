@@ -215,22 +215,19 @@ class PresentationBuilder {
   }
 
   getRowCardSize(
-    rows: unknown[],
+    rowsCount: number,
     rowIndex: number,
     colIndex: number,
-    data: unknown[]
+    colsCount: number = 1
   ) {
     const SPACER_SIZE = 0.25;
     const { width, height } = this.getSizes();
 
-    const ROWS_COUNT = rows.length;
-    const COLS_COUNT = Math.max(2, data.length);
-
     // Calculate cell size based on the number of rows
-    const CELL_SIZE = (width - SPACER_SIZE * (ROWS_COUNT - 1)) / ROWS_COUNT;
+    const CELL_SIZE = (width - SPACER_SIZE * (rowsCount - 1)) / rowsCount;
 
     // Calculate column size based on the number of columns
-    let COL_SIZE = (height - SPACER_SIZE * (COLS_COUNT - 1)) / COLS_COUNT;
+    let COL_SIZE = (height - SPACER_SIZE * (colsCount - 1)) / colsCount;
 
     // Calculate offsets for positioning the cells
     const X_OFFSET = CELL_SIZE + SPACER_SIZE;
@@ -260,10 +257,10 @@ class PresentationBuilder {
       payload.data.forEach((row, rowIndex) => {
         row.forEach((col, colIndex) => {
           const sizes = this.getRowCardSize(
-            row,
+            row.length,
             rowIndex,
             colIndex,
-            payload.data
+            Math.max(2, payload.data.length)
           );
 
           slide.addText(
@@ -586,15 +583,16 @@ class PresentationBuilder {
   }) {
     this.slideGenerators.push((slide) => {
       this.addSlideTitle(slide, payload.title);
+      const COLS_COUNT = payload.charts.length;
 
       payload.charts.forEach((row, rowIndex) => {
         row.forEach((col, colIndex) => {
           if (col.type === "bar") {
             const sizes = this.getRowCardSize(
-              row,
+              row.length,
               rowIndex,
               colIndex,
-              col.payload.data
+              COLS_COUNT
             );
 
             this.renderBarChart(slide, col.payload, col.options, {
@@ -607,10 +605,10 @@ class PresentationBuilder {
 
           if (col.type === "pie") {
             const sizes = this.getRowCardSize(
-              row,
+              row.length,
               rowIndex,
               colIndex,
-              col.payload.data.values
+              COLS_COUNT
             );
 
             this.renderPieChart(slide, col.payload, {
@@ -666,6 +664,26 @@ builder.addChartsSlide({
         },
       },
       {
+        type: "pie",
+        payload: {
+          title: "Impressions by Device",
+          data: {
+            name: "Project Status",
+            labels: [
+              "mobile_app",
+              "mobile_web",
+              "desktop",
+              "Smartphone",
+              "Desktop",
+            ],
+            values: [2265852, 12640, 33414, 40621, 1953],
+            colors: ["0088FE", "00C49F", "FFBB28", "FF8042"],
+          },
+        },
+      },
+    ],
+    [
+      {
         type: "bar",
         payload: {
           title: "Video - CTR & VCR Last 6 Months",
@@ -694,7 +712,35 @@ builder.addChartsSlide({
         },
       },
     ],
+  ],
+});
+
+builder.addChartsSlide({
+  title: "Multipe Chart Slide",
+  charts: [
     [
+      {
+        type: "bar",
+        payload: {
+          title: "Display - CTR Last 6 Months",
+          labelFormatCode: "0.00%",
+          data: [
+            {
+              name: "Display - CTR Last 6 Months",
+              color: "cdd8f2",
+              labels: [
+                "2024-12",
+                "2025-01",
+                "2025-02",
+                "2025-03",
+                "2025-04",
+                "2025-05",
+              ],
+              values: [0.00093, 0.00127, 0.00127, 0.00115, 0.00145, 0.00145],
+            },
+          ],
+        },
+      },
       {
         type: "pie",
         payload: {
