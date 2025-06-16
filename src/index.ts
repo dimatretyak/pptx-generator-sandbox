@@ -623,6 +623,43 @@ builder.addBarChartSlide(
   }
 );
 
+builder.addBarChartSlide(
+  {
+    title: "Campaign Performance",
+    labelFormatCode: "0",
+    data: [
+      {
+        name: "Impressions",
+        color: "0f5870",
+        labels: [
+          "05/18/2025",
+          "05/25/2025",
+          "06/01/2025",
+          "06/08/2025",
+          "06/15/2025",
+        ],
+        values: [843548, 398067, 344513, 358257, 332990],
+      },
+      {
+        name: "Clicks",
+        labels: [],
+        color: "d09cc8",
+        values: [1364, 737, 598, 597, 537],
+      },
+    ],
+    lines: [
+      {
+        name: "Foot Traffic Visits",
+        color: "0f5870",
+        values: [0, 0, 0, 16, 0],
+      },
+    ],
+  },
+  {
+    normalizeData: true,
+  }
+);
+
 const clicks = getMinMax(displayProductPerformance, "clicks");
 const totalConversions = getMinMax(displayProductPerformance, "conversions");
 
