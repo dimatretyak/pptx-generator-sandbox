@@ -1,9 +1,5 @@
 import pptxgen from "pptxgenjs";
-import {
-  PowerPointConfig,
-  PowerPointPieChartData,
-  PowerPointValue,
-} from "./types/common";
+import { PowerPointConfig, PowerPointValue } from "./types/common";
 import {
   displayProductPerformance,
   videoProductPerformance,
@@ -29,6 +25,10 @@ import {
   PowerPointBoxes,
   PowerPointBoxesPayload,
 } from "./components/PowerPointBoxes";
+import {
+  PowerPointPieChart,
+  PowerPointPieChartPayload,
+} from "./components/PowerPointPieChart";
 
 // 16:9 aspect ratio
 const LAYOUT_NAME = "APP";
@@ -68,6 +68,7 @@ class PresentationBuilder {
   private barChart: PowerPointBarChart;
   private boxes: PowerPointBoxes;
   private layout: PowerPointLayout;
+  private pieChart: PowerPointPieChart;
 
   constructor() {
     this.presentation = new pptxgen();
@@ -101,6 +102,7 @@ class PresentationBuilder {
     this.table = new PowerPointTable(this.config);
     this.barChart = new PowerPointBarChart(this.config);
     this.boxes = new PowerPointBoxes(this.config, this.layout);
+    this.pieChart = new PowerPointPieChart(this.config);
   }
 
   addSlideTitle(slide: pptxgen.Slide, title: string) {
@@ -159,46 +161,12 @@ class PresentationBuilder {
     return this;
   }
 
-  addPieChartSlide(payload: { title: string; data: PowerPointPieChartData }) {
+  addPieChartSlide(payload: PowerPointPieChartPayload) {
     const { width, height } = this.layout.getSlideSizes();
-    const PADDING = 0.25;
-
-    const labels = payload.data.labels.map((label, index) => {
-      return `${label} - ${payload.data.values[index]}`;
-    });
-
-    const colors = payload.data.values.map(
-      (_value, index) => payload.data.colors[index % payload.data.colors.length]
-    );
 
     this.slideGenerators.push((slide) => {
       this.addSlideTitle(slide, payload.title);
-
-      slide.addChart(
-        "pie",
-        [
-          {
-            name: payload.data.name,
-            labels: labels,
-            values: payload.data.values,
-          },
-        ],
-        {
-          x: this.config.margin.left + PADDING,
-          y: this.config.margin.top + PADDING,
-          w: width - 2 * PADDING,
-          h: height - 2 * PADDING,
-          chartColors: colors,
-          dataBorder: {
-            pt: 2,
-            color: "ffffff",
-          },
-          legendPos: "r",
-          showLegend: true,
-          showLeaderLines: true,
-          showValue: false,
-        }
-      );
+      this.pieChart.render(slide, payload, { width, height });
     });
 
     return this;
