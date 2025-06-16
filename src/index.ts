@@ -375,7 +375,7 @@ class PresentationBuilder {
   addBarChartSlide(payload: {
     title: string;
     data: PowerPointChartDataEntity[];
-    lines?: PowerPointChartDataEntity[];
+    lines?: Pick<PowerPointChartDataEntity, "values" | "name" | "color">[];
     labelFormatCode?: string;
   }) {
     const { width, height } = this.getSizes();
@@ -437,7 +437,7 @@ class PresentationBuilder {
             return {
               name: entity.name,
               values: entity.values,
-              labels: entity.labels,
+              labels: [],
             };
           }),
           options: {
@@ -589,13 +589,11 @@ builder.addBarChartSlide({
     {
       name: "Impressions",
       color: "0f5870",
-      labels: [],
       values: [3639961, 7259256, 8872578, 6760069, 5891814],
     },
     {
       name: "Foot Traffic Visits",
       color: "e6821e",
-      labels: [],
       values: [597, 949, 805, 781, 840],
     },
   ],
