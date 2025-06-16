@@ -114,61 +114,6 @@ class PresentationBuilder {
     });
   }
 
-  addCardsSlide(cards: Card[][]) {
-    this.slideGenerators.push((slide) => {
-      cards.forEach((row, rowIndex) => {
-        row.forEach((col, colIndex) => {
-          const info = this.layout.getCardSizeByRowCol({
-            rowsCount: Math.max(2, row.length),
-            colsCount: Math.max(2, cards.length),
-            rowIndex,
-            colIndex,
-          });
-
-          slide.addTable(
-            [
-              [
-                {
-                  text: [
-                    {
-                      text: col.title,
-                      options: {
-                        fontSize: 14,
-                        breakLine: true,
-                      },
-                    },
-                    {
-                      text: formatValue(col.value, col.format),
-                      options: {
-                        fontSize: 24,
-                        bold: true,
-                      },
-                    },
-                  ],
-                },
-              ],
-            ],
-            {
-              x: info.x,
-              y: info.y,
-              w: info.width,
-              h: info.height,
-              color: "3D3D3D",
-              border: {
-                color: "cccccc",
-                pt: this.config.borderSize,
-              },
-              align: "center",
-              valign: "middle",
-            }
-          );
-        });
-      });
-    });
-
-    return this;
-  }
-
   addBoxesSlide(payload: { title: string; data: Card[][] }) {
     const BORDER_SIZE = 1;
 
