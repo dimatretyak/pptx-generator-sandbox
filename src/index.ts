@@ -375,6 +375,7 @@ class PresentationBuilder {
   addBarChartSlide(payload: {
     title: string;
     data: PowerPointChartDataEntity[];
+    lines?: PowerPointChartDataEntity[];
     labelFormatCode?: string;
   }) {
     const { width, height } = this.getSizes();
@@ -395,13 +396,12 @@ class PresentationBuilder {
         },
       });
 
-      slide.addChart("bar", payload.data, {
+      const options: pptxgen.IChartOpts = {
         x: this.config.margin.left + PADDING,
         y: this.config.margin.top + PADDING,
         w: width - 2 * PADDING,
         h: height - 2 * PADDING,
         barDir: "col",
-        chartColors: payload.data.map((entity) => entity.color),
         valAxisLabelFormatCode: payload.labelFormatCode,
         barGapWidthPct: 25,
         valGridLine: {
@@ -412,7 +412,45 @@ class PresentationBuilder {
         legendFontSize: 12,
         showValue: true,
         dataLabelFormatCode: payload.labelFormatCode,
-      });
+      };
+
+      const entities: pptxgen.IChartMulti[] = [
+        {
+          type: "bar",
+          data: payload.data.map((entity) => {
+            return {
+              name: entity.name,
+              values: entity.values,
+              labels: entity.labels,
+            };
+          }),
+          options: {
+            chartColors: payload.data.map((entity) => entity.color),
+          },
+        },
+      ];
+
+      if (Array.isArray(payload.lines)) {
+        entities.push({
+          type: "line",
+          data: payload.lines.map((entity) => {
+            return {
+              name: entity.name,
+              values: entity.values,
+              labels: entity.labels,
+            };
+          }),
+          options: {
+            chartColors: payload.lines.map((entity) => entity.color),
+          },
+        });
+      }
+
+      slide.addChart(
+        entities,
+        // @ts-expect-error
+        options
+      );
     });
 
     return this;
@@ -522,6 +560,26 @@ builder.addBarChartSlide({
     {
       name: "CTR(%)",
       color: "cdd8f2",
+      labels: [],
+      values: [
+        0.0015293595212766042, 0.0016850330036453868, 0.0026369641917544347,
+        0.0017700485579938046, 0.0014604458661489576, 0.0018036372656733593,
+      ],
+    },
+  ],
+  lines: [
+    {
+      name: "VCR(%)",
+      color: "FF0000",
+      labels: [],
+      values: [
+        0.4148591213281817, 0.4094513582939654, 0.4153409448813366,
+        0.4350247806410749, 0.4744703179457573, 0.45896916784347686,
+      ],
+    },
+    {
+      name: "CTR(%)",
+      color: "008000",
       labels: [],
       values: [
         0.0015293595212766042, 0.0016850330036453868, 0.0026369641917544347,
