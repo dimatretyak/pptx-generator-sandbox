@@ -22,13 +22,19 @@ export function normalizeBarsChartData(
 ): pptxgen.IChartMulti[] {
   const info = getMaxValuesInfo(data);
 
-  const results = data.map((dataEntity, index) => {
+  // Create a global index to ensure
+  // unique scaling across all entities
+  let globalIndex = 0;
+
+  const results = data.map((dataEntity) => {
     return {
       ...dataEntity,
-      data: dataEntity.data.map((entity, entityIndex) => {
-        const offset = index + entityIndex;
+      data: dataEntity.data.map((entity) => {
         const values = entity.values ?? [];
-        const scale = info.max / info.maxByArray[offset];
+        const scale = info.max / info.maxByArray[globalIndex];
+
+        // Increment the global index for the next entity
+        globalIndex++;
 
         return {
           ...entity,
