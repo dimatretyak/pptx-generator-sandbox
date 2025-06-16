@@ -396,21 +396,20 @@ class PresentationBuilder {
     return this;
   }
 
-  // TODO: Rename demo and specify the typescrip type
   renderBarChart(
     slide: pptxgen.Slide,
     payload: BarChartPayload,
     options: BarChartOptions = {},
-    demo: CommonChartOptions
+    chartOptions: CommonChartOptions
   ) {
     const shouldRenderLines =
       Array.isArray(payload.lines) && payload.lines.length > 0;
 
-    const chartOptions: pptxgen.IChartOpts = {
-      x: demo.x,
-      y: demo.y,
-      w: demo.w,
-      h: demo.h,
+    const config: pptxgen.IChartOpts = {
+      x: chartOptions.x,
+      y: chartOptions.y,
+      w: chartOptions.w,
+      h: chartOptions.h,
       barDir: "col",
       valAxisLabelFormatCode: payload.labelFormatCode,
       barGapWidthPct: 25,
@@ -466,7 +465,7 @@ class PresentationBuilder {
     slide.addChart(
       entities,
       // @ts-expect-error
-      chartOptions
+      config
     );
   }
 
@@ -503,7 +502,7 @@ class PresentationBuilder {
   renderPieChart(
     slide: pptxgen.Slide,
     payload: PieChartPayload,
-    demo: CommonChartOptions
+    chartOptions: CommonChartOptions
   ) {
     const labels = payload.data.labels.map((label, index) => {
       return `${label} - ${payload.data.values[index]}`;
@@ -523,10 +522,10 @@ class PresentationBuilder {
         },
       ],
       {
-        x: demo.x,
-        y: demo.y,
-        w: demo.w,
-        h: demo.h,
+        x: chartOptions.x,
+        y: chartOptions.y,
+        w: chartOptions.w,
+        h: chartOptions.h,
         chartColors: colors,
         dataBorder: {
           pt: 2,
