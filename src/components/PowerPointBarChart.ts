@@ -1,6 +1,21 @@
 import pptxgen from "pptxgenjs";
-import { PowerPointChartDataEntity, PowerPointConfig } from "../types/common";
+import {
+  PowerPointChartDataEntity,
+  PowerPointConfig,
+  SlideConfig,
+} from "../types/common";
 import { normalizeBarsChartData } from "../utils/charts";
+
+export type PowerPointBarChartPayload = {
+  title: string;
+  data: PowerPointChartDataEntity[];
+  lines?: Pick<PowerPointChartDataEntity, "values" | "name" | "color">[];
+  labelFormatCode?: string;
+};
+
+export type PowerPointOptions = {
+  normalizeData?: boolean;
+};
 
 export class PowerPointBarChart {
   private config: PowerPointConfig;
@@ -11,17 +26,9 @@ export class PowerPointBarChart {
 
   render(
     slide: pptxgen.Slide,
-    payload: {
-      title: string;
-      data: PowerPointChartDataEntity[];
-      lines?: Pick<PowerPointChartDataEntity, "values" | "name" | "color">[];
-      labelFormatCode?: string;
-    },
-    options: {
-      normalizeData?: boolean;
-      width: number;
-      height: number;
-    }
+    payload: PowerPointBarChartPayload,
+    options: PowerPointOptions,
+    slideConfig: SlideConfig
   ) {
     const PADDING = 0.25;
     const shouldRenderLines =
@@ -36,15 +43,15 @@ export class PowerPointBarChart {
       bold: true,
       fontSize: 18,
       margin: 0,
-      w: options.width,
+      w: slideConfig.width,
     });
 
     // Add background shape
     slide.addShape("roundRect", {
       x: this.config.margin.left,
       y: this.config.margin.top,
-      w: options.width,
-      h: options.height,
+      w: slideConfig.width,
+      h: slideConfig.height,
       rectRadius: this.config.roundess,
       line: {
         color: "cccccc",
@@ -55,8 +62,8 @@ export class PowerPointBarChart {
     const chartOptions: pptxgen.IChartOpts = {
       x: this.config.margin.left + PADDING,
       y: this.config.margin.top + PADDING,
-      w: options.width - 2 * PADDING,
-      h: options.height - 2 * PADDING,
+      w: slideConfig.width - 2 * PADDING,
+      h: slideConfig.height - 2 * PADDING,
       barDir: "col",
       valAxisLabelFormatCode: payload.labelFormatCode,
       barGapWidthPct: 25,

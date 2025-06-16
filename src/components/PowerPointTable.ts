@@ -3,6 +3,7 @@ import {
   PowerPointConfig,
   PowerPointTableCellEntity,
   PowerPointValue,
+  SlideConfig,
   TableHeaderEntity,
 } from "../types/common";
 import {
@@ -13,6 +14,12 @@ import {
 } from "../utils/common";
 import { formatValue } from "../utils/formatters";
 
+export type PowerPointTablePayload = {
+  title: string;
+  headers: TableHeaderEntity[];
+  data: PowerPointTableCellEntity[][];
+};
+
 export class PowerPointTable {
   private config: PowerPointConfig;
 
@@ -22,12 +29,8 @@ export class PowerPointTable {
 
   render(
     slide: pptxgen.Slide,
-    payload: {
-      title: string;
-      headers: TableHeaderEntity[];
-      data: PowerPointTableCellEntity[][];
-    },
-    width: number
+    payload: PowerPointTablePayload,
+    slideConfig: SlideConfig
   ) {
     const headers: pptxgen.TableCell[] = payload.headers.map((header) => {
       return {
@@ -93,7 +96,7 @@ export class PowerPointTable {
       {
         x: this.config.margin.left,
         y: this.config.margin.top,
-        w: width,
+        w: slideConfig.width,
         autoPage: true,
         autoPageSlideStartY: this.config.margin.bottom,
         autoPageLineWeight: 0.65,

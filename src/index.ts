@@ -22,8 +22,14 @@ import {
 } from "./utils/formatters";
 import splitArrayIntoChunks from "./utils/splitArrayIntoChunks";
 import { normalizeBarsChartData } from "./utils/charts";
-import { PowerPointTable } from "./components/PowerPointTable";
-import { PowerPointBarChart } from "./components/PowerPointBarChart";
+import {
+  PowerPointTable,
+  PowerPointTablePayload,
+} from "./components/PowerPointTable";
+import {
+  PowerPointBarChart,
+  PowerPointBarChartPayload,
+} from "./components/PowerPointBarChart";
 
 // 16:9 aspect ratio
 const LAYOUT_NAME = "APP";
@@ -256,28 +262,22 @@ class PresentationBuilder {
     return this;
   }
 
-  addTableSlide(payload: {
-    title: string;
-    headers: TableHeaderEntity[];
-    data: PowerPointTableCellEntity[][];
-  }) {
-    const { width } = this.getSizes();
+  addTableSlide(payload: PowerPointTablePayload) {
+    const { width, height } = this.getSizes();
 
     this.slideGenerators.push((slide) => {
       this.addSlideTitle(slide, payload.title);
-      this.table.render(slide, payload, width);
+      this.table.render(slide, payload, {
+        width,
+        height,
+      });
     });
 
     return this;
   }
 
   addBarChartSlide(
-    payload: {
-      title: string;
-      data: PowerPointChartDataEntity[];
-      lines?: Pick<PowerPointChartDataEntity, "values" | "name" | "color">[];
-      labelFormatCode?: string;
-    },
+    payload: PowerPointBarChartPayload,
     options: {
       normalizeData?: boolean;
     } = {}
@@ -285,8 +285,7 @@ class PresentationBuilder {
     const { width, height } = this.getSizes();
 
     this.slideGenerators.push((slide) => {
-      this.barChart.render(slide, payload, {
-        ...options,
+      this.barChart.render(slide, payload, options, {
         width,
         height,
       });
