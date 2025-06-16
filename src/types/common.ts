@@ -50,3 +50,10 @@ export type PieChartPayload = {
   title: string;
   data: PowerPointPieChartData;
 };
+
+export type CommonChartOptions = {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+};

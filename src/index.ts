@@ -3,6 +3,7 @@ import {
   BarChartOptions,
   BarChartPayload,
   Card,
+  CommonChartOptions,
   Formatter,
   PieChartPayload,
   PowerPointChartDataEntity,
@@ -400,12 +401,7 @@ class PresentationBuilder {
     slide: pptxgen.Slide,
     payload: BarChartPayload,
     options: BarChartOptions = {},
-    demo: {
-      x: number;
-      y: number;
-      w: number;
-      h: number;
-    }
+    demo: CommonChartOptions
   ) {
     const shouldRenderLines =
       Array.isArray(payload.lines) && payload.lines.length > 0;
@@ -507,12 +503,7 @@ class PresentationBuilder {
   renderPieChart(
     slide: pptxgen.Slide,
     payload: PieChartPayload,
-    demo: {
-      x: number;
-      y: number;
-      w: number;
-      h: number;
-    }
+    demo: CommonChartOptions
   ) {
     const labels = payload.data.labels.map((label, index) => {
       return `${label} - ${payload.data.values[index]}`;
