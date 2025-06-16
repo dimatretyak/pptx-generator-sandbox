@@ -1,29 +1,11 @@
 import pptxgen from "pptxgenjs";
-import { PowerPointChartDataEntity } from "../types/common";
+import { PowerPointChartDataEntity, PowerPointConfig } from "../types/common";
 import { normalizeBarsChartData } from "../utils/charts";
 
 export class PowerPointBarChart {
-  private config: {
-    margin: {
-      top: number;
-      left: number;
-      right: number;
-      bottom: number;
-    };
-    borderSize: number;
-    roundess: number;
-  };
+  private config: PowerPointConfig;
 
-  constructor(config: {
-    margin: {
-      top: number;
-      left: number;
-      right: number;
-      bottom: number;
-    };
-    borderSize: number;
-    roundess: number;
-  }) {
+  constructor(config: PowerPointConfig) {
     this.config = config;
   }
 

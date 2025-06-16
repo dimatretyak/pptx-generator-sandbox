@@ -2,6 +2,7 @@ import pptxgen from "pptxgenjs";
 import {
   Card,
   PowerPointChartDataEntity,
+  PowerPointConfig,
   PowerPointPieChartData,
   PowerPointTableCellEntity,
   PowerPointValue,
@@ -57,16 +58,7 @@ const formatPowerPointPercent = (value: PowerPointValue) => {
 class PresentationBuilder {
   private slideGenerators: Array<(slide: pptxgen.Slide) => void> = [];
   private presentation: pptxgen;
-  private config: {
-    borderSize: number;
-    roundess: number;
-    margin: {
-      top: number;
-      left: number;
-      right: number;
-      bottom: number;
-    };
-  };
+  private config: PowerPointConfig;
   private table: PowerPointTable;
   private barChart: PowerPointBarChart;
 
@@ -92,15 +84,8 @@ class PresentationBuilder {
       },
     };
 
-    this.table = new PowerPointTable({
-      margin: this.config.margin,
-    });
-
-    this.barChart = new PowerPointBarChart({
-      margin: this.config.margin,
-      borderSize: this.config.borderSize,
-      roundess: this.config.roundess,
-    });
+    this.table = new PowerPointTable(this.config);
+    this.barChart = new PowerPointBarChart(this.config);
   }
 
   private getSizes() {

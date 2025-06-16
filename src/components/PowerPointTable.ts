@@ -1,5 +1,6 @@
 import pptxgen from "pptxgenjs";
 import {
+  PowerPointConfig,
   PowerPointTableCellEntity,
   PowerPointValue,
   TableHeaderEntity,
@@ -13,23 +14,9 @@ import {
 import { formatValue } from "../utils/formatters";
 
 export class PowerPointTable {
-  private config: {
-    margin: {
-      top: number;
-      left: number;
-      right: number;
-      bottom: number;
-    };
-  };
+  private config: PowerPointConfig;
 
-  constructor(config: {
-    margin: {
-      top: number;
-      left: number;
-      right: number;
-      bottom: number;
-    };
-  }) {
+  constructor(config: PowerPointConfig) {
     this.config = config;
   }
 

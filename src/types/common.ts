@@ -34,3 +34,14 @@ export type PowerPointPieChartData = {
   values: number[];
   colors: string[];
 };
+
+export type PowerPointConfig = {
+  margin: {
+    top: number;
+    left: number;
+    right: number;
+    bottom: number;
+  };
+  borderSize: number;
+  roundess: number;
+};
