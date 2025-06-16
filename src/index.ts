@@ -22,6 +22,7 @@ import {
 import splitArrayIntoChunks from "./utils/splitArrayIntoChunks";
 import { normalizeBarsChartData } from "./utils/charts";
 import { PowerPointTable } from "./components/PowerPointTable";
+import { PowerPointBarChart } from "./components/PowerPointBarChart";
 
 // 16:9 aspect ratio
 const LAYOUT_NAME = "APP";
@@ -67,6 +68,7 @@ class PresentationBuilder {
     };
   };
   private table: PowerPointTable;
+  private barChart: PowerPointBarChart;
 
   constructor() {
     this.presentation = new pptxgen();
@@ -92,6 +94,12 @@ class PresentationBuilder {
 
     this.table = new PowerPointTable({
       margin: this.config.margin,
+    });
+
+    this.barChart = new PowerPointBarChart({
+      margin: this.config.margin,
+      borderSize: this.config.borderSize,
+      roundess: this.config.roundess,
     });
   }
 
@@ -290,87 +298,13 @@ class PresentationBuilder {
     } = {}
   ) {
     const { width, height } = this.getSizes();
-    const PADDING = 0.25;
-    const shouldRenderLines =
-      Array.isArray(payload.lines) && payload.lines.length > 0;
 
     this.slideGenerators.push((slide) => {
-      this.addSlideTitle(slide, payload.title);
-
-      slide.addShape("roundRect", {
-        x: this.config.margin.left,
-        y: this.config.margin.top,
-        w: width,
-        h: height,
-        rectRadius: this.config.roundess,
-        line: {
-          color: "cccccc",
-          size: this.config.borderSize,
-        },
+      this.barChart.render(slide, payload, {
+        ...options,
+        width,
+        height,
       });
-
-      const chartOptions: pptxgen.IChartOpts = {
-        x: this.config.margin.left + PADDING,
-        y: this.config.margin.top + PADDING,
-        w: width - 2 * PADDING,
-        h: height - 2 * PADDING,
-        barDir: "col",
-        valAxisLabelFormatCode: payload.labelFormatCode,
-        barGapWidthPct: 25,
-        valGridLine: {
-          style: "none",
-        },
-        showLegend: true,
-        legendPos: "b",
-        legendFontSize: 12,
-        showValue: !shouldRenderLines,
-        dataLabelFormatCode: payload.labelFormatCode,
-      };
-
-      let entities: pptxgen.IChartMulti[] = [
-        {
-          type: "bar",
-          data: payload.data.map((entity) => {
-            return {
-              name: entity.name,
-              values: entity.values,
-              labels: entity.labels,
-            };
-          }),
-          options: {
-            chartColors: payload.data.map((entity) => entity.color),
-          },
-        },
-      ];
-
-      if (shouldRenderLines) {
-        const lines = payload.lines!;
-
-        entities.push({
-          type: "line",
-          data: lines.map((entity) => {
-            return {
-              name: entity.name,
-              values: entity.values,
-              labels: [],
-            };
-          }),
-          options: {
-            chartColors: lines.map((entity) => entity.color),
-            showValue: false,
-          },
-        });
-      }
-
-      if (options.normalizeData) {
-        entities = normalizeBarsChartData(entities);
-      }
-
-      slide.addChart(
-        entities,
-        // @ts-expect-error
-        chartOptions
-      );
     });
 
     return this;
