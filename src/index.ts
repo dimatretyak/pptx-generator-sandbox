@@ -7,7 +7,6 @@ import {
   PowerPointValue,
 } from "./types/common";
 import {
-  cards,
   displayProductPerformance,
   videoProductPerformance,
 } from "./data/constants";
@@ -83,6 +82,7 @@ class PresentationBuilder {
         width: SLIDE_WIDTH,
         height: SLIDE_HEIGHT,
       },
+      spacer: 0.25,
     };
 
     this.layout = new PowerPointLayout(this.config);
@@ -115,37 +115,15 @@ class PresentationBuilder {
   }
 
   addCardsSlide(cards: Card[][]) {
-    const SPACER_SIZE = 0.25;
-    const { width, height } = this.layout.getSlideSizes();
-
     this.slideGenerators.push((slide) => {
       cards.forEach((row, rowIndex) => {
-        const ROWS_COUNT = Math.max(2, row.length);
-        const COLS_COUNT = Math.max(2, cards.length);
-
-        // Calculate cell size based on the number of rows
-        const CELL_SIZE = (width - SPACER_SIZE * (ROWS_COUNT - 1)) / ROWS_COUNT;
-
-        // Calculate column size based on the number of columns
-        let COL_SIZE = (height - SPACER_SIZE * (COLS_COUNT - 1)) / COLS_COUNT;
-
-        // Calculate offsets for positioning the cells
-        const X_OFFSET = CELL_SIZE + SPACER_SIZE;
-        const Y_OFFSET = COL_SIZE + SPACER_SIZE;
-
-        let Y_BASE = rowIndex * Y_OFFSET;
-
-        // Center the cards vertically if there's only one row
-        if (cards.length === 1) {
-          Y_BASE = (height - COL_SIZE) / 2;
-        }
-
         row.forEach((col, colIndex) => {
-          let X_BASE = colIndex * X_OFFSET;
-
-          if (row.length === 1) {
-            X_BASE = (width - CELL_SIZE) / 2;
-          }
+          const info = this.layout.getCardSizeByRowCol({
+            rowsCount: Math.max(2, row.length),
+            colsCount: Math.max(2, cards.length),
+            rowIndex,
+            colIndex,
+          });
 
           slide.addTable(
             [
@@ -171,10 +149,10 @@ class PresentationBuilder {
               ],
             ],
             {
-              x: this.config.margin.left + X_BASE,
-              y: this.config.margin.top + Y_BASE,
-              w: CELL_SIZE,
-              h: COL_SIZE,
+              x: info.x,
+              y: info.y,
+              w: info.width,
+              h: info.height,
               color: "3D3D3D",
               border: {
                 color: "cccccc",
@@ -193,34 +171,19 @@ class PresentationBuilder {
 
   addBoxesSlide(payload: { title: string; data: Card[][] }) {
     const BORDER_SIZE = 1;
-    const SPACER_SIZE = 0.25;
-    const { width, height } = this.layout.getSlideSizes();
 
     this.slideGenerators.push((slide) => {
       this.addSlideTitle(slide, payload.title);
 
       payload.data.forEach((row, rowIndex) => {
-        const ROWS_COUNT = row.length;
-        const COLS_COUNT = Math.max(2, payload.data.length);
-
-        // Calculate cell size based on the number of rows
-        const CELL_SIZE = (width - SPACER_SIZE * (ROWS_COUNT - 1)) / ROWS_COUNT;
-
-        // Calculate column size based on the number of columns
-        let COL_SIZE = (height - SPACER_SIZE * (COLS_COUNT - 1)) / COLS_COUNT;
-
-        // Calculate offsets for positioning the cells
-        const X_OFFSET = CELL_SIZE + SPACER_SIZE;
-        const Y_OFFSET = COL_SIZE + SPACER_SIZE;
-
-        let Y_BASE = rowIndex * Y_OFFSET;
-
-        // Center the cards vertically if there's only one row
-        if (cards.length === 1) {
-          Y_BASE = (height - COL_SIZE) / 2;
-        }
-
         row.forEach((col, colIndex) => {
+          const info = this.layout.getCardSizeByRowCol({
+            rowsCount: row.length,
+            colsCount: Math.max(2, payload.data.length),
+            rowIndex,
+            colIndex,
+          });
+
           slide.addText(
             [
               {
@@ -240,10 +203,10 @@ class PresentationBuilder {
             ],
             {
               shape: this.presentation.ShapeType.roundRect,
-              x: this.config.margin.left + colIndex * X_OFFSET,
-              y: this.config.margin.top + Y_BASE,
-              w: CELL_SIZE,
-              h: COL_SIZE,
+              x: info.x,
+              y: info.y,
+              w: info.width,
+              h: info.height,
               align: "center",
               fontSize: 14,
               rectRadius: this.config.roundess,

@@ -48,6 +48,7 @@ export type PowerPointConfig = {
     width: number;
     height: number;
   };
+  spacer: number;
 };
 
 export type SlideConfig = {
