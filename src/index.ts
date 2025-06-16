@@ -1,5 +1,7 @@
 import pptxgen from "pptxgenjs";
 import {
+  BarChartOptions,
+  BarChartPayload,
   Card,
   Formatter,
   PowerPointChartDataEntity,
@@ -395,17 +397,7 @@ class PresentationBuilder {
     return this;
   }
 
-  addBarChartSlide(
-    payload: {
-      title: string;
-      data: PowerPointChartDataEntity[];
-      lines?: Pick<PowerPointChartDataEntity, "values" | "name" | "color">[];
-      labelFormatCode?: string;
-    },
-    options: {
-      normalizeData?: boolean;
-    } = {}
-  ) {
+  addBarChartSlide(payload: BarChartPayload, options: BarChartOptions = {}) {
     const { width, height } = this.getSizes();
     const PADDING = 0.25;
     const shouldRenderLines =

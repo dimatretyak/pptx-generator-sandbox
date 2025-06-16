@@ -34,3 +34,14 @@ export type PowerPointPieChartData = {
   values: number[];
   colors: string[];
 };
+
+export type BarChartPayload = {
+  title: string;
+  data: PowerPointChartDataEntity[];
+  lines?: Pick<PowerPointChartDataEntity, "values" | "name" | "color">[];
+  labelFormatCode?: string;
+};
+
+export type BarChartOptions = {
+  normalizeData?: boolean;
+};
