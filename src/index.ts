@@ -65,10 +65,13 @@ class PresentationBuilder {
   private presentation: pptxgen;
   private config: PowerPointConfig;
   private table: PowerPointTable;
-  private barChart: PowerPointBarChart;
   private boxes: PowerPointBoxes;
   private layout: PowerPointLayout;
-  private pieChart: PowerPointPieChart;
+
+  private charts: {
+    pie: PowerPointPieChart;
+    bar: PowerPointBarChart;
+  };
 
   constructor() {
     this.presentation = new pptxgen();
@@ -100,9 +103,12 @@ class PresentationBuilder {
     this.presentation.layout = LAYOUT_NAME;
 
     this.table = new PowerPointTable(this.config);
-    this.barChart = new PowerPointBarChart(this.config);
     this.boxes = new PowerPointBoxes(this.config, this.layout);
-    this.pieChart = new PowerPointPieChart(this.config);
+
+    this.charts = {
+      bar: new PowerPointBarChart(this.config),
+      pie: new PowerPointPieChart(this.config),
+    };
   }
 
   addSlideTitle(slide: pptxgen.Slide, title: string) {
@@ -152,7 +158,7 @@ class PresentationBuilder {
     const { width, height } = this.layout.getSlideSizes();
 
     this.slideGenerators.push((slide) => {
-      this.barChart.render(slide, payload, options, {
+      this.charts.bar.render(slide, payload, options, {
         width,
         height,
       });
@@ -166,7 +172,7 @@ class PresentationBuilder {
 
     this.slideGenerators.push((slide) => {
       this.addSlideTitle(slide, payload.title);
-      this.pieChart.render(slide, payload, { width, height });
+      this.charts.pie.render(slide, payload, { width, height });
     });
 
     return this;
