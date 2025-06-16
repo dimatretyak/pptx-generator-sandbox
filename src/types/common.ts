@@ -45,3 +45,8 @@ export type BarChartPayload = {
 export type BarChartOptions = {
   normalizeData?: boolean;
 };
+
+export type PieChartPayload = {
+  title: string;
+  data: PowerPointPieChartData;
+};

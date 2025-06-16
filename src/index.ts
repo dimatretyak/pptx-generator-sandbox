@@ -4,6 +4,7 @@ import {
   BarChartPayload,
   Card,
   Formatter,
+  PieChartPayload,
   PowerPointChartDataEntity,
   PowerPointPieChartData,
   PowerPointTableCellEntity,
@@ -506,10 +507,16 @@ class PresentationBuilder {
     return this;
   }
 
-  addPieChartSlide(payload: { title: string; data: PowerPointPieChartData }) {
-    const { width, height } = this.getSizes();
-    const PADDING = 0.25;
-
+  renderPieChart(
+    slide: pptxgen.Slide,
+    payload: PieChartPayload,
+    demo: {
+      x: number;
+      y: number;
+      w: number;
+      h: number;
+    }
+  ) {
     const labels = payload.data.labels.map((label, index) => {
       return `${label} - ${payload.data.values[index]}`;
     });
@@ -518,34 +525,46 @@ class PresentationBuilder {
       (_value, index) => payload.data.colors[index % payload.data.colors.length]
     );
 
+    slide.addChart(
+      "pie",
+      [
+        {
+          name: payload.data.name,
+          labels: labels,
+          values: payload.data.values,
+        },
+      ],
+      {
+        x: demo.x,
+        y: demo.y,
+        w: demo.w,
+        h: demo.h,
+        chartColors: colors,
+        dataBorder: {
+          pt: 2,
+          color: "ffffff",
+        },
+        legendPos: "r",
+        showLegend: true,
+        showLeaderLines: true,
+        showValue: false,
+      }
+    );
+  }
+
+  addPieChartSlide(payload: PieChartPayload) {
+    const { width, height } = this.getSizes();
+    const PADDING = 0.25;
+
     this.slideGenerators.push((slide) => {
       this.addSlideTitle(slide, payload.title);
 
-      slide.addChart(
-        "pie",
-        [
-          {
-            name: payload.data.name,
-            labels: labels,
-            values: payload.data.values,
-          },
-        ],
-        {
-          x: this.config.margin.left + PADDING,
-          y: this.config.margin.top + PADDING,
-          w: width - 2 * PADDING,
-          h: height - 2 * PADDING,
-          chartColors: colors,
-          dataBorder: {
-            pt: 2,
-            color: "ffffff",
-          },
-          legendPos: "r",
-          showLegend: true,
-          showLeaderLines: true,
-          showValue: false,
-        }
-      );
+      this.renderPieChart(slide, payload, {
+        x: this.config.margin.left + PADDING,
+        y: this.config.margin.top + PADDING,
+        w: width - 2 * PADDING,
+        h: height - 2 * PADDING,
+      });
     });
 
     return this;
@@ -561,13 +580,10 @@ class PresentationBuilder {
         }
       | {
           type: "pie";
-          data: PowerPointPieChartData;
+          payload: PieChartPayload;
         }
     )[][];
   }) {
-    const { width, height } = this.getSizes();
-    const PADDING = 0.25;
-
     this.slideGenerators.push((slide) => {
       this.addSlideTitle(slide, payload.title);
 
@@ -582,6 +598,22 @@ class PresentationBuilder {
             );
 
             this.renderBarChart(slide, col.payload, col.options, {
+              x: sizes.x,
+              y: sizes.y,
+              w: sizes.width,
+              h: sizes.height,
+            });
+          }
+
+          if (col.type === "pie") {
+            const sizes = this.getRowCardSize(
+              row,
+              rowIndex,
+              colIndex,
+              col.payload.data.values
+            );
+
+            this.renderPieChart(slide, col.payload, {
               x: sizes.x,
               y: sizes.y,
               w: sizes.width,
@@ -659,6 +691,26 @@ builder.addChartsSlide({
               ],
             },
           ],
+        },
+      },
+    ],
+    [
+      {
+        type: "pie",
+        payload: {
+          title: "Impressions by Device",
+          data: {
+            name: "Project Status",
+            labels: [
+              "mobile_app",
+              "mobile_web",
+              "desktop",
+              "Smartphone",
+              "Desktop",
+            ],
+            values: [2265852, 12640, 33414, 40621, 1953],
+            colors: ["0088FE", "00C49F", "FFBB28", "FF8042"],
+          },
         },
       },
     ],
