@@ -30,6 +30,7 @@ import {
   PowerPointBarChart,
   PowerPointBarChartPayload,
 } from "./components/PowerPointBarChart";
+import { PowerPointLayout } from "./components/PowerPointLayout";
 
 // 16:9 aspect ratio
 const LAYOUT_NAME = "APP";
@@ -67,17 +68,10 @@ class PresentationBuilder {
   private config: PowerPointConfig;
   private table: PowerPointTable;
   private barChart: PowerPointBarChart;
+  private layout: PowerPointLayout;
 
   constructor() {
     this.presentation = new pptxgen();
-
-    this.presentation.defineLayout({
-      name: LAYOUT_NAME,
-      width: SLIDE_WIDTH,
-      height: SLIDE_HEIGHT,
-    });
-
-    this.presentation.layout = LAYOUT_NAME;
 
     this.config = {
       borderSize: 1,
@@ -88,21 +82,28 @@ class PresentationBuilder {
         right: 0.25,
         bottom: 0.25,
       },
+      slide: {
+        width: SLIDE_WIDTH,
+        height: SLIDE_HEIGHT,
+      },
     };
+
+    this.layout = new PowerPointLayout(this.config);
+
+    this.presentation.defineLayout({
+      name: LAYOUT_NAME,
+      width: this.config.slide.width,
+      height: this.config.slide.height,
+    });
+
+    this.presentation.layout = LAYOUT_NAME;
 
     this.table = new PowerPointTable(this.config);
     this.barChart = new PowerPointBarChart(this.config);
   }
 
-  private getSizes() {
-    return {
-      width: SLIDE_WIDTH - this.config.margin.left - this.config.margin.right,
-      height: SLIDE_HEIGHT - this.config.margin.top - this.config.margin.bottom,
-    };
-  }
-
   addSlideTitle(slide: pptxgen.Slide, title: string) {
-    const sizes = this.getSizes();
+    const sizes = this.layout.getSlideSizes();
 
     slide.addText(title, {
       x: this.config.margin.left,
@@ -118,7 +119,7 @@ class PresentationBuilder {
 
   addCardsSlide(cards: Card[][]) {
     const SPACER_SIZE = 0.25;
-    const { width, height } = this.getSizes();
+    const { width, height } = this.layout.getSlideSizes();
 
     this.slideGenerators.push((slide) => {
       cards.forEach((row, rowIndex) => {
@@ -196,7 +197,7 @@ class PresentationBuilder {
   addBoxesSlide(payload: { title: string; data: Card[][] }) {
     const BORDER_SIZE = 1;
     const SPACER_SIZE = 0.25;
-    const { width, height } = this.getSizes();
+    const { width, height } = this.layout.getSlideSizes();
 
     this.slideGenerators.push((slide) => {
       this.addSlideTitle(slide, payload.title);
@@ -263,7 +264,7 @@ class PresentationBuilder {
   }
 
   addTableSlide(payload: PowerPointTablePayload) {
-    const { width, height } = this.getSizes();
+    const { width, height } = this.layout.getSlideSizes();
 
     this.slideGenerators.push((slide) => {
       this.addSlideTitle(slide, payload.title);
@@ -282,7 +283,7 @@ class PresentationBuilder {
       normalizeData?: boolean;
     } = {}
   ) {
-    const { width, height } = this.getSizes();
+    const { width, height } = this.layout.getSlideSizes();
 
     this.slideGenerators.push((slide) => {
       this.barChart.render(slide, payload, options, {
@@ -295,7 +296,7 @@ class PresentationBuilder {
   }
 
   addPieChartSlide(payload: { title: string; data: PowerPointPieChartData }) {
-    const { width, height } = this.getSizes();
+    const { width, height } = this.layout.getSlideSizes();
     const PADDING = 0.25;
 
     const labels = payload.data.labels.map((label, index) => {

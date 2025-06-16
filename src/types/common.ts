@@ -44,6 +44,10 @@ export type PowerPointConfig = {
   };
   borderSize: number;
   roundess: number;
+  slide: {
+    width: number;
+    height: number;
+  };
 };
 
 export type SlideConfig = {
