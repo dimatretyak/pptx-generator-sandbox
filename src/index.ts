@@ -1,12 +1,10 @@
 import pptxgen from "pptxgenjs";
 import {
   Card,
-  PowerPointChartDataEntity,
   PowerPointConfig,
   PowerPointPieChartData,
   PowerPointTableCellEntity,
   PowerPointValue,
-  TableHeaderEntity,
 } from "./types/common";
 import {
   cards,
@@ -21,7 +19,6 @@ import {
   formatValue,
 } from "./utils/formatters";
 import splitArrayIntoChunks from "./utils/splitArrayIntoChunks";
-import { normalizeBarsChartData } from "./utils/charts";
 import {
   PowerPointTable,
   PowerPointTablePayload,
