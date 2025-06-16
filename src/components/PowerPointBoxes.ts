@@ -1,11 +1,17 @@
 import pptxgen from "pptxgenjs";
-import { Card, PowerPointConfig } from "../types/common";
+import { Formatter, PowerPointConfig, PowerPointValue } from "../types/common";
 import { formatValue } from "../utils/formatters";
 import { PowerPointLayout } from "./PowerPointLayout";
 
+export type PowerPointBoxEntity = {
+  title: string;
+  value: PowerPointValue;
+  format?: Formatter;
+};
+
 export type PowerPointBoxesPayload = {
   title: string;
-  data: Card[][];
+  data: PowerPointBoxEntity[][];
 };
 
 export class PowerPointBoxes {

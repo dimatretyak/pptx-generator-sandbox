@@ -1,10 +1,9 @@
 import pptxgen from "pptxgenjs";
 import {
+  Formatter,
   PowerPointConfig,
-  PowerPointTableCellEntity,
   PowerPointValue,
   SlideConfig,
-  TableHeaderEntity,
 } from "../types/common";
 import {
   generateHeatmapColor,
@@ -14,10 +13,24 @@ import {
 } from "../utils/common";
 import { formatValue } from "../utils/formatters";
 
+type PowerPointTableTableHeader = {
+  text: string;
+  heatMap?: {
+    colorPalette: [string, string];
+    maxValue: number;
+    minValue: number;
+  };
+};
+
+export type PowerPointTableCell = {
+  value: PowerPointValue;
+  format?: Formatter;
+};
+
 export type PowerPointTablePayload = {
   title: string;
-  headers: TableHeaderEntity[];
-  data: PowerPointTableCellEntity[][];
+  headers: PowerPointTableTableHeader[];
+  data: PowerPointTableCell[][];
 };
 
 export class PowerPointTable {

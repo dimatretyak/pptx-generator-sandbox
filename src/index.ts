@@ -2,7 +2,6 @@ import pptxgen from "pptxgenjs";
 import {
   PowerPointConfig,
   PowerPointPieChartData,
-  PowerPointTableCellEntity,
   PowerPointValue,
 } from "./types/common";
 import {
@@ -18,6 +17,7 @@ import {
 import splitArrayIntoChunks from "./utils/splitArrayIntoChunks";
 import {
   PowerPointTable,
+  PowerPointTableCell,
   PowerPointTablePayload,
 } from "./components/PowerPointTable";
 import {
@@ -372,7 +372,7 @@ builder.addTableSlide({
     },
   ],
   data: displayProductPerformance.map((entity) => {
-    const result: PowerPointTableCellEntity[] = [
+    const result: PowerPointTableCell[] = [
       { value: entity._id.subProduct },
       { value: entity.impressions, format: formatPowerPointNumber },
       { value: entity.clicks, format: formatPowerPointNumber },
@@ -387,7 +387,7 @@ builder.addTableSlide({
 const videoComletes = getMinMax(videoProductPerformance, "videoCompletions");
 const videoClicks = getMinMax(videoProductPerformance, "clicks");
 const entities = videoProductPerformance.map((entity) => {
-  const result: PowerPointTableCellEntity[] = [
+  const result: PowerPointTableCell[] = [
     { value: entity._id.subProduct },
     { value: entity.impressions, format: formatPowerPointNumber },
     { value: entity.videoCompletions, format: formatPowerPointNumber },

@@ -1,15 +1,18 @@
 import pptxgen from "pptxgenjs";
-import {
-  PowerPointChartDataEntity,
-  PowerPointConfig,
-  SlideConfig,
-} from "../types/common";
+import { PowerPointConfig, SlideConfig } from "../types/common";
 import { normalizeBarsChartData } from "../utils/charts";
+
+export type PowerPointBarChartDataEntity = {
+  labels: string[];
+  values: number[];
+  name: string;
+  color: string;
+};
 
 export type PowerPointBarChartPayload = {
   title: string;
-  data: PowerPointChartDataEntity[];
-  lines?: Pick<PowerPointChartDataEntity, "values" | "name" | "color">[];
+  data: PowerPointBarChartDataEntity[];
+  lines?: Pick<PowerPointBarChartDataEntity, "values" | "name" | "color">[];
   labelFormatCode?: string;
 };
 
