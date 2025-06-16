@@ -10,6 +10,7 @@ import {
   isNumber,
   stripHexHash,
 } from "../utils/common";
+import { formatValue } from "../utils/formatters";
 
 export class PowerPointTable {
   private config: {
@@ -30,25 +31,6 @@ export class PowerPointTable {
     };
   }) {
     this.config = config;
-  }
-
-  private formatValue(
-    value: PowerPointValue,
-    formatter?: (value: PowerPointValue) => string
-  ) {
-    if (typeof formatter === "function") {
-      return formatter(value);
-    }
-
-    if (typeof value === "number") {
-      return value.toString();
-    }
-
-    if (typeof value === "string") {
-      return value;
-    }
-
-    return "-";
   }
 
   render(
@@ -74,7 +56,7 @@ export class PowerPointTable {
         const heatMap = payload.headers[columnIndex].heatMap;
 
         const entity: pptxgen.TableCell = {
-          text: this.formatValue(column.value, column.format),
+          text: formatValue(column.value, column.format),
           options: {},
         };
 

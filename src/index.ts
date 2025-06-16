@@ -1,7 +1,6 @@
 import pptxgen from "pptxgenjs";
 import {
   Card,
-  Formatter,
   PowerPointChartDataEntity,
   PowerPointPieChartData,
   PowerPointTableCellEntity,
@@ -13,18 +12,12 @@ import {
   displayProductPerformance,
   videoProductPerformance,
 } from "./data/constants";
-import {
-  generateHeatmapColor,
-  getMinMax,
-  getTextColorByBackground,
-  isNumber,
-  isString,
-  stripHexHash,
-} from "./utils/common";
+import { getMinMax, isNumber, isString } from "./utils/common";
 import {
   formatNumber,
   formatNumberWithSuffix,
   formatPercent,
+  formatValue,
 } from "./utils/formatters";
 import splitArrayIntoChunks from "./utils/splitArrayIntoChunks";
 import { normalizeBarsChartData } from "./utils/charts";
@@ -109,22 +102,6 @@ class PresentationBuilder {
     };
   }
 
-  private formatValue(value: PowerPointValue, formatter?: Formatter) {
-    if (typeof formatter === "function") {
-      return formatter(value);
-    }
-
-    if (isNumber(value)) {
-      return value.toString();
-    }
-
-    if (isString(value)) {
-      return value;
-    }
-
-    return FALLBACK_POWER_POINT_VALUE;
-  }
-
   addSlideTitle(slide: pptxgen.Slide, title: string) {
     const sizes = this.getSizes();
 
@@ -186,7 +163,7 @@ class PresentationBuilder {
                       },
                     },
                     {
-                      text: this.formatValue(col.value, col.format),
+                      text: formatValue(col.value, col.format),
                       options: {
                         fontSize: 24,
                         bold: true,
@@ -257,7 +234,7 @@ class PresentationBuilder {
                 },
               },
               {
-                text: this.formatValue(col.value, col.format),
+                text: formatValue(col.value, col.format),
                 options: {
                   fontSize: 24,
                   bold: true,
