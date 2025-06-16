@@ -516,6 +516,43 @@ class PresentationBuilder {
     return this;
   }
 
+  addChartsSlide() {
+    const { width, height } = this.getSizes();
+    const PADDING = 0.25;
+
+    this.slideGenerators.push((slide) => {
+      this.addSlideTitle(slide, "Demo");
+
+      slide.addChart(
+        "pie",
+        [
+          {
+            name: "Name",
+            labels: ["111", "222", "333"],
+            values: [100, 200, 300],
+          },
+        ],
+        {
+          x: this.config.margin.left + PADDING,
+          y: this.config.margin.top + PADDING,
+          w: width - 2 * PADDING,
+          h: height - 2 * PADDING,
+          chartColors: ["0088FE", "00C49F", "FFBB28"],
+          dataBorder: {
+            pt: 2,
+            color: "ffffff",
+          },
+          legendPos: "r",
+          showLegend: true,
+          showLeaderLines: true,
+          showValue: false,
+        }
+      );
+    });
+
+    return this;
+  }
+
   buildAndSave(fileName: string) {
     for (const generateSlide of this.slideGenerators) {
       const slide = this.presentation.addSlide();
@@ -527,6 +564,8 @@ class PresentationBuilder {
 }
 
 const builder = new PresentationBuilder();
+
+builder.addChartsSlide();
 
 // Render charts
 builder.addPieChartSlide({
