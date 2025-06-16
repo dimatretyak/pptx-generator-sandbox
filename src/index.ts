@@ -1,6 +1,5 @@
 import pptxgen from "pptxgenjs";
 import {
-  Card,
   PowerPointConfig,
   PowerPointPieChartData,
   PowerPointTableCellEntity,
@@ -15,7 +14,6 @@ import {
   formatNumber,
   formatNumberWithSuffix,
   formatPercent,
-  formatValue,
 } from "./utils/formatters";
 import splitArrayIntoChunks from "./utils/splitArrayIntoChunks";
 import {
@@ -27,6 +25,10 @@ import {
   PowerPointBarChartPayload,
 } from "./components/PowerPointBarChart";
 import { PowerPointLayout } from "./components/PowerPointLayout";
+import {
+  PowerPointBoxes,
+  PowerPointBoxesPayload,
+} from "./components/PowerPointBoxes";
 
 // 16:9 aspect ratio
 const LAYOUT_NAME = "APP";
@@ -64,6 +66,7 @@ class PresentationBuilder {
   private config: PowerPointConfig;
   private table: PowerPointTable;
   private barChart: PowerPointBarChart;
+  private boxes: PowerPointBoxes;
   private layout: PowerPointLayout;
 
   constructor() {
@@ -97,6 +100,7 @@ class PresentationBuilder {
 
     this.table = new PowerPointTable(this.config);
     this.barChart = new PowerPointBarChart(this.config);
+    this.boxes = new PowerPointBoxes(this.config, this.layout);
   }
 
   addSlideTitle(slide: pptxgen.Slide, title: string) {
@@ -114,55 +118,10 @@ class PresentationBuilder {
     });
   }
 
-  addBoxesSlide(payload: { title: string; data: Card[][] }) {
-    const BORDER_SIZE = 1;
-
+  addBoxesSlide(payload: PowerPointBoxesPayload) {
     this.slideGenerators.push((slide) => {
       this.addSlideTitle(slide, payload.title);
-
-      payload.data.forEach((row, rowIndex) => {
-        row.forEach((col, colIndex) => {
-          const info = this.layout.getCardSizeByRowCol({
-            rowsCount: row.length,
-            colsCount: Math.max(2, payload.data.length),
-            rowIndex,
-            colIndex,
-          });
-
-          slide.addText(
-            [
-              {
-                text: col.title,
-                options: {
-                  fontSize: 14,
-                  breakLine: true,
-                },
-              },
-              {
-                text: formatValue(col.value, col.format),
-                options: {
-                  fontSize: 24,
-                  bold: true,
-                },
-              },
-            ],
-            {
-              shape: this.presentation.ShapeType.roundRect,
-              x: info.x,
-              y: info.y,
-              w: info.width,
-              h: info.height,
-              align: "center",
-              fontSize: 14,
-              rectRadius: this.config.roundess,
-              line: {
-                color: "cccccc",
-                size: BORDER_SIZE,
-              },
-            }
-          );
-        });
-      });
+      this.boxes.render(slide, payload);
     });
 
     return this;
