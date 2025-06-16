@@ -457,7 +457,6 @@ class PresentationBuilder {
         });
       }
 
-      // Normalize data if requested
       if (options.normalizeData) {
         entities = normalizeBarsChartData(entities);
       }

@@ -17,6 +17,18 @@ const getMaxValuesInfo = (data: pptxgen.IChartMulti[]) => {
   };
 };
 
+/**
+ *
+ * Scale all data series to bring them into a similar visual range for the chart.
+ * So when data series have vastly different magnitudes (e.g. thousands vs millions),
+ * smaller values appear flattened near the X axis.
+ *
+ * Approach:
+ * - Determine the global min and max across all series
+ * - Calculate a scale factor for each series based on its max value relative to a chosen target range
+ * - Apply the scale factor to each value to normalize for display
+ * - Use data labels to show the original (unscaled) values
+ */
 export function normalizeBarsChartData(
   data: pptxgen.IChartMulti[]
 ): pptxgen.IChartMulti[] {
