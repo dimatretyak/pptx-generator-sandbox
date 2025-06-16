@@ -37,30 +37,6 @@ const SLIDE_WIDTH = 10;
 const SLIDE_HEIGHT = 5.625;
 const FALLBACK_POWER_POINT_VALUE = "-";
 
-const formatPowerPointNumber = (value: PowerPointValue) => {
-  if (isNumber(value)) {
-    return formatNumber(value);
-  }
-
-  if (isString(value)) {
-    return value;
-  }
-
-  return FALLBACK_POWER_POINT_VALUE;
-};
-
-const formatPowerPointPercent = (value: PowerPointValue) => {
-  if (isNumber(value)) {
-    return formatPercent(value);
-  }
-
-  if (isString(value)) {
-    return value;
-  }
-
-  return FALLBACK_POWER_POINT_VALUE;
-};
-
 class PresentationBuilder {
   private slideGenerators: Array<(slide: pptxgen.Slide) => void> = [];
   private presentation: pptxgen;
@@ -73,6 +49,30 @@ class PresentationBuilder {
     pie: PowerPointPieChart;
     bar: PowerPointBarChart;
   };
+
+  static formatNumber(value: PowerPointValue): string {
+    if (isNumber(value)) {
+      return formatNumber(value);
+    }
+
+    if (isString(value)) {
+      return value;
+    }
+
+    return FALLBACK_POWER_POINT_VALUE;
+  }
+
+  static formatPercent(value: PowerPointValue): string {
+    if (isNumber(value)) {
+      return formatPercent(value);
+    }
+
+    if (isString(value)) {
+      return value;
+    }
+
+    return FALLBACK_POWER_POINT_VALUE;
+  }
 
   constructor() {
     this.presentation = new pptxgen();
@@ -347,10 +347,10 @@ builder.addTableSlide({
   data: displayProductPerformance.map((entity) => {
     const result: PowerPointTableCell[] = [
       { value: entity._id.subProduct },
-      { value: entity.impressions, format: formatPowerPointNumber },
-      { value: entity.clicks, format: formatPowerPointNumber },
-      { value: entity.ctr, format: formatPowerPointPercent },
-      { value: entity.conversions, format: formatPowerPointNumber },
+      { value: entity.impressions, format: PresentationBuilder.formatNumber },
+      { value: entity.clicks, format: PresentationBuilder.formatNumber },
+      { value: entity.ctr, format: PresentationBuilder.formatPercent },
+      { value: entity.conversions, format: PresentationBuilder.formatNumber },
     ];
 
     return result;
@@ -362,11 +362,14 @@ const videoClicks = getMinMax(videoProductPerformance, "clicks");
 const entities = videoProductPerformance.map((entity) => {
   const result: PowerPointTableCell[] = [
     { value: entity._id.subProduct },
-    { value: entity.impressions, format: formatPowerPointNumber },
-    { value: entity.videoCompletions, format: formatPowerPointNumber },
-    { value: entity.vcr, format: formatPowerPointPercent },
-    { value: entity.clicks, format: formatPowerPointNumber },
-    { value: entity.ctr, format: formatPowerPointPercent },
+    { value: entity.impressions, format: PresentationBuilder.formatNumber },
+    {
+      value: entity.videoCompletions,
+      format: PresentationBuilder.formatNumber,
+    },
+    { value: entity.vcr, format: PresentationBuilder.formatPercent },
+    { value: entity.clicks, format: PresentationBuilder.formatNumber },
+    { value: entity.ctr, format: PresentationBuilder.formatPercent },
   ];
 
   return result;
@@ -425,7 +428,7 @@ builder.addBoxesSlide({
       {
         title: "CTR(%)",
         value: 0.15261760710334837,
-        format: formatPowerPointPercent,
+        format: PresentationBuilder.formatPercent,
       },
     ],
     [
@@ -474,7 +477,7 @@ const videoTopKPIData = [
   {
     title: "VCR(%)",
     value: 45.0,
-    format: formatPowerPointPercent,
+    format: PresentationBuilder.formatPercent,
   },
   {
     title: "Clicks",
@@ -484,7 +487,7 @@ const videoTopKPIData = [
   {
     title: "CTR(%)",
     value: 0.17,
-    format: formatPowerPointPercent,
+    format: PresentationBuilder.formatPercent,
   },
 ];
 
