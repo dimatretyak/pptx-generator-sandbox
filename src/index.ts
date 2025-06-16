@@ -27,6 +27,7 @@ import {
   formatPercent,
 } from "./utils/formatters";
 import splitArrayIntoChunks from "./utils/splitArrayIntoChunks";
+import { normalizeBarsChartData } from "./utils/charts";
 
 // 16:9 aspect ratio
 const LAYOUT_NAME = "APP";
@@ -372,14 +373,21 @@ class PresentationBuilder {
     return this;
   }
 
-  addBarChartSlide(payload: {
-    title: string;
-    data: PowerPointChartDataEntity[];
-    lines?: Pick<PowerPointChartDataEntity, "values" | "name" | "color">[];
-    labelFormatCode?: string;
-  }) {
+  addBarChartSlide(
+    payload: {
+      title: string;
+      data: PowerPointChartDataEntity[];
+      lines?: Pick<PowerPointChartDataEntity, "values" | "name" | "color">[];
+      labelFormatCode?: string;
+    },
+    options: {
+      normalizeData?: boolean;
+    } = {}
+  ) {
     const { width, height } = this.getSizes();
     const PADDING = 0.25;
+    const shouldRenderLines =
+      Array.isArray(payload.lines) && payload.lines.length > 0;
 
     this.slideGenerators.push((slide) => {
       this.addSlideTitle(slide, payload.title);
@@ -396,7 +404,7 @@ class PresentationBuilder {
         },
       });
 
-      const options: pptxgen.IChartOpts = {
+      const chartOptions: pptxgen.IChartOpts = {
         x: this.config.margin.left + PADDING,
         y: this.config.margin.top + PADDING,
         w: width - 2 * PADDING,
@@ -410,11 +418,11 @@ class PresentationBuilder {
         showLegend: true,
         legendPos: "b",
         legendFontSize: 12,
-        showValue: true,
+        showValue: !shouldRenderLines,
         dataLabelFormatCode: payload.labelFormatCode,
       };
 
-      const entities: pptxgen.IChartMulti[] = [
+      let entities: pptxgen.IChartMulti[] = [
         {
           type: "bar",
           data: payload.data.map((entity) => {
@@ -430,10 +438,10 @@ class PresentationBuilder {
         },
       ];
 
-      if (Array.isArray(payload.lines)) {
+      if (shouldRenderLines) {
         entities.push({
           type: "line",
-          data: payload.lines.map((entity) => {
+          data: payload.lines!.map((entity) => {
             return {
               name: entity.name,
               values: entity.values,
@@ -441,15 +449,23 @@ class PresentationBuilder {
             };
           }),
           options: {
-            chartColors: payload.lines.map((entity) => entity.color),
+            chartColors: payload.lines!.map((entity) => entity.color),
+            showValue: false,
           },
         });
       }
 
+      // Normalize data if requested
+      if (options.normalizeData) {
+        entities = normalizeBarsChartData(entities);
+      }
+
+      // console.log(JSON.stringify(entities, null, 2));
+
       slide.addChart(
         entities,
         // @ts-expect-error
-        options
+        chartOptions
       );
     });
 
@@ -569,36 +585,41 @@ builder.addBarChartSlide({
   ],
 });
 
-builder.addBarChartSlide({
-  title: "Weekly Performance Trend(s)",
-  labelFormatCode: "0",
-  data: [
-    {
-      name: "Impressions",
-      color: "0f5870",
-      labels: [
-        "05/18/2025",
-        "05/25/2025",
-        "06/01/2025",
-        "06/08/2025",
-        "06/15/2025",
-      ],
-      values: [3639961, 7259256, 8872578, 6760069, 5891814],
-    },
-  ],
-  lines: [
-    {
-      name: "Clicks",
-      color: "cdd8f2",
-      values: [7055, 13882, 17499, 13568, 12257],
-    },
-    {
-      name: "Foot Traffic Visits",
-      color: "e6821e",
-      values: [597, 949, 805, 781, 840],
-    },
-  ],
-});
+builder.addBarChartSlide(
+  {
+    title: "Weekly Performance Trend(s)",
+    labelFormatCode: "0",
+    data: [
+      {
+        name: "Impressions",
+        color: "0f5870",
+        labels: [
+          "05/18/2025",
+          "05/25/2025",
+          "06/01/2025",
+          "06/08/2025",
+          "06/15/2025",
+        ],
+        values: [3639961, 7259256, 8872578, 6760069, 5891814],
+      },
+    ],
+    lines: [
+      {
+        name: "Clicks",
+        color: "cdd8f2",
+        values: [7055, 13882, 17499, 13568, 12257],
+      },
+      {
+        name: "Foot Traffic Visits",
+        color: "e6821e",
+        values: [597, 949, 805, 781, 840],
+      },
+    ],
+  },
+  {
+    normalizeData: true,
+  }
+);
 
 const clicks = getMinMax(displayProductPerformance, "clicks");
 const totalConversions = getMinMax(displayProductPerformance, "conversions");
