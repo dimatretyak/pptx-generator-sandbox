@@ -397,11 +397,88 @@ class PresentationBuilder {
     return this;
   }
 
+  // TODO: Rename demo and specify the typescrip type
+  renderBarChart(
+    slide: pptxgen.Slide,
+    payload: BarChartPayload,
+    options: BarChartOptions = {},
+    demo: {
+      x: number;
+      y: number;
+      w: number;
+      h: number;
+    }
+  ) {
+    const shouldRenderLines =
+      Array.isArray(payload.lines) && payload.lines.length > 0;
+
+    const chartOptions: pptxgen.IChartOpts = {
+      x: demo.x,
+      y: demo.y,
+      w: demo.w,
+      h: demo.h,
+      barDir: "col",
+      valAxisLabelFormatCode: payload.labelFormatCode,
+      barGapWidthPct: 25,
+      valGridLine: {
+        style: "none",
+      },
+      showLegend: true,
+      legendPos: "b",
+      legendFontSize: 12,
+      showValue: !shouldRenderLines,
+      dataLabelFormatCode: payload.labelFormatCode,
+    };
+
+    let entities: pptxgen.IChartMulti[] = [
+      {
+        type: "bar",
+        data: payload.data.map((entity) => {
+          return {
+            name: entity.name,
+            values: entity.values,
+            labels: entity.labels,
+          };
+        }),
+        options: {
+          chartColors: payload.data.map((entity) => entity.color),
+        },
+      },
+    ];
+
+    if (shouldRenderLines) {
+      const lines = payload.lines!;
+
+      entities.push({
+        type: "line",
+        data: lines.map((entity) => {
+          return {
+            name: entity.name,
+            values: entity.values,
+            labels: [],
+          };
+        }),
+        options: {
+          chartColors: lines.map((entity) => entity.color),
+          showValue: false,
+        },
+      });
+    }
+
+    if (options.normalizeData) {
+      entities = normalizeBarsChartData(entities);
+    }
+
+    slide.addChart(
+      entities,
+      // @ts-expect-error
+      chartOptions
+    );
+  }
+
   addBarChartSlide(payload: BarChartPayload, options: BarChartOptions = {}) {
     const { width, height } = this.getSizes();
     const PADDING = 0.25;
-    const shouldRenderLines =
-      Array.isArray(payload.lines) && payload.lines.length > 0;
 
     this.slideGenerators.push((slide) => {
       this.addSlideTitle(slide, payload.title);
@@ -418,68 +495,12 @@ class PresentationBuilder {
         },
       });
 
-      const chartOptions: pptxgen.IChartOpts = {
+      this.renderBarChart(slide, payload, options, {
         x: this.config.margin.left + PADDING,
         y: this.config.margin.top + PADDING,
         w: width - 2 * PADDING,
         h: height - 2 * PADDING,
-        barDir: "col",
-        valAxisLabelFormatCode: payload.labelFormatCode,
-        barGapWidthPct: 25,
-        valGridLine: {
-          style: "none",
-        },
-        showLegend: true,
-        legendPos: "b",
-        legendFontSize: 12,
-        showValue: !shouldRenderLines,
-        dataLabelFormatCode: payload.labelFormatCode,
-      };
-
-      let entities: pptxgen.IChartMulti[] = [
-        {
-          type: "bar",
-          data: payload.data.map((entity) => {
-            return {
-              name: entity.name,
-              values: entity.values,
-              labels: entity.labels,
-            };
-          }),
-          options: {
-            chartColors: payload.data.map((entity) => entity.color),
-          },
-        },
-      ];
-
-      if (shouldRenderLines) {
-        const lines = payload.lines!;
-
-        entities.push({
-          type: "line",
-          data: lines.map((entity) => {
-            return {
-              name: entity.name,
-              values: entity.values,
-              labels: [],
-            };
-          }),
-          options: {
-            chartColors: lines.map((entity) => entity.color),
-            showValue: false,
-          },
-        });
-      }
-
-      if (options.normalizeData) {
-        entities = normalizeBarsChartData(entities);
-      }
-
-      slide.addChart(
-        entities,
-        // @ts-expect-error
-        chartOptions
-      );
+      });
     });
 
     return this;
@@ -530,38 +551,45 @@ class PresentationBuilder {
     return this;
   }
 
-  addChartsSlide() {
+  addChartsSlide(payload: {
+    title: string;
+    charts: (
+      | {
+          type: "bar";
+          payload: BarChartPayload;
+          options?: BarChartOptions;
+        }
+      | {
+          type: "pie";
+          data: PowerPointPieChartData;
+        }
+    )[][];
+  }) {
     const { width, height } = this.getSizes();
     const PADDING = 0.25;
 
     this.slideGenerators.push((slide) => {
-      this.addSlideTitle(slide, "Demo");
+      this.addSlideTitle(slide, payload.title);
 
-      slide.addChart(
-        "pie",
-        [
-          {
-            name: "Name",
-            labels: ["111", "222", "333"],
-            values: [100, 200, 300],
-          },
-        ],
-        {
-          x: this.config.margin.left + PADDING,
-          y: this.config.margin.top + PADDING,
-          w: width - 2 * PADDING,
-          h: height - 2 * PADDING,
-          chartColors: ["0088FE", "00C49F", "FFBB28"],
-          dataBorder: {
-            pt: 2,
-            color: "ffffff",
-          },
-          legendPos: "r",
-          showLegend: true,
-          showLeaderLines: true,
-          showValue: false,
-        }
-      );
+      payload.charts.forEach((row, rowIndex) => {
+        row.forEach((col, colIndex) => {
+          if (col.type === "bar") {
+            const sizes = this.getRowCardSize(
+              row,
+              rowIndex,
+              colIndex,
+              col.payload.data
+            );
+
+            this.renderBarChart(slide, col.payload, col.options, {
+              x: sizes.x,
+              y: sizes.y,
+              w: sizes.width,
+              h: sizes.height,
+            });
+          }
+        });
+      });
     });
 
     return this;
@@ -579,7 +607,63 @@ class PresentationBuilder {
 
 const builder = new PresentationBuilder();
 
-builder.addChartsSlide();
+builder.addChartsSlide({
+  title: "Multipe Chart Slide",
+  charts: [
+    [
+      {
+        type: "bar",
+        payload: {
+          title: "Display - CTR Last 6 Months",
+          labelFormatCode: "0.00%",
+          data: [
+            {
+              name: "Display - CTR Last 6 Months",
+              color: "cdd8f2",
+              labels: [
+                "2024-12",
+                "2025-01",
+                "2025-02",
+                "2025-03",
+                "2025-04",
+                "2025-05",
+              ],
+              values: [0.00093, 0.00127, 0.00127, 0.00115, 0.00145, 0.00145],
+            },
+          ],
+        },
+      },
+      {
+        type: "bar",
+        payload: {
+          title: "Video - CTR & VCR Last 6 Months",
+          labelFormatCode: "00.00%",
+          data: [
+            {
+              name: "VCR(%)",
+              color: "0f5870",
+              labels: [],
+              values: [
+                0.4148591213281817, 0.4094513582939654, 0.4153409448813366,
+                0.4350247806410749, 0.4744703179457573, 0.45896916784347686,
+              ],
+            },
+            {
+              name: "CTR(%)",
+              color: "cdd8f2",
+              labels: [],
+              values: [
+                0.0015293595212766042, 0.0016850330036453868,
+                0.0026369641917544347, 0.0017700485579938046,
+                0.0014604458661489576, 0.0018036372656733593,
+              ],
+            },
+          ],
+        },
+      },
+    ],
+  ],
+});
 
 // Render charts
 builder.addPieChartSlide({
