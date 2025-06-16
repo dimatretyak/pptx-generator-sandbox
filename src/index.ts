@@ -462,8 +462,6 @@ class PresentationBuilder {
         entities = normalizeBarsChartData(entities);
       }
 
-      // console.log(JSON.stringify(entities, null, 2));
-
       slide.addChart(
         entities,
         // @ts-expect-error
