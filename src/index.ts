@@ -571,10 +571,11 @@ builder.addBarChartSlide({
 
 builder.addBarChartSlide({
   title: "Weekly Performance Trend(s)",
+  labelFormatCode: "0",
   data: [
     {
-      name: "Clicks",
-      color: "cdd8f2",
+      name: "Impressions",
+      color: "0f5870",
       labels: [
         "05/18/2025",
         "05/25/2025",
@@ -582,14 +583,14 @@ builder.addBarChartSlide({
         "06/08/2025",
         "06/15/2025",
       ],
-      values: [7055, 13882, 17499, 13568, 12257],
+      values: [3639961, 7259256, 8872578, 6760069, 5891814],
     },
   ],
   lines: [
     {
-      name: "Impressions",
-      color: "0f5870",
-      values: [3639961, 7259256, 8872578, 6760069, 5891814],
+      name: "Clicks",
+      color: "cdd8f2",
+      values: [7055, 13882, 17499, 13568, 12257],
     },
     {
       name: "Foot Traffic Visits",
