@@ -18,6 +18,7 @@ import {
 } from "./components/PowerPointTable";
 import {
   PowerPointBarChart,
+  PowerPointBarChartOptions,
   PowerPointBarChartPayload,
 } from "./components/PowerPointBarChart";
 import { PowerPointLayout } from "./components/PowerPointLayout";
@@ -151,9 +152,7 @@ class PresentationBuilder {
 
   addBarChartSlide(
     payload: PowerPointBarChartPayload,
-    options: {
-      normalizeData?: boolean;
-    } = {}
+    options: PowerPointBarChartOptions = {}
   ) {
     const { width, height } = this.layout.getSlideSizes();
 

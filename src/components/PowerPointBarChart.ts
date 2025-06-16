@@ -16,7 +16,7 @@ export type PowerPointBarChartPayload = {
   labelFormatCode?: string;
 };
 
-export type PowerPointOptions = {
+export type PowerPointBarChartOptions = {
   normalizeData?: boolean;
 };
 
@@ -30,7 +30,7 @@ export class PowerPointBarChart {
   render(
     slide: pptxgen.Slide,
     payload: PowerPointBarChartPayload,
-    options: PowerPointOptions,
+    options: PowerPointBarChartOptions,
     slideConfig: SlideConfig
   ) {
     const PADDING = 0.25;
