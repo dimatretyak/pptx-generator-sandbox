@@ -211,36 +211,58 @@ class PresentationBuilder {
     return this;
   }
 
-  addBoxesSlide(payload: { title: string; data: Card[][] }) {
-    const BORDER_SIZE = 1;
+  getRowCardSize(
+    rows: unknown[],
+    rowIndex: number,
+    colIndex: number,
+    data: unknown[]
+  ) {
     const SPACER_SIZE = 0.25;
     const { width, height } = this.getSizes();
+
+    const ROWS_COUNT = rows.length;
+    const COLS_COUNT = Math.max(2, data.length);
+
+    // Calculate cell size based on the number of rows
+    const CELL_SIZE = (width - SPACER_SIZE * (ROWS_COUNT - 1)) / ROWS_COUNT;
+
+    // Calculate column size based on the number of columns
+    let COL_SIZE = (height - SPACER_SIZE * (COLS_COUNT - 1)) / COLS_COUNT;
+
+    // Calculate offsets for positioning the cells
+    const X_OFFSET = CELL_SIZE + SPACER_SIZE;
+    const Y_OFFSET = COL_SIZE + SPACER_SIZE;
+
+    let Y_BASE = rowIndex * Y_OFFSET;
+
+    // Center the cards vertically if there's only one row
+    if (cards.length === 1) {
+      Y_BASE = (height - COL_SIZE) / 2;
+    }
+
+    return {
+      width: CELL_SIZE,
+      height: COL_SIZE,
+      x: this.config.margin.left + colIndex * X_OFFSET,
+      y: this.config.margin.top + Y_BASE,
+    };
+  }
+
+  addBoxesSlide(payload: { title: string; data: Card[][] }) {
+    const BORDER_SIZE = 1;
 
     this.slideGenerators.push((slide) => {
       this.addSlideTitle(slide, payload.title);
 
       payload.data.forEach((row, rowIndex) => {
-        const ROWS_COUNT = row.length;
-        const COLS_COUNT = Math.max(2, payload.data.length);
-
-        // Calculate cell size based on the number of rows
-        const CELL_SIZE = (width - SPACER_SIZE * (ROWS_COUNT - 1)) / ROWS_COUNT;
-
-        // Calculate column size based on the number of columns
-        let COL_SIZE = (height - SPACER_SIZE * (COLS_COUNT - 1)) / COLS_COUNT;
-
-        // Calculate offsets for positioning the cells
-        const X_OFFSET = CELL_SIZE + SPACER_SIZE;
-        const Y_OFFSET = COL_SIZE + SPACER_SIZE;
-
-        let Y_BASE = rowIndex * Y_OFFSET;
-
-        // Center the cards vertically if there's only one row
-        if (cards.length === 1) {
-          Y_BASE = (height - COL_SIZE) / 2;
-        }
-
         row.forEach((col, colIndex) => {
+          const sizes = this.getRowCardSize(
+            row,
+            rowIndex,
+            colIndex,
+            payload.data
+          );
+
           slide.addText(
             [
               {
@@ -260,10 +282,10 @@ class PresentationBuilder {
             ],
             {
               shape: this.presentation.ShapeType.roundRect,
-              x: this.config.margin.left + colIndex * X_OFFSET,
-              y: this.config.margin.top + Y_BASE,
-              w: CELL_SIZE,
-              h: COL_SIZE,
+              x: sizes.x,
+              y: sizes.y,
+              w: sizes.width,
+              h: sizes.height,
               align: "center",
               fontSize: 14,
               rectRadius: this.config.roundess,
