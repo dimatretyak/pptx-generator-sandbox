@@ -183,6 +183,7 @@ const builder = new PresentationBuilder();
 
 // Render charts
 builder.addPieChartSlide({
+  headerTitle: "Device Performance",
   title: "Impressions by Device",
   data: {
     name: "Project Status",

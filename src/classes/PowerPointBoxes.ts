@@ -26,6 +26,8 @@ export class PowerPointBoxes {
   render(slide: pptxgen.Slide, payload: PowerPointBoxesPayload) {
     this.layout.renderSlideMarkup(slide, {
       title: payload.title,
+      headerTitle: "Header Title",
+      footerTitle: "Footer",
     });
 
     payload.data.forEach((row, rowIndex) => {

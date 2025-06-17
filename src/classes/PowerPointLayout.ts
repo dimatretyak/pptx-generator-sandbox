@@ -78,7 +78,7 @@ export class PowerPointLayout {
     };
   }
 
-  private renderHeader(slide: pptxgen.Slide) {
+  private renderHeader(slide: pptxgen.Slide, text: string) {
     slide.addShape("rect", {
       x: 0,
       y: 0,
@@ -89,7 +89,7 @@ export class PowerPointLayout {
       },
     });
 
-    slide.addText("Header", {
+    slide.addText(text, {
       x: HORIZONTAL_OFFSET,
       y: 0,
       w: this.config.slide.width - HORIZONTAL_OFFSET * 2,
@@ -132,10 +132,12 @@ export class PowerPointLayout {
   renderSlideMarkup(
     slide: pptxgen.Slide,
     payload: {
+      headerTitle: string;
       title?: string;
-    } = {}
+      footerTitle: string;
+    }
   ) {
-    this.renderHeader(slide);
+    this.renderHeader(slide, payload.headerTitle);
     this.renderFooter(slide);
 
     if (payload.title) {

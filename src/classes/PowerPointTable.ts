@@ -50,6 +50,8 @@ export class PowerPointTable {
   ) {
     this.layout.renderSlideMarkup(slide, {
       title: payload.title,
+      headerTitle: "Header Title",
+      footerTitle: "Footer",
     });
 
     const coords = this.layout.getContentCoords();

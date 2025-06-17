@@ -38,6 +38,8 @@ export class PowerPointBarChart {
   ) {
     this.layout.renderSlideMarkup(slide, {
       title: payload.title,
+      headerTitle: "Header Title",
+      footerTitle: "Footer",
     });
 
     const coords = this.layout.getContentCoords();

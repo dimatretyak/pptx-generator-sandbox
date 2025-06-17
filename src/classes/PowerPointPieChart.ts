@@ -10,6 +10,7 @@ export type PowerPointPieChartData = {
 };
 
 export type PowerPointPieChartPayload = {
+  headerTitle: string;
   title: string;
   data: PowerPointPieChartData;
 };
@@ -30,6 +31,8 @@ export class PowerPointPieChart {
   ) {
     this.layout.renderSlideMarkup(slide, {
       title: payload.title,
+      headerTitle: payload.headerTitle,
+      footerTitle: "Footer",
     });
 
     const coords = this.layout.getContentCoords();
