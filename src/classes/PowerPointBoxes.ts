@@ -1,5 +1,10 @@
 import pptxgen from "pptxgenjs";
-import { Formatter, PowerPointConfig, PowerPointValue } from "../types/common";
+import {
+  Formatter,
+  PowerPointConfig,
+  PowerPointLayoutConfig,
+  PowerPointValue,
+} from "../types/common";
 import { formatValue } from "../utils/formatters";
 import { PowerPointLayout } from "./PowerPointLayout";
 
@@ -9,8 +14,7 @@ export type PowerPointBoxEntity = {
   format?: Formatter;
 };
 
-export type PowerPointBoxesPayload = {
-  title: string;
+export type PowerPointBoxesPayload = PowerPointLayoutConfig & {
   data: PowerPointBoxEntity[][];
 };
 
@@ -24,6 +28,10 @@ export class PowerPointBoxes {
   }
 
   render(slide: pptxgen.Slide, payload: PowerPointBoxesPayload) {
+    this.layout.renderSlideMarkup(slide, {
+      markup: payload.markup,
+    });
+
     payload.data.forEach((row, rowIndex) => {
       row.forEach((col, colIndex) => {
         const info = this.layout.getCardSizeByRowCol({
@@ -31,6 +39,7 @@ export class PowerPointBoxes {
           colsCount: Math.max(2, payload.data.length),
           rowIndex,
           colIndex,
+          markup: payload.markup,
         });
 
         slide.addText(

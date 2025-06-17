@@ -84,7 +84,7 @@ class PresentationBuilder {
       },
       roundess: 0.025,
       margin: {
-        top: 0.75,
+        top: 0.25,
         left: 0.25,
         right: 0.25,
         bottom: 0.25,
@@ -106,33 +106,17 @@ class PresentationBuilder {
 
     this.presentation.layout = LAYOUT_NAME;
 
-    this.table = new PowerPointTable(this.config);
+    this.table = new PowerPointTable(this.config, this.layout);
     this.boxes = new PowerPointBoxes(this.config, this.layout);
 
     this.charts = {
-      bar: new PowerPointBarChart(this.config),
-      pie: new PowerPointPieChart(this.config),
+      bar: new PowerPointBarChart(this.config, this.layout),
+      pie: new PowerPointPieChart(this.config, this.layout),
     };
-  }
-
-  addSlideTitle(slide: pptxgen.Slide, title: string) {
-    const sizes = this.layout.getSlideSizes();
-
-    slide.addText(title, {
-      x: this.config.margin.left,
-      y: 0,
-      h: this.config.margin.top,
-      valign: "middle",
-      bold: true,
-      fontSize: 18,
-      margin: 0,
-      w: sizes.width,
-    });
   }
 
   addBoxesSlide(payload: PowerPointBoxesPayload) {
     this.slideGenerators.push((slide) => {
-      this.addSlideTitle(slide, payload.title);
       this.boxes.render(slide, payload);
     });
 
@@ -140,10 +124,9 @@ class PresentationBuilder {
   }
 
   addTableSlide(payload: PowerPointTablePayload) {
-    const { width, height } = this.layout.getSlideSizes();
+    const { width, height } = this.layout.getSlideSizes(payload.markup);
 
     this.slideGenerators.push((slide) => {
-      this.addSlideTitle(slide, payload.title);
       this.table.render(slide, payload, {
         width,
         height,
@@ -157,7 +140,7 @@ class PresentationBuilder {
     payload: PowerPointBarChartPayload,
     options: PowerPointBarChartOptions = {}
   ) {
-    const { width, height } = this.layout.getSlideSizes();
+    const { width, height } = this.layout.getSlideSizes(payload.markup);
 
     this.slideGenerators.push((slide) => {
       this.charts.bar.render(slide, payload, options, {
@@ -170,11 +153,13 @@ class PresentationBuilder {
   }
 
   addPieChartSlide(payload: PowerPointPieChartPayload) {
-    const { width, height } = this.layout.getSlideSizes();
+    const { width, height } = this.layout.getSlideSizes(payload.markup);
 
     this.slideGenerators.push((slide) => {
-      this.addSlideTitle(slide, payload.title);
-      this.charts.pie.render(slide, payload, { width, height });
+      this.charts.pie.render(slide, payload, {
+        width,
+        height,
+      });
     });
 
     return this;
@@ -194,7 +179,13 @@ const builder = new PresentationBuilder();
 
 // Render charts
 builder.addPieChartSlide({
-  title: "Impressions by Device",
+  markup: {
+    text: {
+      header: "Device Performance",
+      content: "Impressions by Device",
+      footer: "05/12 - 06/01 2025",
+    },
+  },
   data: {
     name: "Project Status",
     labels: ["mobile_app", "mobile_web", "desktop", "Smartphone", "Desktop"],
@@ -204,7 +195,13 @@ builder.addPieChartSlide({
 });
 
 builder.addBarChartSlide({
-  title: "Display - CTR Last 6 Months",
+  markup: {
+    text: {
+      header: "Display Ads - Overall Performance",
+      content: "Display - CTR Last 6 Months",
+      footer: "05/12 - 06/01 2025",
+    },
+  },
   labelFormatCode: "0.00%",
   data: [
     {
@@ -224,7 +221,13 @@ builder.addBarChartSlide({
 });
 
 builder.addBarChartSlide({
-  title: "Video - CTR & VCR Last 6 Months",
+  markup: {
+    text: {
+      header: "Video Ads - Overall Performance",
+      content: "Video - CTR & VCR Last 6 Months",
+      footer: "05/12 - 06/01 2025",
+    },
+  },
   labelFormatCode: "00.00%",
   data: [
     {
@@ -250,7 +253,13 @@ builder.addBarChartSlide({
 
 builder.addBarChartSlide(
   {
-    title: "Weekly Performance Trend(s)",
+    markup: {
+      text: {
+        header: "Addressable Display Overview",
+        content: "Weekly Performance Trend(s)",
+        footer: "05/12 - 06/01 2025",
+      },
+    },
     labelFormatCode: "0",
     data: [
       {
@@ -286,7 +295,13 @@ builder.addBarChartSlide(
 
 builder.addBarChartSlide(
   {
-    title: "Campaign Performance",
+    markup: {
+      text: {
+        header: "Campaign Performance",
+        content: "Campaign Performance",
+        footer: "05/12 - 06/01 2025",
+      },
+    },
     labelFormatCode: "0",
     data: [
       {
@@ -325,7 +340,13 @@ const clicks = getMinMax(displayProductPerformance, "clicks");
 const totalConversions = getMinMax(displayProductPerformance, "conversions");
 
 builder.addTableSlide({
-  title: "Display - Product Performance",
+  markup: {
+    text: {
+      header: "Display Ads - Overall Performance",
+      content: "Display - Product Performance",
+      footer: "05/12 - 06/01 2025",
+    },
+  },
   headers: [
     { text: "Product" },
     { text: "Impressions" },
@@ -379,7 +400,13 @@ const entities = videoProductPerformance.map((entity) => {
 });
 
 builder.addTableSlide({
-  title: "Video - Product Performance",
+  markup: {
+    text: {
+      header: "Video Ads - Overall Performance",
+      content: "Video - Product Performance",
+      footer: "05/12 - 06/01 2025",
+    },
+  },
   headers: [
     { text: "Product" },
     { text: "Impressions" },
@@ -415,7 +442,13 @@ builder.addTableSlide({
 });
 
 builder.addBoxesSlide({
-  title: "Display - Top KPIs",
+  markup: {
+    text: {
+      header: "Display Ads - Overall Performance",
+      content: "Display - Top KPIs",
+      footer: "05/12 - 06/01 2025",
+    },
+  },
   data: [
     [
       {
@@ -495,7 +528,13 @@ const videoTopKPIData = [
 ];
 
 builder.addBoxesSlide({
-  title: "Video - Top KPIs",
+  markup: {
+    text: {
+      header: "Video Ads - Overall Performance",
+      content: "Video - Top KPIs",
+      footer: "05/12 - 06/01 2025",
+    },
+  },
   data: splitArrayIntoChunks(videoTopKPIData, 3),
 });
 

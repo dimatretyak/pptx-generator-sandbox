@@ -2,6 +2,7 @@ import pptxgen from "pptxgenjs";
 import {
   Formatter,
   PowerPointConfig,
+  PowerPointLayoutConfig,
   PowerPointValue,
   SlideConfig,
 } from "../types/common";
@@ -12,6 +13,7 @@ import {
   stripHexHash,
 } from "../utils/common";
 import { formatValue } from "../utils/formatters";
+import { PowerPointLayout } from "./PowerPointLayout";
 
 type PowerPointTableTableHeader = {
   text: string;
@@ -27,17 +29,18 @@ export type PowerPointTableCell = {
   format?: Formatter;
 };
 
-export type PowerPointTablePayload = {
-  title: string;
+export type PowerPointTablePayload = PowerPointLayoutConfig & {
   headers: PowerPointTableTableHeader[];
   data: PowerPointTableCell[][];
 };
 
 export class PowerPointTable {
   private config: PowerPointConfig;
+  private layout: PowerPointLayout;
 
-  constructor(config: PowerPointConfig) {
+  constructor(config: PowerPointConfig, layout: PowerPointLayout) {
     this.config = config;
+    this.layout = layout;
   }
 
   render(
@@ -45,6 +48,12 @@ export class PowerPointTable {
     payload: PowerPointTablePayload,
     slideConfig: SlideConfig
   ) {
+    this.layout.renderSlideMarkup(slide, {
+      markup: payload.markup,
+    });
+
+    const coords = this.layout.getContentCoords(payload.markup);
+
     const headers: pptxgen.TableCell[] = payload.headers.map((header) => {
       return {
         text: header.text,
@@ -107,16 +116,16 @@ export class PowerPointTable {
         ...content,
       ],
       {
-        x: this.config.margin.left,
-        y: this.config.margin.top,
+        x: coords.x,
+        y: coords.y,
         w: slideConfig.width,
         autoPage: true,
         autoPageSlideStartY: this.config.margin.bottom,
         autoPageLineWeight: 0.65,
         valign: "middle",
         border: {
-          pt: 1,
-          color: "cccccc",
+          pt: this.config.border.size,
+          color: this.config.border.color,
         },
         margin: 0.1,
         fontSize: 14,

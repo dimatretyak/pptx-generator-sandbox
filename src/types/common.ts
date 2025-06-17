@@ -38,3 +38,16 @@ export type SlideConfig = {
   width: number;
   height: number;
 };
+
+export type PowerPointMarkup = {
+  contentVerticalOffset?: number;
+  text: {
+    header: string;
+    content: string;
+    footer: string;
+  };
+};
+
+export type PowerPointLayoutConfig = {
+  markup: PowerPointMarkup;
+};
