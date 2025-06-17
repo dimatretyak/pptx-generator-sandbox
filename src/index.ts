@@ -150,8 +150,9 @@ class PresentationBuilder {
     const { width, height } = this.layout.getSlideSizes();
 
     this.slideGenerators.push((slide) => {
-      this.layout.renderSlideMarkup(slide);
-      this.addSlideTitle(slide, payload.title);
+      this.layout.renderSlideMarkup(slide, {
+        title: payload.title,
+      });
 
       this.charts.bar.render(slide, payload, options, {
         width,

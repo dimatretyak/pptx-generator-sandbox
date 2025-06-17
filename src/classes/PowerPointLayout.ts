@@ -76,7 +76,12 @@ export class PowerPointLayout {
     };
   }
 
-  renderSlideMarkup(slide: pptxgen.Slide) {
+  renderSlideMarkup(
+    slide: pptxgen.Slide,
+    payload: {
+      title?: string;
+    } = {}
+  ) {
     slide.addText("Header", {
       x: 0,
       y: 0,
@@ -100,6 +105,10 @@ export class PowerPointLayout {
       w: this.config.slide.width,
       fill: { color: "0000FF" },
     });
+
+    if (payload.title) {
+      this.renderContentTitle(slide, payload.title);
+    }
   }
 
   renderContentTitle(slide: pptxgen.Slide, title: string) {
