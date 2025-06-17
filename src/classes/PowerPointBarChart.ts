@@ -96,22 +96,25 @@ export class PowerPointBarChart {
     ];
 
     if (shouldRenderLines) {
-      const lines = payload.lines!;
-
-      entities.push({
-        type: "line",
-        data: lines.map((entity) => {
-          return {
-            name: entity.name,
-            values: entity.values,
-            labels: [],
-          };
-        }),
-        options: {
-          chartColors: lines.map((entity) => entity.color),
-          showValue: false,
-        },
-      });
+      // IMPORTANT: Each line series is added separately to ensure marker (dot) colors match the line color.
+      // pptxgenjs may ignore `chartColors` for line markers when multiple series are grouped in a single `data` array.
+      // Adding each line as a separate chart entity ensures consistent coloring for both lines and markers.
+      for (const entity of payload.lines!) {
+        entities.push({
+          type: "line",
+          data: [
+            {
+              name: entity.name,
+              values: entity.values,
+              labels: [],
+            },
+          ],
+          options: {
+            chartColors: [entity.color],
+            showValue: false,
+          },
+        });
+      }
     }
 
     if (options.normalizeData) {
