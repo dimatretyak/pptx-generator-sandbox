@@ -1,4 +1,8 @@
-import { PowerPointConfig, PowerPointLayoutConfig } from "../types/common";
+import {
+  PowerPointConfig,
+  PowerPointLayoutConfig,
+  PowerPointMarkup,
+} from "../types/common";
 import pptxgen from "pptxgenjs";
 import { isNumber } from "../utils/common";
 
@@ -15,7 +19,7 @@ export class PowerPointLayout {
     this.config = config;
   }
 
-  getSlideSizes(payload: PowerPointLayoutConfig["markup"]) {
+  getSlideSizes(payload: PowerPointMarkup) {
     const horizontal = this.config.margin.left + this.config.margin.right;
     const vertical = this.config.margin.top + this.config.margin.bottom;
     let height =
@@ -36,7 +40,7 @@ export class PowerPointLayout {
     };
   }
 
-  getContentCoords(payload: PowerPointLayoutConfig["markup"]) {
+  getContentCoords(payload: PowerPointMarkup) {
     let y =
       HEADER_SIZE +
       CONTENT_TITLE_SIZE +
@@ -152,10 +156,7 @@ export class PowerPointLayout {
     }
   }
 
-  renderContentTitle(
-    slide: pptxgen.Slide,
-    markup: PowerPointLayoutConfig["markup"]
-  ) {
+  renderContentTitle(slide: pptxgen.Slide, markup: PowerPointMarkup) {
     const sizes = this.getSlideSizes(markup);
     let y = HEADER_SIZE + this.config.margin.top;
 
