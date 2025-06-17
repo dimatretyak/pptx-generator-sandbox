@@ -113,18 +113,29 @@ export class PowerPointLayout {
   }
 
   renderContentTitle(slide: pptxgen.Slide, title: string) {
+    const HORIZONTAL_OFFSET = 0.15;
     const sizes = this.getSlideSizes();
 
-    slide.addText(title, {
+    // Add a background shape first, then overlay text for better control over padding and layout.
+    slide.addShape("rect", {
       x: this.config.margin.left,
       y: HEADER_SIZE + this.config.margin.top,
+      w: sizes.width,
+      h: SLIDE_TITLE_SIZE,
+      fill: {
+        color: "e7e6e6",
+      },
+    });
+
+    slide.addText(title, {
+      x: this.config.margin.left + HORIZONTAL_OFFSET,
+      y: HEADER_SIZE + this.config.margin.top,
+      w: sizes.width - HORIZONTAL_OFFSET * 2,
       h: SLIDE_TITLE_SIZE,
       valign: "middle",
       bold: true,
       fontSize: 18,
       margin: 0,
-      w: sizes.width,
-      fill: { color: "00FF00" },
     });
   }
 }
