@@ -1,4 +1,4 @@
-import { PowerPointConfig } from "../types/common";
+import { PowerPointConfig, PowerPointMarkupPayload } from "../types/common";
 import pptxgen from "pptxgenjs";
 
 const HEADER_SIZE = 0.5;
@@ -102,7 +102,7 @@ export class PowerPointLayout {
     });
   }
 
-  renderFooter(slide: pptxgen.Slide) {
+  renderFooter(slide: pptxgen.Slide, text: string) {
     const width = this.config.slide.width;
     const height = this.config.slide.height - FOOTER_SIZE;
 
@@ -116,7 +116,7 @@ export class PowerPointLayout {
       },
     });
 
-    slide.addText("Bottom", {
+    slide.addText(text, {
       x: HORIZONTAL_OFFSET,
       y: height,
       w: width - HORIZONTAL_OFFSET * 2,
@@ -129,19 +129,12 @@ export class PowerPointLayout {
     });
   }
 
-  renderSlideMarkup(
-    slide: pptxgen.Slide,
-    payload: {
-      headerTitle: string;
-      title?: string;
-      footerTitle: string;
-    }
-  ) {
-    this.renderHeader(slide, payload.headerTitle);
-    this.renderFooter(slide);
+  renderSlideMarkup(slide: pptxgen.Slide, payload: PowerPointMarkupPayload) {
+    this.renderHeader(slide, payload.titles.header);
+    this.renderFooter(slide, payload.titles.footer);
 
-    if (payload.title) {
-      this.renderContentTitle(slide, payload.title);
+    if (payload.titles.content) {
+      this.renderContentTitle(slide, payload.titles.content);
     }
   }
 

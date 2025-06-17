@@ -2,6 +2,7 @@ import pptxgen from "pptxgenjs";
 import {
   Formatter,
   PowerPointConfig,
+  PowerPointMarkupPayload,
   PowerPointValue,
   SlideConfig,
 } from "../types/common";
@@ -28,8 +29,7 @@ export type PowerPointTableCell = {
   format?: Formatter;
 };
 
-export type PowerPointTablePayload = {
-  title: string;
+export type PowerPointTablePayload = PowerPointMarkupPayload & {
   headers: PowerPointTableTableHeader[];
   data: PowerPointTableCell[][];
 };
@@ -49,9 +49,7 @@ export class PowerPointTable {
     slideConfig: SlideConfig
   ) {
     this.layout.renderSlideMarkup(slide, {
-      title: payload.title,
-      headerTitle: "Header Title",
-      footerTitle: "Footer",
+      titles: payload.titles,
     });
 
     const coords = this.layout.getContentCoords();

@@ -38,3 +38,11 @@ export type SlideConfig = {
   width: number;
   height: number;
 };
+
+export type PowerPointMarkupPayload = {
+  titles: {
+    header: string;
+    content: string;
+    footer: string;
+  };
+};

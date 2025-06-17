@@ -1,5 +1,10 @@
 import pptxgen from "pptxgenjs";
-import { Formatter, PowerPointConfig, PowerPointValue } from "../types/common";
+import {
+  Formatter,
+  PowerPointConfig,
+  PowerPointMarkupPayload,
+  PowerPointValue,
+} from "../types/common";
 import { formatValue } from "../utils/formatters";
 import { PowerPointLayout } from "./PowerPointLayout";
 
@@ -9,8 +14,7 @@ export type PowerPointBoxEntity = {
   format?: Formatter;
 };
 
-export type PowerPointBoxesPayload = {
-  title: string;
+export type PowerPointBoxesPayload = PowerPointMarkupPayload & {
   data: PowerPointBoxEntity[][];
 };
 
@@ -25,9 +29,7 @@ export class PowerPointBoxes {
 
   render(slide: pptxgen.Slide, payload: PowerPointBoxesPayload) {
     this.layout.renderSlideMarkup(slide, {
-      title: payload.title,
-      headerTitle: "Header Title",
-      footerTitle: "Footer",
+      titles: payload.titles,
     });
 
     payload.data.forEach((row, rowIndex) => {

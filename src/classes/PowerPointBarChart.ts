@@ -1,5 +1,9 @@
 import pptxgen from "pptxgenjs";
-import { PowerPointConfig, SlideConfig } from "../types/common";
+import {
+  PowerPointConfig,
+  PowerPointMarkupPayload,
+  SlideConfig,
+} from "../types/common";
 import { normalizeBarsChartData } from "../utils/charts";
 import { PowerPointLayout } from "./PowerPointLayout";
 
@@ -10,8 +14,7 @@ export type PowerPointBarChartDataEntity = {
   color: string;
 };
 
-export type PowerPointBarChartPayload = {
-  title: string;
+export type PowerPointBarChartPayload = PowerPointMarkupPayload & {
   data: PowerPointBarChartDataEntity[];
   lines?: Pick<PowerPointBarChartDataEntity, "values" | "name" | "color">[];
   labelFormatCode?: string;
@@ -37,9 +40,7 @@ export class PowerPointBarChart {
     slideConfig: SlideConfig
   ) {
     this.layout.renderSlideMarkup(slide, {
-      title: payload.title,
-      headerTitle: "Header Title",
-      footerTitle: "Footer",
+      titles: payload.titles,
     });
 
     const coords = this.layout.getContentCoords();
