@@ -22,7 +22,10 @@ export type PowerPointConfig = {
     right: number;
     bottom: number;
   };
-  borderSize: number;
+  border: {
+    size: number;
+    color: string;
+  };
   roundess: number;
   slide: {
     width: number;

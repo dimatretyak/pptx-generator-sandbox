@@ -78,7 +78,10 @@ class PresentationBuilder {
     this.presentation = new pptxgen();
 
     this.config = {
-      borderSize: 1,
+      border: {
+        size: 1,
+        color: "cccccc",
+      },
       roundess: 0.025,
       margin: {
         top: 0.75,

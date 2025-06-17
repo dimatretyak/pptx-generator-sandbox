@@ -57,8 +57,8 @@ export class PowerPointBarChart {
       h: slideConfig.height,
       rectRadius: this.config.roundess,
       line: {
-        color: "cccccc",
-        size: this.config.borderSize,
+        color: this.config.border.color,
+        size: this.config.border.size,
       },
     });
 

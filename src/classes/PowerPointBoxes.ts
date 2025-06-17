@@ -24,8 +24,6 @@ export class PowerPointBoxes {
   }
 
   render(slide: pptxgen.Slide, payload: PowerPointBoxesPayload) {
-    const BORDER_SIZE = 1;
-
     payload.data.forEach((row, rowIndex) => {
       row.forEach((col, colIndex) => {
         const info = this.layout.getCardSizeByRowCol({
@@ -62,8 +60,8 @@ export class PowerPointBoxes {
             fontSize: 14,
             rectRadius: this.config.roundess,
             line: {
-              color: "cccccc",
-              size: BORDER_SIZE,
+              color: this.config.border.color,
+              size: this.config.border.size,
             },
           }
         );
