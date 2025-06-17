@@ -106,7 +106,7 @@ class PresentationBuilder {
 
     this.presentation.layout = LAYOUT_NAME;
 
-    this.table = new PowerPointTable(this.config);
+    this.table = new PowerPointTable(this.config, this.layout);
     this.boxes = new PowerPointBoxes(this.config, this.layout);
 
     this.charts = {
@@ -121,7 +121,9 @@ class PresentationBuilder {
 
   addBoxesSlide(payload: PowerPointBoxesPayload) {
     this.slideGenerators.push((slide) => {
-      this.addSlideTitle(slide, payload.title);
+      this.layout.renderSlideMarkup(slide, {
+        title: payload.title,
+      });
 
       this.boxes.render(slide, payload);
     });
@@ -133,7 +135,10 @@ class PresentationBuilder {
     const { width, height } = this.layout.getSlideSizes();
 
     this.slideGenerators.push((slide) => {
-      this.addSlideTitle(slide, payload.title);
+      this.layout.renderSlideMarkup(slide, {
+        title: payload.title,
+      });
+
       this.table.render(slide, payload, {
         width,
         height,
