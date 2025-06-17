@@ -201,7 +201,7 @@ builder.addPieChartSlide({
 builder.addBarChartSlide({
   markup: {
     text: {
-      header: "Header",
+      header: "Display Ads - Overall Performance",
       content: "Display - CTR Last 6 Months",
       footer: "05/12 - 06/01 2025",
     },
@@ -227,7 +227,7 @@ builder.addBarChartSlide({
 builder.addBarChartSlide({
   markup: {
     text: {
-      header: "Header",
+      header: "Video Ads - Overall Performance",
       content: "Video - CTR & VCR Last 6 Months",
       footer: "05/12 - 06/01 2025",
     },
@@ -259,7 +259,7 @@ builder.addBarChartSlide(
   {
     markup: {
       text: {
-        header: "Header",
+        header: "Addressable Display Overview",
         content: "Weekly Performance Trend(s)",
         footer: "05/12 - 06/01 2025",
       },
@@ -301,7 +301,7 @@ builder.addBarChartSlide(
   {
     markup: {
       text: {
-        header: "Header",
+        header: "Campaign Performance",
         content: "Campaign Performance",
         footer: "05/12 - 06/01 2025",
       },
@@ -346,7 +346,7 @@ const totalConversions = getMinMax(displayProductPerformance, "conversions");
 builder.addTableSlide({
   markup: {
     text: {
-      header: "Header",
+      header: "Display Ads - Overall Performance",
       content: "Display - Product Performance",
       footer: "05/12 - 06/01 2025",
     },
@@ -406,7 +406,7 @@ const entities = videoProductPerformance.map((entity) => {
 builder.addTableSlide({
   markup: {
     text: {
-      header: "Header",
+      header: "Video Ads - Overall Performance",
       content: "Video - Product Performance",
       footer: "05/12 - 06/01 2025",
     },
@@ -448,7 +448,7 @@ builder.addTableSlide({
 builder.addBoxesSlide({
   markup: {
     text: {
-      header: "Header",
+      header: "Display Ads - Overall Performance",
       content: "Display - Top KPIs",
       footer: "05/12 - 06/01 2025",
     },
@@ -534,7 +534,7 @@ const videoTopKPIData = [
 builder.addBoxesSlide({
   markup: {
     text: {
-      header: "Header",
+      header: "Video Ads - Overall Performance",
       content: "Video - Top KPIs",
       footer: "05/12 - 06/01 2025",
     },
