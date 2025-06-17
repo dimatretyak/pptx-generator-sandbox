@@ -2,7 +2,7 @@ import pptxgen from "pptxgenjs";
 import {
   Formatter,
   PowerPointConfig,
-  PowerPointMarkupPayload,
+  PowerPointLayoutConfig,
   PowerPointValue,
   SlideConfig,
 } from "../types/common";
@@ -29,7 +29,7 @@ export type PowerPointTableCell = {
   format?: Formatter;
 };
 
-export type PowerPointTablePayload = PowerPointMarkupPayload & {
+export type PowerPointTablePayload = PowerPointLayoutConfig & {
   headers: PowerPointTableTableHeader[];
   data: PowerPointTableCell[][];
 };

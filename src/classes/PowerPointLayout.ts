@@ -1,4 +1,4 @@
-import { PowerPointConfig, PowerPointMarkupPayload } from "../types/common";
+import { PowerPointConfig, PowerPointLayoutConfig } from "../types/common";
 import pptxgen from "pptxgenjs";
 import { isNumber } from "../utils/common";
 
@@ -15,7 +15,7 @@ export class PowerPointLayout {
     this.config = config;
   }
 
-  getSlideSizes(payload: PowerPointMarkupPayload["markup"]) {
+  getSlideSizes(payload: PowerPointLayoutConfig["markup"]) {
     const horizontal = this.config.margin.left + this.config.margin.right;
     const vertical = this.config.margin.top + this.config.margin.bottom;
     let height =
@@ -36,7 +36,7 @@ export class PowerPointLayout {
     };
   }
 
-  getContentCoords(payload: PowerPointMarkupPayload["markup"]) {
+  getContentCoords(payload: PowerPointLayoutConfig["markup"]) {
     let y =
       HEADER_SIZE +
       CONTENT_TITLE_SIZE +
@@ -54,7 +54,7 @@ export class PowerPointLayout {
   }
 
   getCardSizeByRowCol(
-    payload: PowerPointMarkupPayload & {
+    payload: PowerPointLayoutConfig & {
       rowsCount: number;
       colsCount: number;
       rowIndex: number;
@@ -143,7 +143,7 @@ export class PowerPointLayout {
     });
   }
 
-  renderSlideMarkup(slide: pptxgen.Slide, payload: PowerPointMarkupPayload) {
+  renderSlideMarkup(slide: pptxgen.Slide, payload: PowerPointLayoutConfig) {
     this.renderHeader(slide, payload.markup.text.header);
     this.renderFooter(slide, payload.markup.text.footer);
 
@@ -154,7 +154,7 @@ export class PowerPointLayout {
 
   renderContentTitle(
     slide: pptxgen.Slide,
-    markup: PowerPointMarkupPayload["markup"]
+    markup: PowerPointLayoutConfig["markup"]
   ) {
     const sizes = this.getSlideSizes(markup);
     let y = HEADER_SIZE + this.config.margin.top;

@@ -2,7 +2,7 @@ import pptxgen from "pptxgenjs";
 import {
   Formatter,
   PowerPointConfig,
-  PowerPointMarkupPayload,
+  PowerPointLayoutConfig,
   PowerPointValue,
 } from "../types/common";
 import { formatValue } from "../utils/formatters";
@@ -14,7 +14,7 @@ export type PowerPointBoxEntity = {
   format?: Formatter;
 };
 
-export type PowerPointBoxesPayload = PowerPointMarkupPayload & {
+export type PowerPointBoxesPayload = PowerPointLayoutConfig & {
   data: PowerPointBoxEntity[][];
 };
 

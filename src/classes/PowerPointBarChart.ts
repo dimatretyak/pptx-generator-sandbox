@@ -1,7 +1,7 @@
 import pptxgen from "pptxgenjs";
 import {
   PowerPointConfig,
-  PowerPointMarkupPayload,
+  PowerPointLayoutConfig,
   SlideConfig,
 } from "../types/common";
 import { normalizeBarsChartData } from "../utils/charts";
@@ -14,7 +14,7 @@ export type PowerPointBarChartDataEntity = {
   color: string;
 };
 
-export type PowerPointBarChartPayload = PowerPointMarkupPayload & {
+export type PowerPointBarChartPayload = PowerPointLayoutConfig & {
   data: PowerPointBarChartDataEntity[];
   lines?: Pick<PowerPointBarChartDataEntity, "values" | "name" | "color">[];
   labelFormatCode?: string;

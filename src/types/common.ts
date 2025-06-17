@@ -39,7 +39,7 @@ export type SlideConfig = {
   height: number;
 };
 
-export type PowerPointMarkupPayload = {
+export type PowerPointLayoutConfig = {
   markup: {
     verticalOffset?: number;
     text: {
