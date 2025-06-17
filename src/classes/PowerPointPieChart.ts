@@ -35,7 +35,7 @@ export class PowerPointPieChart {
       markup: payload.markup,
     });
 
-    const coords = this.layout.getContentCoords();
+    const coords = this.layout.getContentCoords(payload.markup);
 
     const labels = payload.data.labels.map((label, index) => {
       return `${label} - ${payload.data.values[index]}`;

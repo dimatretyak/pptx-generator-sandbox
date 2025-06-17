@@ -115,10 +115,6 @@ class PresentationBuilder {
     };
   }
 
-  addSlideTitle(slide: pptxgen.Slide, title: string) {
-    this.layout.renderContentTitle(slide, title);
-  }
-
   addBoxesSlide(payload: PowerPointBoxesPayload) {
     this.slideGenerators.push((slide) => {
       this.boxes.render(slide, payload);
@@ -128,7 +124,7 @@ class PresentationBuilder {
   }
 
   addTableSlide(payload: PowerPointTablePayload) {
-    const { width, height } = this.layout.getSlideSizes();
+    const { width, height } = this.layout.getSlideSizes(payload.markup);
 
     this.slideGenerators.push((slide) => {
       this.table.render(slide, payload, {
@@ -144,7 +140,7 @@ class PresentationBuilder {
     payload: PowerPointBarChartPayload,
     options: PowerPointBarChartOptions = {}
   ) {
-    const { width, height } = this.layout.getSlideSizes();
+    const { width, height } = this.layout.getSlideSizes(payload.markup);
 
     this.slideGenerators.push((slide) => {
       this.charts.bar.render(slide, payload, options, {
@@ -157,7 +153,7 @@ class PresentationBuilder {
   }
 
   addPieChartSlide(payload: PowerPointPieChartPayload) {
-    const { width, height } = this.layout.getSlideSizes();
+    const { width, height } = this.layout.getSlideSizes(payload.markup);
 
     this.slideGenerators.push((slide) => {
       this.charts.pie.render(slide, payload, {

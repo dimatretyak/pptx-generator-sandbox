@@ -52,7 +52,7 @@ export class PowerPointTable {
       markup: payload.markup,
     });
 
-    const coords = this.layout.getContentCoords();
+    const coords = this.layout.getContentCoords(payload.markup);
 
     const headers: pptxgen.TableCell[] = payload.headers.map((header) => {
       return {

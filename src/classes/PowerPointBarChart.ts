@@ -43,7 +43,7 @@ export class PowerPointBarChart {
       markup: payload.markup,
     });
 
-    const coords = this.layout.getContentCoords();
+    const coords = this.layout.getContentCoords(payload.markup);
     const shouldRenderLines =
       Array.isArray(payload.lines) && payload.lines.length > 0;
 

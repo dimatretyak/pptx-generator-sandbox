@@ -1,5 +1,6 @@
 import { PowerPointConfig, PowerPointMarkupPayload } from "../types/common";
 import pptxgen from "pptxgenjs";
+import { isNumber } from "../utils/common";
 
 const HEADER_SIZE = 0.5;
 const FOOTER_SIZE = 0.35;
@@ -14,42 +15,55 @@ export class PowerPointLayout {
     this.config = config;
   }
 
-  getSlideSizes() {
+  getSlideSizes(payload: PowerPointMarkupPayload["markup"]) {
     const horizontal = this.config.margin.left + this.config.margin.right;
     const vertical = this.config.margin.top + this.config.margin.bottom;
+    let height =
+      this.config.slide.height -
+      vertical -
+      HEADER_SIZE -
+      FOOTER_SIZE -
+      CONTENT_TITLE_SIZE -
+      SLIDE_TITLE_SPACER;
+
+    if (isNumber(payload.verticalOffset)) {
+      height -= payload.verticalOffset * 2;
+    }
 
     return {
       width: this.config.slide.width - horizontal,
-      height:
-        this.config.slide.height -
-        vertical -
-        HEADER_SIZE -
-        FOOTER_SIZE -
-        CONTENT_TITLE_SIZE -
-        SLIDE_TITLE_SPACER,
+      height,
     };
   }
 
-  getContentCoords() {
+  getContentCoords(payload: PowerPointMarkupPayload["markup"]) {
+    let y =
+      HEADER_SIZE +
+      CONTENT_TITLE_SIZE +
+      this.config.margin.top +
+      SLIDE_TITLE_SPACER;
+
+    if (isNumber(payload.verticalOffset)) {
+      y += payload.verticalOffset;
+    }
+
     return {
       x: this.config.margin.left,
-      y:
-        HEADER_SIZE +
-        CONTENT_TITLE_SIZE +
-        this.config.margin.top +
-        SLIDE_TITLE_SPACER,
+      y,
     };
   }
 
-  getCardSizeByRowCol(payload: {
-    rowsCount: number;
-    colsCount: number;
-    rowIndex: number;
-    colIndex: number;
-  }) {
-    const { rowsCount, colsCount, rowIndex, colIndex } = payload;
-    const slide = this.getSlideSizes();
-    const coords = this.getContentCoords();
+  getCardSizeByRowCol(
+    payload: PowerPointMarkupPayload & {
+      rowsCount: number;
+      colsCount: number;
+      rowIndex: number;
+      colIndex: number;
+    }
+  ) {
+    const { rowsCount, colsCount, rowIndex, colIndex, markup } = payload;
+    const slide = this.getSlideSizes(markup);
+    const coords = this.getContentCoords(markup);
 
     // Calculate cell size based on the number of rows
     const CELL_SIZE =
@@ -134,17 +148,25 @@ export class PowerPointLayout {
     this.renderFooter(slide, payload.markup.text.footer);
 
     if (payload.markup.text.content) {
-      this.renderContentTitle(slide, payload.markup.text.content);
+      this.renderContentTitle(slide, payload.markup);
     }
   }
 
-  renderContentTitle(slide: pptxgen.Slide, title: string) {
-    const sizes = this.getSlideSizes();
+  renderContentTitle(
+    slide: pptxgen.Slide,
+    markup: PowerPointMarkupPayload["markup"]
+  ) {
+    const sizes = this.getSlideSizes(markup);
+    let y = HEADER_SIZE + this.config.margin.top;
+
+    if (isNumber(markup.verticalOffset)) {
+      y += markup.verticalOffset;
+    }
 
     // Add a background shape first, then overlay text for better control over padding and layout.
     slide.addShape("rect", {
       x: this.config.margin.left,
-      y: HEADER_SIZE + this.config.margin.top,
+      y,
       w: sizes.width,
       h: CONTENT_TITLE_SIZE,
       fill: {
@@ -152,9 +174,9 @@ export class PowerPointLayout {
       },
     });
 
-    slide.addText(title, {
+    slide.addText(markup.text.content, {
       x: this.config.margin.left + HORIZONTAL_OFFSET,
-      y: HEADER_SIZE + this.config.margin.top,
+      y,
       w: sizes.width - HORIZONTAL_OFFSET * 2,
       h: CONTENT_TITLE_SIZE,
       valign: "middle",
