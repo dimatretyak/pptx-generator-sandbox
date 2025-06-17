@@ -55,9 +55,6 @@ export class PowerPointBarChart {
         color: this.config.border.color,
         size: this.config.border.size,
       },
-      fill: {
-        color: "cccccc",
-      },
     });
 
     const chartOptions: pptxgen.IChartOpts = {
