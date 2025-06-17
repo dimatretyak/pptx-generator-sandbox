@@ -36,18 +36,6 @@ export class PowerPointBarChart {
     const shouldRenderLines =
       Array.isArray(payload.lines) && payload.lines.length > 0;
 
-    // Add title
-    slide.addText(payload.title, {
-      x: this.config.margin.left,
-      y: 0,
-      h: this.config.margin.top,
-      valign: "middle",
-      bold: true,
-      fontSize: 18,
-      margin: 0,
-      w: slideConfig.width,
-    });
-
     // Add background shape
     slide.addShape("roundRect", {
       x: this.config.margin.left,

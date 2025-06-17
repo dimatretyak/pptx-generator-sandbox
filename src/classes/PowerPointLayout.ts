@@ -1,4 +1,8 @@
 import { PowerPointConfig } from "../types/common";
+import pptxgen from "pptxgenjs";
+
+const HEADER_SIZE = 0.75;
+const FOOTER_SIZE = 0.75;
 
 export class PowerPointLayout {
   private config: PowerPointConfig;
@@ -13,7 +17,7 @@ export class PowerPointLayout {
 
     return {
       width: this.config.slide.width - horizontal,
-      height: this.config.slide.height - vertical,
+      height: this.config.slide.height - vertical - HEADER_SIZE - FOOTER_SIZE,
     };
   }
 
@@ -51,5 +55,31 @@ export class PowerPointLayout {
       width: CELL_SIZE,
       height: COL_SIZE,
     };
+  }
+
+  renderSlideMarkup(slide: pptxgen.Slide) {
+    slide.addText("Header", {
+      x: 0,
+      y: 0,
+      h: HEADER_SIZE,
+      valign: "middle",
+      bold: true,
+      fontSize: 18,
+      margin: 0,
+      w: this.config.slide.width,
+      fill: { color: "FF0000" },
+    });
+
+    slide.addText("Bottom", {
+      x: 0,
+      y: this.config.slide.height - FOOTER_SIZE,
+      h: FOOTER_SIZE,
+      valign: "middle",
+      bold: true,
+      fontSize: 18,
+      margin: 0,
+      w: this.config.slide.width,
+      fill: { color: "0000FF" },
+    });
   }
 }

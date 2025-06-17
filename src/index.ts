@@ -84,7 +84,7 @@ class PresentationBuilder {
       },
       roundess: 0.025,
       margin: {
-        top: 0.75,
+        top: 0.25,
         left: 0.25,
         right: 0.25,
         bottom: 0.25,
@@ -133,6 +133,7 @@ class PresentationBuilder {
   addBoxesSlide(payload: PowerPointBoxesPayload) {
     this.slideGenerators.push((slide) => {
       this.addSlideTitle(slide, payload.title);
+
       this.boxes.render(slide, payload);
     });
 
@@ -160,6 +161,8 @@ class PresentationBuilder {
     const { width, height } = this.layout.getSlideSizes();
 
     this.slideGenerators.push((slide) => {
+      this.addSlideTitle(slide, payload.title);
+
       this.charts.bar.render(slide, payload, options, {
         width,
         height,
