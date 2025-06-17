@@ -3,7 +3,7 @@ import pptxgen from "pptxgenjs";
 
 const HEADER_SIZE = 0.5;
 const FOOTER_SIZE = 0.35;
-const SLIDE_TITLE_SIZE = 0.5;
+const CONTENT_TITLE_SIZE = 0.35;
 const SLIDE_TITLE_SPACER = 0.25;
 const HORIZONTAL_OFFSET = 0.15;
 
@@ -25,7 +25,7 @@ export class PowerPointLayout {
         vertical -
         HEADER_SIZE -
         FOOTER_SIZE -
-        SLIDE_TITLE_SIZE -
+        CONTENT_TITLE_SIZE -
         SLIDE_TITLE_SPACER,
     };
   }
@@ -35,7 +35,7 @@ export class PowerPointLayout {
       x: this.config.margin.left,
       y:
         HEADER_SIZE +
-        SLIDE_TITLE_SIZE +
+        CONTENT_TITLE_SIZE +
         this.config.margin.top +
         SLIDE_TITLE_SPACER,
     };
@@ -151,7 +151,7 @@ export class PowerPointLayout {
       x: this.config.margin.left,
       y: HEADER_SIZE + this.config.margin.top,
       w: sizes.width,
-      h: SLIDE_TITLE_SIZE,
+      h: CONTENT_TITLE_SIZE,
       fill: {
         color: "e7e6e6",
       },
@@ -161,10 +161,10 @@ export class PowerPointLayout {
       x: this.config.margin.left + HORIZONTAL_OFFSET,
       y: HEADER_SIZE + this.config.margin.top,
       w: sizes.width - HORIZONTAL_OFFSET * 2,
-      h: SLIDE_TITLE_SIZE,
+      h: CONTENT_TITLE_SIZE,
       valign: "middle",
       bold: true,
-      fontSize: 18,
+      fontSize: 14,
       margin: 0,
     });
   }
