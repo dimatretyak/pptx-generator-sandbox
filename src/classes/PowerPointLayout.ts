@@ -5,6 +5,7 @@ const HEADER_SIZE = 0.75;
 const FOOTER_SIZE = 0.75;
 const SLIDE_TITLE_SIZE = 0.5;
 const SLIDE_TITLE_SPACER = 0.25;
+const HORIZONTAL_OFFSET = 0.15;
 
 export class PowerPointLayout {
   private config: PowerPointConfig;
@@ -83,16 +84,26 @@ export class PowerPointLayout {
       title?: string;
     } = {}
   ) {
-    slide.addText("Header", {
+    slide.addShape("rect", {
       x: 0,
       y: 0,
+      h: HEADER_SIZE,
+      w: this.config.slide.width,
+      fill: {
+        color: "FF0000",
+      },
+    });
+
+    slide.addText("Header", {
+      x: HORIZONTAL_OFFSET,
+      y: 0,
+      w: this.config.slide.width - HORIZONTAL_OFFSET * 2,
       h: HEADER_SIZE,
       valign: "middle",
       bold: true,
       fontSize: 18,
       margin: 0,
-      w: this.config.slide.width,
-      fill: { color: "FF0000" },
+      color: "FFFFFF",
     });
 
     slide.addText("Bottom", {
@@ -113,7 +124,6 @@ export class PowerPointLayout {
   }
 
   renderContentTitle(slide: pptxgen.Slide, title: string) {
-    const HORIZONTAL_OFFSET = 0.15;
     const sizes = this.getSlideSizes();
 
     // Add a background shape first, then overlay text for better control over padding and layout.
