@@ -130,11 +130,11 @@ export class PowerPointLayout {
   }
 
   renderSlideMarkup(slide: pptxgen.Slide, payload: PowerPointMarkupPayload) {
-    this.renderHeader(slide, payload.titles.header);
-    this.renderFooter(slide, payload.titles.footer);
+    this.renderHeader(slide, payload.markup.text.header);
+    this.renderFooter(slide, payload.markup.text.footer);
 
-    if (payload.titles.content) {
-      this.renderContentTitle(slide, payload.titles.content);
+    if (payload.markup.text.content) {
+      this.renderContentTitle(slide, payload.markup.text.content);
     }
   }
 

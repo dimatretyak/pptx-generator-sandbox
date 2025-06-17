@@ -40,9 +40,11 @@ export type SlideConfig = {
 };
 
 export type PowerPointMarkupPayload = {
-  titles: {
-    header: string;
-    content: string;
-    footer: string;
+  markup: {
+    text: {
+      header: string;
+      content: string;
+      footer: string;
+    };
   };
 };

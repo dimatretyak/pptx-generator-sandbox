@@ -183,10 +183,12 @@ const builder = new PresentationBuilder();
 
 // Render charts
 builder.addPieChartSlide({
-  titles: {
-    header: "Device Performance",
-    content: "Impressions by Device",
-    footer: "05/12 - 06/01 2025",
+  markup: {
+    text: {
+      header: "Device Performance",
+      content: "Impressions by Device",
+      footer: "05/12 - 06/01 2025",
+    },
   },
   data: {
     name: "Project Status",
@@ -197,10 +199,12 @@ builder.addPieChartSlide({
 });
 
 builder.addBarChartSlide({
-  titles: {
-    header: "Header",
-    content: "Display - CTR Last 6 Months",
-    footer: "05/12 - 06/01 2025",
+  markup: {
+    text: {
+      header: "Header",
+      content: "Display - CTR Last 6 Months",
+      footer: "05/12 - 06/01 2025",
+    },
   },
   labelFormatCode: "0.00%",
   data: [
@@ -221,10 +225,12 @@ builder.addBarChartSlide({
 });
 
 builder.addBarChartSlide({
-  titles: {
-    header: "Header",
-    content: "Video - CTR & VCR Last 6 Months",
-    footer: "05/12 - 06/01 2025",
+  markup: {
+    text: {
+      header: "Header",
+      content: "Video - CTR & VCR Last 6 Months",
+      footer: "05/12 - 06/01 2025",
+    },
   },
   labelFormatCode: "00.00%",
   data: [
@@ -251,10 +257,12 @@ builder.addBarChartSlide({
 
 builder.addBarChartSlide(
   {
-    titles: {
-      header: "Header",
-      content: "Weekly Performance Trend(s)",
-      footer: "05/12 - 06/01 2025",
+    markup: {
+      text: {
+        header: "Header",
+        content: "Weekly Performance Trend(s)",
+        footer: "05/12 - 06/01 2025",
+      },
     },
     labelFormatCode: "0",
     data: [
@@ -291,10 +299,12 @@ builder.addBarChartSlide(
 
 builder.addBarChartSlide(
   {
-    titles: {
-      header: "Header",
-      content: "Campaign Performance",
-      footer: "05/12 - 06/01 2025",
+    markup: {
+      text: {
+        header: "Header",
+        content: "Campaign Performance",
+        footer: "05/12 - 06/01 2025",
+      },
     },
     labelFormatCode: "0",
     data: [
@@ -334,10 +344,12 @@ const clicks = getMinMax(displayProductPerformance, "clicks");
 const totalConversions = getMinMax(displayProductPerformance, "conversions");
 
 builder.addTableSlide({
-  titles: {
-    header: "Header",
-    content: "Display - Product Performance",
-    footer: "05/12 - 06/01 2025",
+  markup: {
+    text: {
+      header: "Header",
+      content: "Display - Product Performance",
+      footer: "05/12 - 06/01 2025",
+    },
   },
   headers: [
     { text: "Product" },
@@ -392,10 +404,12 @@ const entities = videoProductPerformance.map((entity) => {
 });
 
 builder.addTableSlide({
-  titles: {
-    header: "Header",
-    content: "Video - Product Performance",
-    footer: "05/12 - 06/01 2025",
+  markup: {
+    text: {
+      header: "Header",
+      content: "Video - Product Performance",
+      footer: "05/12 - 06/01 2025",
+    },
   },
   headers: [
     { text: "Product" },
@@ -432,10 +446,12 @@ builder.addTableSlide({
 });
 
 builder.addBoxesSlide({
-  titles: {
-    header: "Header",
-    content: "Display - Top KPIs",
-    footer: "05/12 - 06/01 2025",
+  markup: {
+    text: {
+      header: "Header",
+      content: "Display - Top KPIs",
+      footer: "05/12 - 06/01 2025",
+    },
   },
   data: [
     [
@@ -516,10 +532,12 @@ const videoTopKPIData = [
 ];
 
 builder.addBoxesSlide({
-  titles: {
-    header: "Header",
-    content: "Video - Top KPIs",
-    footer: "05/12 - 06/01 2025",
+  markup: {
+    text: {
+      header: "Header",
+      content: "Video - Top KPIs",
+      footer: "05/12 - 06/01 2025",
+    },
   },
   data: splitArrayIntoChunks(videoTopKPIData, 3),
 });

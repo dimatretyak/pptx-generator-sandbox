@@ -32,7 +32,7 @@ export class PowerPointPieChart {
     slideConfig: SlideConfig
   ) {
     this.layout.renderSlideMarkup(slide, {
-      titles: payload.titles,
+      markup: payload.markup,
     });
 
     const coords = this.layout.getContentCoords();

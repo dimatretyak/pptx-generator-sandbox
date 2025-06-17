@@ -29,7 +29,7 @@ export class PowerPointBoxes {
 
   render(slide: pptxgen.Slide, payload: PowerPointBoxesPayload) {
     this.layout.renderSlideMarkup(slide, {
-      titles: payload.titles,
+      markup: payload.markup,
     });
 
     payload.data.forEach((row, rowIndex) => {
