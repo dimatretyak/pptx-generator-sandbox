@@ -33,7 +33,6 @@ export class PowerPointBarChart {
     options: PowerPointBarChartOptions,
     slideConfig: SlideConfig
   ) {
-    const PADDING = 0.25;
     const shouldRenderLines =
       Array.isArray(payload.lines) && payload.lines.length > 0;
 
@@ -63,10 +62,10 @@ export class PowerPointBarChart {
     });
 
     const chartOptions: pptxgen.IChartOpts = {
-      x: this.config.margin.left + PADDING,
-      y: this.config.margin.top + PADDING,
-      w: slideConfig.width - 2 * PADDING,
-      h: slideConfig.height - 2 * PADDING,
+      x: this.config.margin.left + this.config.spacer,
+      y: this.config.margin.top + this.config.spacer,
+      w: slideConfig.width - 2 * this.config.spacer,
+      h: slideConfig.height - 2 * this.config.spacer,
       barDir: "col",
       valAxisLabelFormatCode: payload.labelFormatCode,
       barGapWidthPct: 25,

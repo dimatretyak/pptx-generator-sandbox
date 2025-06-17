@@ -25,8 +25,6 @@ export class PowerPointPieChart {
     payload: PowerPointPieChartPayload,
     slideConfig: SlideConfig
   ) {
-    const PADDING = 0.25;
-
     const labels = payload.data.labels.map((label, index) => {
       return `${label} - ${payload.data.values[index]}`;
     });
@@ -45,10 +43,10 @@ export class PowerPointPieChart {
         },
       ],
       {
-        x: this.config.margin.left + PADDING,
-        y: this.config.margin.top + PADDING,
-        w: slideConfig.width - 2 * PADDING,
-        h: slideConfig.height - 2 * PADDING,
+        x: this.config.margin.left + this.config.spacer,
+        y: this.config.margin.top + this.config.spacer,
+        w: slideConfig.width - 2 * this.config.spacer,
+        h: slideConfig.height - 2 * this.config.spacer,
         chartColors: colors,
         dataBorder: {
           pt: 2,
