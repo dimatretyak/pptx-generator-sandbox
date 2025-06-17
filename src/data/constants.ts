@@ -1,6 +1,6 @@
-import { Card } from "../types/common";
+import { PowerPointBoxEntity } from "../classes/PowerPointBoxes";
 
-export const cards: Array<Card[][]> = [
+export const cards: Array<PowerPointBoxEntity[][]> = [
   [
     [
       { title: "Impressions", value: 177000000 },

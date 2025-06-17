@@ -1,33 +1,35 @@
 import pptxgen from "pptxgenjs";
+import { PowerPointConfig, PowerPointValue } from "./types/common";
 import {
-  Card,
-  Formatter,
-  PowerPointChartDataEntity,
-  PowerPointPieChartData,
-  PowerPointTableCellEntity,
-  PowerPointValue,
-  TableHeaderEntity,
-} from "./types/common";
-import {
-  cards,
   displayProductPerformance,
   videoProductPerformance,
 } from "./data/constants";
-import {
-  generateHeatmapColor,
-  getMinMax,
-  getTextColorByBackground,
-  isNumber,
-  isString,
-  stripHexHash,
-} from "./utils/common";
+import { getMinMax, isNumber, isString } from "./utils/common";
 import {
   formatNumber,
   formatNumberWithSuffix,
   formatPercent,
 } from "./utils/formatters";
 import splitArrayIntoChunks from "./utils/splitArrayIntoChunks";
-import { normalizeBarsChartData } from "./utils/charts";
+import {
+  PowerPointTable,
+  PowerPointTableCell,
+  PowerPointTablePayload,
+} from "./classes/PowerPointTable";
+import {
+  PowerPointBarChart,
+  PowerPointBarChartOptions,
+  PowerPointBarChartPayload,
+} from "./classes/PowerPointBarChart";
+import { PowerPointLayout } from "./classes/PowerPointLayout";
+import {
+  PowerPointBoxes,
+  PowerPointBoxesPayload,
+} from "./classes/PowerPointBoxes";
+import {
+  PowerPointPieChart,
+  PowerPointPieChartPayload,
+} from "./classes/PowerPointPieChart";
 
 // 16:9 aspect ratio
 const LAYOUT_NAME = "APP";
@@ -35,81 +37,22 @@ const SLIDE_WIDTH = 10;
 const SLIDE_HEIGHT = 5.625;
 const FALLBACK_POWER_POINT_VALUE = "-";
 
-const formatPowerPointNumber = (value: PowerPointValue) => {
-  if (isNumber(value)) {
-    return formatNumber(value);
-  }
-
-  if (isString(value)) {
-    return value;
-  }
-
-  return FALLBACK_POWER_POINT_VALUE;
-};
-
-const formatPowerPointPercent = (value: PowerPointValue) => {
-  if (isNumber(value)) {
-    return formatPercent(value);
-  }
-
-  if (isString(value)) {
-    return value;
-  }
-
-  return FALLBACK_POWER_POINT_VALUE;
-};
-
 class PresentationBuilder {
   private slideGenerators: Array<(slide: pptxgen.Slide) => void> = [];
   private presentation: pptxgen;
-  private config: {
-    borderSize: number;
-    roundess: number;
-    margin: {
-      top: number;
-      left: number;
-      right: number;
-      bottom: number;
-    };
+  private config: PowerPointConfig;
+  private table: PowerPointTable;
+  private boxes: PowerPointBoxes;
+  private layout: PowerPointLayout;
+
+  private charts: {
+    pie: PowerPointPieChart;
+    bar: PowerPointBarChart;
   };
 
-  constructor() {
-    this.presentation = new pptxgen();
-
-    this.presentation.defineLayout({
-      name: LAYOUT_NAME,
-      width: SLIDE_WIDTH,
-      height: SLIDE_HEIGHT,
-    });
-
-    this.presentation.layout = LAYOUT_NAME;
-
-    this.config = {
-      borderSize: 1,
-      roundess: 0.025,
-      margin: {
-        top: 0.75,
-        left: 0.25,
-        right: 0.25,
-        bottom: 0.25,
-      },
-    };
-  }
-
-  private getSizes() {
-    return {
-      width: SLIDE_WIDTH - this.config.margin.left - this.config.margin.right,
-      height: SLIDE_HEIGHT - this.config.margin.top - this.config.margin.bottom,
-    };
-  }
-
-  private formatValue(value: PowerPointValue, formatter?: Formatter) {
-    if (typeof formatter === "function") {
-      return formatter(value);
-    }
-
+  static formatNumber(value: PowerPointValue): string {
     if (isNumber(value)) {
-      return value.toString();
+      return formatNumber(value);
     }
 
     if (isString(value)) {
@@ -119,8 +62,61 @@ class PresentationBuilder {
     return FALLBACK_POWER_POINT_VALUE;
   }
 
+  static formatPercent(value: PowerPointValue): string {
+    if (isNumber(value)) {
+      return formatPercent(value);
+    }
+
+    if (isString(value)) {
+      return value;
+    }
+
+    return FALLBACK_POWER_POINT_VALUE;
+  }
+
+  constructor() {
+    this.presentation = new pptxgen();
+
+    this.config = {
+      border: {
+        size: 1,
+        color: "cccccc",
+      },
+      roundess: 0.025,
+      margin: {
+        top: 0.75,
+        left: 0.25,
+        right: 0.25,
+        bottom: 0.25,
+      },
+      slide: {
+        width: SLIDE_WIDTH,
+        height: SLIDE_HEIGHT,
+      },
+      spacer: 0.25,
+    };
+
+    this.layout = new PowerPointLayout(this.config);
+
+    this.presentation.defineLayout({
+      name: LAYOUT_NAME,
+      width: this.config.slide.width,
+      height: this.config.slide.height,
+    });
+
+    this.presentation.layout = LAYOUT_NAME;
+
+    this.table = new PowerPointTable(this.config);
+    this.boxes = new PowerPointBoxes(this.config, this.layout);
+
+    this.charts = {
+      bar: new PowerPointBarChart(this.config),
+      pie: new PowerPointPieChart(this.config),
+    };
+  }
+
   addSlideTitle(slide: pptxgen.Slide, title: string) {
-    const sizes = this.getSizes();
+    const sizes = this.layout.getSlideSizes();
 
     slide.addText(title, {
       x: this.config.margin.left,
@@ -134,383 +130,51 @@ class PresentationBuilder {
     });
   }
 
-  addCardsSlide(cards: Card[][]) {
-    const SPACER_SIZE = 0.25;
-    const { width, height } = this.getSizes();
-
+  addBoxesSlide(payload: PowerPointBoxesPayload) {
     this.slideGenerators.push((slide) => {
-      cards.forEach((row, rowIndex) => {
-        const ROWS_COUNT = Math.max(2, row.length);
-        const COLS_COUNT = Math.max(2, cards.length);
-
-        // Calculate cell size based on the number of rows
-        const CELL_SIZE = (width - SPACER_SIZE * (ROWS_COUNT - 1)) / ROWS_COUNT;
-
-        // Calculate column size based on the number of columns
-        let COL_SIZE = (height - SPACER_SIZE * (COLS_COUNT - 1)) / COLS_COUNT;
-
-        // Calculate offsets for positioning the cells
-        const X_OFFSET = CELL_SIZE + SPACER_SIZE;
-        const Y_OFFSET = COL_SIZE + SPACER_SIZE;
-
-        let Y_BASE = rowIndex * Y_OFFSET;
-
-        // Center the cards vertically if there's only one row
-        if (cards.length === 1) {
-          Y_BASE = (height - COL_SIZE) / 2;
-        }
-
-        row.forEach((col, colIndex) => {
-          let X_BASE = colIndex * X_OFFSET;
-
-          if (row.length === 1) {
-            X_BASE = (width - CELL_SIZE) / 2;
-          }
-
-          slide.addTable(
-            [
-              [
-                {
-                  text: [
-                    {
-                      text: col.title,
-                      options: {
-                        fontSize: 14,
-                        breakLine: true,
-                      },
-                    },
-                    {
-                      text: this.formatValue(col.value, col.format),
-                      options: {
-                        fontSize: 24,
-                        bold: true,
-                      },
-                    },
-                  ],
-                },
-              ],
-            ],
-            {
-              x: this.config.margin.left + X_BASE,
-              y: this.config.margin.top + Y_BASE,
-              w: CELL_SIZE,
-              h: COL_SIZE,
-              color: "3D3D3D",
-              border: {
-                color: "cccccc",
-                pt: this.config.borderSize,
-              },
-              align: "center",
-              valign: "middle",
-            }
-          );
-        });
-      });
+      this.addSlideTitle(slide, payload.title);
+      this.boxes.render(slide, payload);
     });
 
     return this;
   }
 
-  addBoxesSlide(payload: { title: string; data: Card[][] }) {
-    const BORDER_SIZE = 1;
-    const SPACER_SIZE = 0.25;
-    const { width, height } = this.getSizes();
+  addTableSlide(payload: PowerPointTablePayload) {
+    const { width, height } = this.layout.getSlideSizes();
 
     this.slideGenerators.push((slide) => {
       this.addSlideTitle(slide, payload.title);
-
-      payload.data.forEach((row, rowIndex) => {
-        const ROWS_COUNT = row.length;
-        const COLS_COUNT = Math.max(2, payload.data.length);
-
-        // Calculate cell size based on the number of rows
-        const CELL_SIZE = (width - SPACER_SIZE * (ROWS_COUNT - 1)) / ROWS_COUNT;
-
-        // Calculate column size based on the number of columns
-        let COL_SIZE = (height - SPACER_SIZE * (COLS_COUNT - 1)) / COLS_COUNT;
-
-        // Calculate offsets for positioning the cells
-        const X_OFFSET = CELL_SIZE + SPACER_SIZE;
-        const Y_OFFSET = COL_SIZE + SPACER_SIZE;
-
-        let Y_BASE = rowIndex * Y_OFFSET;
-
-        // Center the cards vertically if there's only one row
-        if (cards.length === 1) {
-          Y_BASE = (height - COL_SIZE) / 2;
-        }
-
-        row.forEach((col, colIndex) => {
-          slide.addText(
-            [
-              {
-                text: col.title,
-                options: {
-                  fontSize: 14,
-                  breakLine: true,
-                },
-              },
-              {
-                text: this.formatValue(col.value, col.format),
-                options: {
-                  fontSize: 24,
-                  bold: true,
-                },
-              },
-            ],
-            {
-              shape: this.presentation.ShapeType.roundRect,
-              x: this.config.margin.left + colIndex * X_OFFSET,
-              y: this.config.margin.top + Y_BASE,
-              w: CELL_SIZE,
-              h: COL_SIZE,
-              align: "center",
-              fontSize: 14,
-              rectRadius: this.config.roundess,
-              line: {
-                color: "cccccc",
-                size: BORDER_SIZE,
-              },
-            }
-          );
-        });
+      this.table.render(slide, payload, {
+        width,
+        height,
       });
-    });
-
-    return this;
-  }
-
-  addTableSlide(payload: {
-    title: string;
-    headers: TableHeaderEntity[];
-    data: PowerPointTableCellEntity[][];
-  }) {
-    const { width } = this.getSizes();
-
-    const headers: pptxgen.TableCell[] = payload.headers.map((header) => {
-      return {
-        text: header.text,
-        options: {
-          bold: true,
-        },
-      };
-    });
-
-    const content = payload.data.map((row, index) => {
-      return row.map((column, columnIndex) => {
-        const heatMap = payload.headers[columnIndex].heatMap;
-
-        const entity: pptxgen.TableCell = {
-          text: this.formatValue(column.value, column.format),
-          options: {},
-        };
-
-        // Apply background color for odd rows
-        if (index % 2 === 0) {
-          entity.options!.fill = {
-            color: "f5f5f5",
-          };
-        }
-
-        // Check if heatmap is defined and the value is a number
-        // Otherwise, log a warning
-        if (heatMap && typeof column.value !== "number") {
-          console.warn(
-            `Heatmap color is defined for column "${column.value}" but the value is not a number.`
-          );
-        }
-
-        // Apply heatmap color if defined
-        if (isNumber(column.value) && heatMap) {
-          const color = generateHeatmapColor(
-            column.value,
-            heatMap.minValue,
-            heatMap.maxValue,
-            heatMap.colorPalette
-          );
-          const textColor = getTextColorByBackground(color);
-
-          entity.options!.fill = {
-            color: stripHexHash(color),
-          };
-
-          entity.options!.color = stripHexHash(textColor);
-        }
-
-        return entity;
-      });
-    });
-
-    this.slideGenerators.push((slide) => {
-      this.addSlideTitle(slide, payload.title);
-
-      slide.addTable(
-        [
-          // Header
-          headers,
-
-          // Content
-          ...content,
-        ],
-        {
-          x: this.config.margin.left,
-          y: this.config.margin.top,
-          w: width,
-          autoPage: true,
-          autoPageSlideStartY: this.config.margin.bottom,
-          autoPageLineWeight: 0.65,
-          valign: "middle",
-          border: {
-            pt: 1,
-            color: "cccccc",
-          },
-          margin: 0.1,
-          fontSize: 14,
-        }
-      );
     });
 
     return this;
   }
 
   addBarChartSlide(
-    payload: {
-      title: string;
-      data: PowerPointChartDataEntity[];
-      lines?: Pick<PowerPointChartDataEntity, "values" | "name" | "color">[];
-      labelFormatCode?: string;
-    },
-    options: {
-      normalizeData?: boolean;
-    } = {}
+    payload: PowerPointBarChartPayload,
+    options: PowerPointBarChartOptions = {}
   ) {
-    const { width, height } = this.getSizes();
-    const PADDING = 0.25;
-    const shouldRenderLines =
-      Array.isArray(payload.lines) && payload.lines.length > 0;
+    const { width, height } = this.layout.getSlideSizes();
 
     this.slideGenerators.push((slide) => {
-      this.addSlideTitle(slide, payload.title);
-
-      slide.addShape("roundRect", {
-        x: this.config.margin.left,
-        y: this.config.margin.top,
-        w: width,
-        h: height,
-        rectRadius: this.config.roundess,
-        line: {
-          color: "cccccc",
-          size: this.config.borderSize,
-        },
+      this.charts.bar.render(slide, payload, options, {
+        width,
+        height,
       });
-
-      const chartOptions: pptxgen.IChartOpts = {
-        x: this.config.margin.left + PADDING,
-        y: this.config.margin.top + PADDING,
-        w: width - 2 * PADDING,
-        h: height - 2 * PADDING,
-        barDir: "col",
-        valAxisLabelFormatCode: payload.labelFormatCode,
-        barGapWidthPct: 25,
-        valGridLine: {
-          style: "none",
-        },
-        showLegend: true,
-        legendPos: "b",
-        legendFontSize: 12,
-        showValue: !shouldRenderLines,
-        dataLabelFormatCode: payload.labelFormatCode,
-      };
-
-      let entities: pptxgen.IChartMulti[] = [
-        {
-          type: "bar",
-          data: payload.data.map((entity) => {
-            return {
-              name: entity.name,
-              values: entity.values,
-              labels: entity.labels,
-            };
-          }),
-          options: {
-            chartColors: payload.data.map((entity) => entity.color),
-          },
-        },
-      ];
-
-      if (shouldRenderLines) {
-        const lines = payload.lines!;
-
-        entities.push({
-          type: "line",
-          data: lines.map((entity) => {
-            return {
-              name: entity.name,
-              values: entity.values,
-              labels: [],
-            };
-          }),
-          options: {
-            chartColors: lines.map((entity) => entity.color),
-            showValue: false,
-          },
-        });
-      }
-
-      if (options.normalizeData) {
-        entities = normalizeBarsChartData(entities);
-      }
-
-      slide.addChart(
-        entities,
-        // @ts-expect-error
-        chartOptions
-      );
     });
 
     return this;
   }
 
-  addPieChartSlide(payload: { title: string; data: PowerPointPieChartData }) {
-    const { width, height } = this.getSizes();
-    const PADDING = 0.25;
-
-    const labels = payload.data.labels.map((label, index) => {
-      return `${label} - ${payload.data.values[index]}`;
-    });
-
-    const colors = payload.data.values.map(
-      (_value, index) => payload.data.colors[index % payload.data.colors.length]
-    );
+  addPieChartSlide(payload: PowerPointPieChartPayload) {
+    const { width, height } = this.layout.getSlideSizes();
 
     this.slideGenerators.push((slide) => {
       this.addSlideTitle(slide, payload.title);
-
-      slide.addChart(
-        "pie",
-        [
-          {
-            name: payload.data.name,
-            labels: labels,
-            values: payload.data.values,
-          },
-        ],
-        {
-          x: this.config.margin.left + PADDING,
-          y: this.config.margin.top + PADDING,
-          w: width - 2 * PADDING,
-          h: height - 2 * PADDING,
-          chartColors: colors,
-          dataBorder: {
-            pt: 2,
-            color: "ffffff",
-          },
-          legendPos: "r",
-          showLegend: true,
-          showLeaderLines: true,
-          showValue: false,
-        }
-      );
+      this.charts.pie.render(slide, payload, { width, height });
     });
 
     return this;
@@ -684,12 +348,12 @@ builder.addTableSlide({
     },
   ],
   data: displayProductPerformance.map((entity) => {
-    const result: PowerPointTableCellEntity[] = [
+    const result: PowerPointTableCell[] = [
       { value: entity._id.subProduct },
-      { value: entity.impressions, format: formatPowerPointNumber },
-      { value: entity.clicks, format: formatPowerPointNumber },
-      { value: entity.ctr, format: formatPowerPointPercent },
-      { value: entity.conversions, format: formatPowerPointNumber },
+      { value: entity.impressions, format: PresentationBuilder.formatNumber },
+      { value: entity.clicks, format: PresentationBuilder.formatNumber },
+      { value: entity.ctr, format: PresentationBuilder.formatPercent },
+      { value: entity.conversions, format: PresentationBuilder.formatNumber },
     ];
 
     return result;
@@ -699,13 +363,16 @@ builder.addTableSlide({
 const videoComletes = getMinMax(videoProductPerformance, "videoCompletions");
 const videoClicks = getMinMax(videoProductPerformance, "clicks");
 const entities = videoProductPerformance.map((entity) => {
-  const result: PowerPointTableCellEntity[] = [
+  const result: PowerPointTableCell[] = [
     { value: entity._id.subProduct },
-    { value: entity.impressions, format: formatPowerPointNumber },
-    { value: entity.videoCompletions, format: formatPowerPointNumber },
-    { value: entity.vcr, format: formatPowerPointPercent },
-    { value: entity.clicks, format: formatPowerPointNumber },
-    { value: entity.ctr, format: formatPowerPointPercent },
+    { value: entity.impressions, format: PresentationBuilder.formatNumber },
+    {
+      value: entity.videoCompletions,
+      format: PresentationBuilder.formatNumber,
+    },
+    { value: entity.vcr, format: PresentationBuilder.formatPercent },
+    { value: entity.clicks, format: PresentationBuilder.formatNumber },
+    { value: entity.ctr, format: PresentationBuilder.formatPercent },
   ];
 
   return result;
@@ -764,7 +431,7 @@ builder.addBoxesSlide({
       {
         title: "CTR(%)",
         value: 0.15261760710334837,
-        format: formatPowerPointPercent,
+        format: PresentationBuilder.formatPercent,
       },
     ],
     [
@@ -813,7 +480,7 @@ const videoTopKPIData = [
   {
     title: "VCR(%)",
     value: 45.0,
-    format: formatPowerPointPercent,
+    format: PresentationBuilder.formatPercent,
   },
   {
     title: "Clicks",
@@ -823,7 +490,7 @@ const videoTopKPIData = [
   {
     title: "CTR(%)",
     value: 0.17,
-    format: formatPowerPointPercent,
+    format: PresentationBuilder.formatPercent,
   },
 ];
 
