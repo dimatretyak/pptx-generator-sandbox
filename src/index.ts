@@ -15,21 +15,21 @@ import {
   PowerPointTable,
   PowerPointTableCell,
   PowerPointTablePayload,
-} from "./components/PowerPointTable";
+} from "./classes/PowerPointTable";
 import {
   PowerPointBarChart,
   PowerPointBarChartOptions,
   PowerPointBarChartPayload,
-} from "./components/PowerPointBarChart";
-import { PowerPointLayout } from "./components/PowerPointLayout";
+} from "./classes/PowerPointBarChart";
+import { PowerPointLayout } from "./classes/PowerPointLayout";
 import {
   PowerPointBoxes,
   PowerPointBoxesPayload,
-} from "./components/PowerPointBoxes";
+} from "./classes/PowerPointBoxes";
 import {
   PowerPointPieChart,
   PowerPointPieChartPayload,
-} from "./components/PowerPointPieChart";
+} from "./classes/PowerPointPieChart";
 
 // 16:9 aspect ratio
 const LAYOUT_NAME = "APP";
