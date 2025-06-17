@@ -124,8 +124,8 @@ export class PowerPointTable {
         autoPageLineWeight: 0.65,
         valign: "middle",
         border: {
-          pt: 1,
-          color: "cccccc",
+          pt: this.config.border.size,
+          color: this.config.border.color,
         },
         margin: 0.1,
         fontSize: 14,
