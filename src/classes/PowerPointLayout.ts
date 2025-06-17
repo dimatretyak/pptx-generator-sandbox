@@ -1,8 +1,8 @@
 import { PowerPointConfig } from "../types/common";
 import pptxgen from "pptxgenjs";
 
-const HEADER_SIZE = 0.75;
-const FOOTER_SIZE = 0.75;
+const HEADER_SIZE = 0.5;
+const FOOTER_SIZE = 0.35;
 const SLIDE_TITLE_SIZE = 0.5;
 const SLIDE_TITLE_SPACER = 0.25;
 const HORIZONTAL_OFFSET = 0.15;
