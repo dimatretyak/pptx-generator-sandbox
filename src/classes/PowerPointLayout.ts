@@ -123,8 +123,7 @@ export class PowerPointLayout {
       h: FOOTER_SIZE,
       valign: "middle",
       align: "right",
-      bold: true,
-      fontSize: 18,
+      fontSize: 14,
       margin: 0,
       color: "FFFFFF",
     });
