@@ -4,6 +4,7 @@ import pptxgen from "pptxgenjs";
 const HEADER_SIZE = 0.75;
 const FOOTER_SIZE = 0.75;
 const SLIDE_TITLE_SIZE = 0.5;
+const SLIDE_TITLE_SPACER = 0.25;
 
 export class PowerPointLayout {
   private config: PowerPointConfig;
@@ -23,14 +24,19 @@ export class PowerPointLayout {
         vertical -
         HEADER_SIZE -
         FOOTER_SIZE -
-        SLIDE_TITLE_SIZE,
+        SLIDE_TITLE_SIZE -
+        SLIDE_TITLE_SPACER,
     };
   }
 
   getContentCoords() {
     return {
       x: this.config.margin.left,
-      y: HEADER_SIZE + SLIDE_TITLE_SIZE + this.config.margin.top,
+      y:
+        HEADER_SIZE +
+        SLIDE_TITLE_SIZE +
+        this.config.margin.top +
+        SLIDE_TITLE_SPACER,
     };
   }
 
@@ -102,7 +108,7 @@ export class PowerPointLayout {
 
     slide.addText(title, {
       x: coords.x,
-      y: coords.y - SLIDE_TITLE_SIZE,
+      y: HEADER_SIZE + this.config.margin.top,
       h: SLIDE_TITLE_SIZE,
       valign: "middle",
       bold: true,
