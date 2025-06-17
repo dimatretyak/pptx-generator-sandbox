@@ -3,6 +3,7 @@ import pptxgen from "pptxgenjs";
 
 const HEADER_SIZE = 0.75;
 const FOOTER_SIZE = 0.75;
+const SLIDE_TITLE_SIZE = 0.5;
 
 export class PowerPointLayout {
   private config: PowerPointConfig;
@@ -17,14 +18,19 @@ export class PowerPointLayout {
 
     return {
       width: this.config.slide.width - horizontal,
-      height: this.config.slide.height - vertical - HEADER_SIZE - FOOTER_SIZE,
+      height:
+        this.config.slide.height -
+        vertical -
+        HEADER_SIZE -
+        FOOTER_SIZE -
+        SLIDE_TITLE_SIZE,
     };
   }
 
   getContentCoords() {
     return {
       x: this.config.margin.left,
-      y: this.config.margin.top + HEADER_SIZE,
+      y: HEADER_SIZE + SLIDE_TITLE_SIZE + this.config.margin.top,
     };
   }
 
@@ -87,6 +93,23 @@ export class PowerPointLayout {
       margin: 0,
       w: this.config.slide.width,
       fill: { color: "0000FF" },
+    });
+  }
+
+  renderContentTitle(slide: pptxgen.Slide, title: string) {
+    const sizes = this.getSlideSizes();
+    const coords = this.getContentCoords();
+
+    slide.addText(title, {
+      x: coords.x,
+      y: coords.y - SLIDE_TITLE_SIZE,
+      h: SLIDE_TITLE_SIZE,
+      valign: "middle",
+      bold: true,
+      fontSize: 18,
+      margin: 0,
+      w: sizes.width,
+      fill: { color: "00FF00" },
     });
   }
 }

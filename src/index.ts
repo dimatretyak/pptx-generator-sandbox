@@ -116,18 +116,7 @@ class PresentationBuilder {
   }
 
   addSlideTitle(slide: pptxgen.Slide, title: string) {
-    const sizes = this.layout.getSlideSizes();
-
-    slide.addText(title, {
-      x: this.config.margin.left,
-      y: 0,
-      h: this.config.margin.top,
-      valign: "middle",
-      bold: true,
-      fontSize: 18,
-      margin: 0,
-      w: sizes.width,
-    });
+    this.layout.renderContentTitle(slide, title);
   }
 
   addBoxesSlide(payload: PowerPointBoxesPayload) {
@@ -162,6 +151,7 @@ class PresentationBuilder {
 
     this.slideGenerators.push((slide) => {
       this.layout.renderSlideMarkup(slide);
+      this.addSlideTitle(slide, payload.title);
 
       this.charts.bar.render(slide, payload, options, {
         width,
