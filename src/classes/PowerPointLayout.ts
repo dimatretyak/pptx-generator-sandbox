@@ -21,6 +21,13 @@ export class PowerPointLayout {
     };
   }
 
+  getContentCoords() {
+    return {
+      x: this.config.margin.left,
+      y: this.config.margin.top + HEADER_SIZE,
+    };
+  }
+
   getCardSizeByRowCol(payload: {
     rowsCount: number;
     colsCount: number;

@@ -110,7 +110,7 @@ class PresentationBuilder {
     this.boxes = new PowerPointBoxes(this.config, this.layout);
 
     this.charts = {
-      bar: new PowerPointBarChart(this.config),
+      bar: new PowerPointBarChart(this.config, this.layout),
       pie: new PowerPointPieChart(this.config),
     };
   }
@@ -161,7 +161,7 @@ class PresentationBuilder {
     const { width, height } = this.layout.getSlideSizes();
 
     this.slideGenerators.push((slide) => {
-      this.addSlideTitle(slide, payload.title);
+      this.layout.renderSlideMarkup(slide);
 
       this.charts.bar.render(slide, payload, options, {
         width,
