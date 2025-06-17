@@ -12,6 +12,7 @@ import {
   stripHexHash,
 } from "../utils/common";
 import { formatValue } from "../utils/formatters";
+import { PowerPointLayout } from "./PowerPointLayout";
 
 type PowerPointTableTableHeader = {
   text: string;
@@ -35,9 +36,11 @@ export type PowerPointTablePayload = {
 
 export class PowerPointTable {
   private config: PowerPointConfig;
+  private layout: PowerPointLayout;
 
-  constructor(config: PowerPointConfig) {
+  constructor(config: PowerPointConfig, layout: PowerPointLayout) {
     this.config = config;
+    this.layout = layout;
   }
 
   render(
@@ -45,6 +48,8 @@ export class PowerPointTable {
     payload: PowerPointTablePayload,
     slideConfig: SlideConfig
   ) {
+    const coords = this.layout.getContentCoords();
+
     const headers: pptxgen.TableCell[] = payload.headers.map((header) => {
       return {
         text: header.text,
@@ -107,8 +112,8 @@ export class PowerPointTable {
         ...content,
       ],
       {
-        x: this.config.margin.left,
-        y: this.config.margin.top,
+        x: coords.x,
+        y: coords.y,
         w: slideConfig.width,
         autoPage: true,
         autoPageSlideStartY: this.config.margin.bottom,

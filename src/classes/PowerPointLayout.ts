@@ -113,10 +113,9 @@ export class PowerPointLayout {
 
   renderContentTitle(slide: pptxgen.Slide, title: string) {
     const sizes = this.getSlideSizes();
-    const coords = this.getContentCoords();
 
     slide.addText(title, {
-      x: coords.x,
+      x: this.config.margin.left,
       y: HEADER_SIZE + this.config.margin.top,
       h: SLIDE_TITLE_SIZE,
       valign: "middle",
