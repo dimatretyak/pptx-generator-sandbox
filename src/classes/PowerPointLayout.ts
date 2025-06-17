@@ -102,6 +102,34 @@ export class PowerPointLayout {
     });
   }
 
+  renderFooter(slide: pptxgen.Slide) {
+    const width = this.config.slide.width;
+    const height = this.config.slide.height - FOOTER_SIZE;
+
+    slide.addShape("rect", {
+      x: 0,
+      y: height,
+      w: this.config.slide.width,
+      h: FOOTER_SIZE,
+      fill: {
+        color: "0000FF",
+      },
+    });
+
+    slide.addText("Bottom", {
+      x: HORIZONTAL_OFFSET,
+      y: height,
+      w: width - HORIZONTAL_OFFSET * 2,
+      h: FOOTER_SIZE,
+      valign: "middle",
+      align: "right",
+      bold: true,
+      fontSize: 18,
+      margin: 0,
+      color: "FFFFFF",
+    });
+  }
+
   renderSlideMarkup(
     slide: pptxgen.Slide,
     payload: {
@@ -109,18 +137,7 @@ export class PowerPointLayout {
     } = {}
   ) {
     this.renderHeader(slide);
-
-    slide.addText("Bottom", {
-      x: 0,
-      y: this.config.slide.height - FOOTER_SIZE,
-      h: FOOTER_SIZE,
-      valign: "middle",
-      bold: true,
-      fontSize: 18,
-      margin: 0,
-      w: this.config.slide.width,
-      fill: { color: "0000FF" },
-    });
+    this.renderFooter(slide);
 
     if (payload.title) {
       this.renderContentTitle(slide, payload.title);
