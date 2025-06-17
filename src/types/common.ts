@@ -41,7 +41,7 @@ export type SlideConfig = {
 
 export type PowerPointLayoutConfig = {
   markup: {
-    verticalOffset?: number;
+    contentVerticalOffset?: number;
     text: {
       header: string;
       content: string;

@@ -26,8 +26,8 @@ export class PowerPointLayout {
       CONTENT_TITLE_SIZE -
       SLIDE_TITLE_SPACER;
 
-    if (isNumber(payload.verticalOffset)) {
-      height -= payload.verticalOffset * 2;
+    if (isNumber(payload.contentVerticalOffset)) {
+      height -= payload.contentVerticalOffset * 2;
     }
 
     return {
@@ -43,8 +43,8 @@ export class PowerPointLayout {
       this.config.margin.top +
       SLIDE_TITLE_SPACER;
 
-    if (isNumber(payload.verticalOffset)) {
-      y += payload.verticalOffset;
+    if (isNumber(payload.contentVerticalOffset)) {
+      y += payload.contentVerticalOffset;
     }
 
     return {
@@ -159,8 +159,8 @@ export class PowerPointLayout {
     const sizes = this.getSlideSizes(markup);
     let y = HEADER_SIZE + this.config.margin.top;
 
-    if (isNumber(markup.verticalOffset)) {
-      y += markup.verticalOffset;
+    if (isNumber(markup.contentVerticalOffset)) {
+      y += markup.contentVerticalOffset;
     }
 
     // Add a background shape first, then overlay text for better control over padding and layout.
