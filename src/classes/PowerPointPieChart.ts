@@ -28,6 +28,10 @@ export class PowerPointPieChart {
     payload: PowerPointPieChartPayload,
     slideConfig: SlideConfig
   ) {
+    this.layout.renderSlideMarkup(slide, {
+      title: payload.title,
+    });
+
     const coords = this.layout.getContentCoords();
 
     const labels = payload.data.labels.map((label, index) => {

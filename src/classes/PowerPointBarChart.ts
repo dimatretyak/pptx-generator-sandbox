@@ -36,6 +36,10 @@ export class PowerPointBarChart {
     options: PowerPointBarChartOptions,
     slideConfig: SlideConfig
   ) {
+    this.layout.renderSlideMarkup(slide, {
+      title: payload.title,
+    });
+
     const coords = this.layout.getContentCoords();
     const shouldRenderLines =
       Array.isArray(payload.lines) && payload.lines.length > 0;

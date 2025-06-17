@@ -48,6 +48,10 @@ export class PowerPointTable {
     payload: PowerPointTablePayload,
     slideConfig: SlideConfig
   ) {
+    this.layout.renderSlideMarkup(slide, {
+      title: payload.title,
+    });
+
     const coords = this.layout.getContentCoords();
 
     const headers: pptxgen.TableCell[] = payload.headers.map((header) => {

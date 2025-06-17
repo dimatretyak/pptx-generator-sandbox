@@ -24,6 +24,10 @@ export class PowerPointBoxes {
   }
 
   render(slide: pptxgen.Slide, payload: PowerPointBoxesPayload) {
+    this.layout.renderSlideMarkup(slide, {
+      title: payload.title,
+    });
+
     payload.data.forEach((row, rowIndex) => {
       row.forEach((col, colIndex) => {
         const info = this.layout.getCardSizeByRowCol({
