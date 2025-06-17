@@ -78,12 +78,7 @@ export class PowerPointLayout {
     };
   }
 
-  renderSlideMarkup(
-    slide: pptxgen.Slide,
-    payload: {
-      title?: string;
-    } = {}
-  ) {
+  private renderHeader(slide: pptxgen.Slide) {
     slide.addShape("rect", {
       x: 0,
       y: 0,
@@ -105,6 +100,15 @@ export class PowerPointLayout {
       margin: 0,
       color: "FFFFFF",
     });
+  }
+
+  renderSlideMarkup(
+    slide: pptxgen.Slide,
+    payload: {
+      title?: string;
+    } = {}
+  ) {
+    this.renderHeader(slide);
 
     slide.addText("Bottom", {
       x: 0,
