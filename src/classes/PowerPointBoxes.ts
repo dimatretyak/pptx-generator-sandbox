@@ -32,8 +32,17 @@ export class PowerPointBoxes {
     payload: PowerPointBoxesPayload,
     options?: PowerPointSlideOptions
   ) {
-    const sizes = this.layout.getSlideSizes(options);
-    const coords = this.layout.getContentCoords(options);
+    const rect = options?.rect;
+    let { width, height } = this.layout.getSlideSizes(options);
+    let { x, y } = this.layout.getContentCoords(options);
+
+    // If a specific rectangle is provided, use its dimensions and coordinates
+    if (rect) {
+      width = rect.width;
+      height = rect.height;
+      x = rect.x;
+      y = rect.y;
+    }
 
     payload.data.forEach((row, rowIndex) => {
       row.forEach((col, colIndex) => {
@@ -43,12 +52,12 @@ export class PowerPointBoxes {
           rowIndex,
           colIndex,
           sizes: {
-            width: options?.width ?? sizes.width,
-            height: options?.height ?? sizes.height,
+            width,
+            height,
           },
           coords: {
-            x: options?.x ?? coords.x,
-            y: options?.y ?? coords.y,
+            x,
+            y,
           },
         });
 

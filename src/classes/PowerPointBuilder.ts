@@ -224,10 +224,12 @@ class PowerPointBuilder {
 
           if (col.type === "boxes") {
             this.boxes.render(slide, col.payload, {
-              width: info.width,
-              height: info.height,
-              x: info.x,
-              y: info.y,
+              rect: {
+                width: info.width,
+                height: info.height,
+                x: info.x,
+                y: info.y,
+              },
 
               // TODO: Remove markup
               markup: {
