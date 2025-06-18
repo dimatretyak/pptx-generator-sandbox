@@ -1,8 +1,8 @@
 import pptxgen from "pptxgenjs";
 import {
   PowerPointConfig,
-  PowerPointLayoutConfig,
   PowerPointSlideConfig,
+  PowerPointSlideOptions,
 } from "../types/powerpoint.types";
 import { normalizeBarsChartData } from "../utils/powerpoint/charts";
 import { PowerPointLayout } from "./PowerPointLayout";
@@ -14,13 +14,13 @@ export type PowerPointBarChartDataEntity = {
   color: string;
 };
 
-export type PowerPointBarChartPayload = PowerPointLayoutConfig & {
+export type PowerPointBarChartPayload = {
   data: PowerPointBarChartDataEntity[];
   lines?: Pick<PowerPointBarChartDataEntity, "values" | "name" | "color">[];
   labelFormatCode?: string;
 };
 
-export type PowerPointBarChartOptions = {
+export type PowerPointBarChartOptions = PowerPointSlideOptions & {
   normalizeData?: boolean;
 };
 

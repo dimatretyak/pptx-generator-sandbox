@@ -1,7 +1,6 @@
 import pptxgen from "pptxgenjs";
 import {
   PowerPointConfig,
-  PowerPointLayoutConfig,
   PowerPointSlideConfig,
 } from "../types/powerpoint.types";
 import { PowerPointLayout } from "./PowerPointLayout";
@@ -13,7 +12,7 @@ export type PowerPointPieChartData = {
   colors: string[];
 };
 
-export type PowerPointPieChartPayload = PowerPointLayoutConfig & {
+export type PowerPointPieChartPayload = {
   data: PowerPointPieChartData;
 };
 

@@ -50,6 +50,6 @@ export type PowerPointMarkup = {
   };
 };
 
-export type PowerPointLayoutConfig = {
+export type PowerPointSlideOptions = {
   markup: PowerPointMarkup;
 };

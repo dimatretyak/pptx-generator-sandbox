@@ -1,6 +1,6 @@
 import {
   PowerPointConfig,
-  PowerPointLayoutConfig,
+  PowerPointSlideOptions,
   PowerPointMarkup,
 } from "../types/powerpoint.types";
 import pptxgen from "pptxgenjs";
@@ -58,7 +58,7 @@ export class PowerPointLayout {
   }
 
   getCardSizeByRowCol(
-    payload: PowerPointLayoutConfig & {
+    payload: PowerPointSlideOptions & {
       rowsCount: number;
       colsCount: number;
       rowIndex: number;
@@ -147,7 +147,7 @@ export class PowerPointLayout {
     });
   }
 
-  renderSlideMarkup(slide: pptxgen.Slide, payload: PowerPointLayoutConfig) {
+  renderSlideMarkup(slide: pptxgen.Slide, payload: PowerPointSlideOptions) {
     this.renderHeader(slide, payload.markup.text.header);
     this.renderFooter(slide, payload.markup.text.footer);
 

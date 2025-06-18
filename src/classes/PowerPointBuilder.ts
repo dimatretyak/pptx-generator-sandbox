@@ -1,8 +1,8 @@
 import pptxgen from "pptxgenjs";
 import {
   PowerPointConfig,
-  PowerPointMarkup,
   PowerPointSlideConfig,
+  PowerPointSlideOptions,
   PowerPointValue,
 } from "../types/powerpoint.types";
 import { isNumber, isString } from "../utils/common";
@@ -106,14 +106,12 @@ class PowerPointBuilder {
 
   addMarkup(
     slide: pptxgen.Slide,
-    markup: PowerPointMarkup
+    options: PowerPointSlideOptions
   ): PowerPointSlideConfig {
-    const { width, height } = this.layout.getSlideSizes(markup);
-    const coords = this.layout.getContentCoords(markup);
+    const { width, height } = this.layout.getSlideSizes(options.markup);
+    const coords = this.layout.getContentCoords(options.markup);
 
-    this.layout.renderSlideMarkup(slide, {
-      markup: markup,
-    });
+    this.layout.renderSlideMarkup(slide, options);
 
     return {
       width,
@@ -123,19 +121,25 @@ class PowerPointBuilder {
     };
   }
 
-  addBoxesSlide(payload: PowerPointBoxesPayload) {
+  addBoxesSlide(
+    payload: PowerPointBoxesPayload,
+    options: PowerPointSlideOptions
+  ) {
     this.slideGenerators.push((slide) => {
-      const config = this.addMarkup(slide, payload.markup);
+      const config = this.addMarkup(slide, options);
 
-      this.boxes.render(slide, payload);
+      this.boxes.render(slide, payload, options);
     });
 
     return this;
   }
 
-  addTableSlide(payload: PowerPointTablePayload) {
+  addTableSlide(
+    payload: PowerPointTablePayload,
+    options: PowerPointSlideOptions
+  ) {
     this.slideGenerators.push((slide) => {
-      const config = this.addMarkup(slide, payload.markup);
+      const config = this.addMarkup(slide, options);
 
       this.table.render(slide, payload, config);
     });
@@ -145,10 +149,10 @@ class PowerPointBuilder {
 
   addBarChartSlide(
     payload: PowerPointBarChartPayload,
-    options: PowerPointBarChartOptions = {}
+    options: PowerPointBarChartOptions
   ) {
     this.slideGenerators.push((slide) => {
-      const config = this.addMarkup(slide, payload.markup);
+      const config = this.addMarkup(slide, options);
 
       this.charts.bar.render(slide, payload, options, config);
     });
@@ -156,9 +160,12 @@ class PowerPointBuilder {
     return this;
   }
 
-  addPieChartSlide(payload: PowerPointPieChartPayload) {
+  addPieChartSlide(
+    payload: PowerPointPieChartPayload,
+    options: PowerPointSlideOptions
+  ) {
     this.slideGenerators.push((slide) => {
-      const config = this.addMarkup(slide, payload.markup);
+      const config = this.addMarkup(slide, options);
 
       this.charts.pie.render(slide, payload, config);
     });

@@ -2,7 +2,6 @@ import pptxgen from "pptxgenjs";
 import {
   PowerPointValueFormatter,
   PowerPointConfig,
-  PowerPointLayoutConfig,
   PowerPointValue,
   PowerPointSlideConfig,
 } from "../types/powerpoint.types";
@@ -29,7 +28,7 @@ export type PowerPointTableCell = {
   format?: PowerPointValueFormatter;
 };
 
-export type PowerPointTablePayload = PowerPointLayoutConfig & {
+export type PowerPointTablePayload = {
   headers: PowerPointTableTableHeader[];
   data: PowerPointTableCell[][];
 };
