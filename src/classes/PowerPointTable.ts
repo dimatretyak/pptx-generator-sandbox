@@ -11,7 +11,6 @@ import {
   isNumber,
 } from "../utils/common";
 import { formatValue } from "../utils/formatters";
-import { PowerPointLayout } from "./PowerPointLayout";
 import { stripHexHash } from "../utils/powerpoint/common";
 
 type PowerPointTableTableHeader = {
@@ -35,11 +34,9 @@ export type PowerPointTablePayload = {
 
 export class PowerPointTable {
   private config: PowerPointConfig;
-  private layout: PowerPointLayout;
 
-  constructor(config: PowerPointConfig, layout: PowerPointLayout) {
+  constructor(config: PowerPointConfig) {
     this.config = config;
-    this.layout = layout;
   }
 
   render(

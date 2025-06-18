@@ -1,9 +1,5 @@
 import pptxgen from "pptxgenjs";
-import {
-  PowerPointConfig,
-  PowerPointSlideConfig,
-} from "../types/powerpoint.types";
-import { PowerPointLayout } from "./PowerPointLayout";
+import { PowerPointSlideConfig } from "../types/powerpoint.types";
 
 export type PowerPointPieChartData = {
   name: string;
@@ -17,14 +13,6 @@ export type PowerPointPieChartPayload = {
 };
 
 export class PowerPointPieChart {
-  private config: PowerPointConfig;
-  private layout: PowerPointLayout;
-
-  constructor(config: PowerPointConfig, layout: PowerPointLayout) {
-    this.config = config;
-    this.layout = layout;
-  }
-
   render(
     slide: pptxgen.Slide,
     payload: PowerPointPieChartPayload,

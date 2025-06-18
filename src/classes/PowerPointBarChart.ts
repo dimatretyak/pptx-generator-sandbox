@@ -2,10 +2,8 @@ import pptxgen from "pptxgenjs";
 import {
   PowerPointConfig,
   PowerPointSlideConfig,
-  PowerPointSlideOptions,
 } from "../types/powerpoint.types";
 import { normalizeBarsChartData } from "../utils/powerpoint/charts";
-import { PowerPointLayout } from "./PowerPointLayout";
 
 export type PowerPointBarChartDataEntity = {
   labels: string[];
@@ -23,11 +21,9 @@ export type PowerPointBarChartPayload = {
 
 export class PowerPointBarChart {
   private config: PowerPointConfig;
-  private layout: PowerPointLayout;
 
-  constructor(config: PowerPointConfig, layout: PowerPointLayout) {
+  constructor(config: PowerPointConfig) {
     this.config = config;
-    this.layout = layout;
   }
 
   render(
