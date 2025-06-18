@@ -1,8 +1,5 @@
 import pptxgen from "pptxgenjs";
-import {
-  PowerPointConfig,
-  PowerPointSlideConfig,
-} from "../types/powerpoint.types";
+import { PowerPointSlideConfig } from "../types/powerpoint.types";
 import { normalizeBarsChartData } from "../utils/powerpoint/charts";
 
 export type PowerPointBarChartDataEntity = {
@@ -20,12 +17,6 @@ export type PowerPointBarChartPayload = {
 };
 
 export class PowerPointBarChart {
-  private config: PowerPointConfig;
-
-  constructor(config: PowerPointConfig) {
-    this.config = config;
-  }
-
   render(
     slide: pptxgen.Slide,
     payload: PowerPointBarChartPayload,
@@ -34,24 +25,11 @@ export class PowerPointBarChart {
     const shouldRenderLines =
       Array.isArray(payload.lines) && payload.lines.length > 0;
 
-    // Add background shape
-    slide.addShape("roundRect", {
+    const chartOptions: pptxgen.IChartOpts = {
       x: slideConfig.x,
       y: slideConfig.y,
       w: slideConfig.width,
       h: slideConfig.height,
-      rectRadius: this.config.roundess,
-      line: {
-        color: this.config.border.color,
-        size: this.config.border.size,
-      },
-    });
-
-    const chartOptions: pptxgen.IChartOpts = {
-      x: slideConfig.x + this.config.spacer,
-      y: slideConfig.y + this.config.spacer,
-      w: slideConfig.width - 2 * this.config.spacer,
-      h: slideConfig.height - 2 * this.config.spacer,
       barDir: "col",
       valAxisLabelFormatCode: payload.labelFormatCode,
       barGapWidthPct: 25,

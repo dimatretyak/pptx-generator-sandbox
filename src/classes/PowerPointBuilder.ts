@@ -112,7 +112,7 @@ class PowerPointBuilder {
     this.boxes = new PowerPointBoxes(this.config, this.layout);
 
     this.charts = {
-      bar: new PowerPointBarChart(this.config),
+      bar: new PowerPointBarChart(),
       pie: new PowerPointPieChart(),
     };
   }
