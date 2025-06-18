@@ -10,7 +10,6 @@ import { formatNumber, formatPercent } from "../utils/formatters";
 import { PowerPointTable, PowerPointTablePayload } from ".//PowerPointTable";
 import {
   PowerPointBarChart,
-  PowerPointBarChartOptions,
   PowerPointBarChartPayload,
 } from ".//PowerPointBarChart";
 import { PowerPointLayout } from ".//PowerPointLayout";
@@ -25,6 +24,20 @@ const LAYOUT_NAME = "APP";
 const SLIDE_WIDTH = 10;
 const SLIDE_HEIGHT = 5.625;
 const FALLBACK_POWER_POINT_VALUE = "-";
+
+type PowerPointMultipleEntity =
+  | {
+      type: "pie";
+      payload: PowerPointPieChartPayload;
+    }
+  | {
+      type: "bar";
+      payload: PowerPointBarChartPayload;
+    }
+  | {
+      type: "boxes";
+      payload: PowerPointBoxesPayload;
+    };
 
 class PowerPointBuilder {
   private slideGenerators: Array<(slide: pptxgen.Slide) => void> = [];
@@ -149,12 +162,12 @@ class PowerPointBuilder {
 
   addBarChartSlide(
     payload: PowerPointBarChartPayload,
-    options: PowerPointBarChartOptions
+    options: PowerPointSlideOptions
   ) {
     this.slideGenerators.push((slide) => {
       const config = this.addMarkup(slide, options);
 
-      this.charts.bar.render(slide, payload, options, config);
+      this.charts.bar.render(slide, payload, config);
     });
 
     return this;
@@ -168,6 +181,38 @@ class PowerPointBuilder {
       const config = this.addMarkup(slide, options);
 
       this.charts.pie.render(slide, payload, config);
+    });
+
+    return this;
+  }
+
+  addMultipleToSlide(entities: PowerPointMultipleEntity[][]) {
+    this.slideGenerators.push((slide) => {
+      entities.forEach((row, rowIndex) => {
+        row.forEach((col, colIndex) => {
+          const info = this.layout.getCardSizeByRowCol({
+            rowIndex,
+            colIndex,
+            rowsCount: row.length,
+            colsCount: entities.length,
+          });
+
+          const slideConfig: PowerPointSlideConfig = {
+            width: info.width,
+            height: info.height,
+            x: info.x,
+            y: info.y,
+          };
+
+          if (col.type === "pie") {
+            this.charts.pie.render(slide, col.payload, slideConfig);
+          }
+
+          if (col.type === "bar") {
+            this.charts.bar.render(slide, col.payload, slideConfig);
+          }
+        });
+      });
     });
 
     return this;

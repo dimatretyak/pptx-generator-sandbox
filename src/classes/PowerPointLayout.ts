@@ -19,7 +19,7 @@ export class PowerPointLayout {
     this.config = config;
   }
 
-  getSlideSizes(payload: PowerPointMarkup) {
+  getSlideSizes(payload: Partial<PowerPointMarkup> = {}) {
     const horizontal = this.config.margin.left + this.config.margin.right;
     const vertical = this.config.margin.top + this.config.margin.bottom;
     let height =
@@ -40,7 +40,7 @@ export class PowerPointLayout {
     };
   }
 
-  getContentCoords(payload: PowerPointMarkup) {
+  getContentCoords(payload: Partial<PowerPointMarkup> = {}) {
     let y =
       HEADER_SIZE +
       CONTENT_TITLE_SIZE +
@@ -57,14 +57,13 @@ export class PowerPointLayout {
     };
   }
 
-  getCardSizeByRowCol(
-    payload: PowerPointSlideOptions & {
-      rowsCount: number;
-      colsCount: number;
-      rowIndex: number;
-      colIndex: number;
-    }
-  ) {
+  getCardSizeByRowCol(payload: {
+    rowsCount: number;
+    colsCount: number;
+    rowIndex: number;
+    colIndex: number;
+    markup?: PowerPointMarkup;
+  }) {
     const { rowsCount, colsCount, rowIndex, colIndex, markup } = payload;
     const slide = this.getSlideSizes(markup);
     const coords = this.getContentCoords(markup);

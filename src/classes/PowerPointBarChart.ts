@@ -18,9 +18,6 @@ export type PowerPointBarChartPayload = {
   data: PowerPointBarChartDataEntity[];
   lines?: Pick<PowerPointBarChartDataEntity, "values" | "name" | "color">[];
   labelFormatCode?: string;
-};
-
-export type PowerPointBarChartOptions = PowerPointSlideOptions & {
   normalizeData?: boolean;
 };
 
@@ -36,7 +33,6 @@ export class PowerPointBarChart {
   render(
     slide: pptxgen.Slide,
     payload: PowerPointBarChartPayload,
-    options: PowerPointBarChartOptions,
     slideConfig: PowerPointSlideConfig
   ) {
     const shouldRenderLines =
@@ -111,7 +107,7 @@ export class PowerPointBarChart {
       }
     }
 
-    if (options.normalizeData) {
+    if (payload.normalizeData) {
       entities = normalizeBarsChartData(entities);
     }
 
