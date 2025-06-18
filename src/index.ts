@@ -37,7 +37,7 @@ const SLIDE_WIDTH = 10;
 const SLIDE_HEIGHT = 5.625;
 const FALLBACK_POWER_POINT_VALUE = "-";
 
-class PresentationBuilder {
+class PowerPointBuilder {
   private slideGenerators: Array<(slide: pptxgen.Slide) => void> = [];
   private presentation: pptxgen;
   private config: PowerPointConfig;
@@ -175,7 +175,7 @@ class PresentationBuilder {
   }
 }
 
-const builder = new PresentationBuilder();
+const builder = new PowerPointBuilder();
 
 // Render charts
 builder.addPieChartSlide({
@@ -371,10 +371,10 @@ builder.addTableSlide({
   data: displayProductPerformance.map((entity) => {
     const result: PowerPointTableCell[] = [
       { value: entity._id.subProduct },
-      { value: entity.impressions, format: PresentationBuilder.formatNumber },
-      { value: entity.clicks, format: PresentationBuilder.formatNumber },
-      { value: entity.ctr, format: PresentationBuilder.formatPercent },
-      { value: entity.conversions, format: PresentationBuilder.formatNumber },
+      { value: entity.impressions, format: PowerPointBuilder.formatNumber },
+      { value: entity.clicks, format: PowerPointBuilder.formatNumber },
+      { value: entity.ctr, format: PowerPointBuilder.formatPercent },
+      { value: entity.conversions, format: PowerPointBuilder.formatNumber },
     ];
 
     return result;
@@ -386,14 +386,14 @@ const videoClicks = getMinMax(videoProductPerformance, "clicks");
 const entities = videoProductPerformance.map((entity) => {
   const result: PowerPointTableCell[] = [
     { value: entity._id.subProduct },
-    { value: entity.impressions, format: PresentationBuilder.formatNumber },
+    { value: entity.impressions, format: PowerPointBuilder.formatNumber },
     {
       value: entity.videoCompletions,
-      format: PresentationBuilder.formatNumber,
+      format: PowerPointBuilder.formatNumber,
     },
-    { value: entity.vcr, format: PresentationBuilder.formatPercent },
-    { value: entity.clicks, format: PresentationBuilder.formatNumber },
-    { value: entity.ctr, format: PresentationBuilder.formatPercent },
+    { value: entity.vcr, format: PowerPointBuilder.formatPercent },
+    { value: entity.clicks, format: PowerPointBuilder.formatNumber },
+    { value: entity.ctr, format: PowerPointBuilder.formatPercent },
   ];
 
   return result;
@@ -464,7 +464,7 @@ builder.addBoxesSlide({
       {
         title: "CTR(%)",
         value: 0.15261760710334837,
-        format: PresentationBuilder.formatPercent,
+        format: PowerPointBuilder.formatPercent,
       },
     ],
     [
@@ -513,7 +513,7 @@ const videoTopKPIData = [
   {
     title: "VCR(%)",
     value: 45.0,
-    format: PresentationBuilder.formatPercent,
+    format: PowerPointBuilder.formatPercent,
   },
   {
     title: "Clicks",
@@ -523,7 +523,7 @@ const videoTopKPIData = [
   {
     title: "CTR(%)",
     value: 0.17,
-    format: PresentationBuilder.formatPercent,
+    format: PowerPointBuilder.formatPercent,
   },
 ];
 
