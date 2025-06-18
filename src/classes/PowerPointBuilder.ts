@@ -101,6 +101,10 @@ class PowerPointBuilder {
 
   addBoxesSlide(payload: PowerPointBoxesPayload) {
     this.slideGenerators.push((slide) => {
+      this.layout.renderSlideMarkup(slide, {
+        markup: payload.markup,
+      });
+
       this.boxes.render(slide, payload);
     });
 
@@ -111,9 +115,17 @@ class PowerPointBuilder {
     const { width, height } = this.layout.getSlideSizes(payload.markup);
 
     this.slideGenerators.push((slide) => {
+      this.layout.renderSlideMarkup(slide, {
+        markup: payload.markup,
+      });
+
+      const coords = this.layout.getContentCoords(payload.markup);
+
       this.table.render(slide, payload, {
         width,
         height,
+        x: coords.x,
+        y: coords.y,
       });
     });
 
@@ -125,11 +137,18 @@ class PowerPointBuilder {
     options: PowerPointBarChartOptions = {}
   ) {
     const { width, height } = this.layout.getSlideSizes(payload.markup);
+    const coords = this.layout.getContentCoords(payload.markup);
 
     this.slideGenerators.push((slide) => {
+      this.layout.renderSlideMarkup(slide, {
+        markup: payload.markup,
+      });
+
       this.charts.bar.render(slide, payload, options, {
         width,
         height,
+        x: coords.x,
+        y: coords.y,
       });
     });
 
@@ -140,9 +159,17 @@ class PowerPointBuilder {
     const { width, height } = this.layout.getSlideSizes(payload.markup);
 
     this.slideGenerators.push((slide) => {
+      this.layout.renderSlideMarkup(slide, {
+        markup: payload.markup,
+      });
+
+      const coords = this.layout.getContentCoords(payload.markup);
+
       this.charts.pie.render(slide, payload, {
         width,
         height,
+        x: coords.x,
+        y: coords.y,
       });
     });
 

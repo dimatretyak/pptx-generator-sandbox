@@ -39,18 +39,13 @@ export class PowerPointBarChart {
     options: PowerPointBarChartOptions,
     slideConfig: PowerPointSlideConfig
   ) {
-    this.layout.renderSlideMarkup(slide, {
-      markup: payload.markup,
-    });
-
-    const coords = this.layout.getContentCoords(payload.markup);
     const shouldRenderLines =
       Array.isArray(payload.lines) && payload.lines.length > 0;
 
     // Add background shape
     slide.addShape("roundRect", {
-      x: coords.x,
-      y: coords.y,
+      x: slideConfig.x,
+      y: slideConfig.y,
       w: slideConfig.width,
       h: slideConfig.height,
       rectRadius: this.config.roundess,
@@ -61,8 +56,8 @@ export class PowerPointBarChart {
     });
 
     const chartOptions: pptxgen.IChartOpts = {
-      x: coords.x + this.config.spacer,
-      y: coords.y + this.config.spacer,
+      x: slideConfig.x + this.config.spacer,
+      y: slideConfig.y + this.config.spacer,
       w: slideConfig.width - 2 * this.config.spacer,
       h: slideConfig.height - 2 * this.config.spacer,
       barDir: "col",
