@@ -5,7 +5,7 @@ import {
   PowerPointLayoutConfig,
   PowerPointValue,
   PowerPointSlideConfig,
-} from "../types/common";
+} from "../types/powerpoint.types";
 import {
   generateHeatmapColor,
   getTextColorByBackground,

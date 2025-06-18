@@ -2,7 +2,7 @@ import {
   PowerPointConfig,
   PowerPointLayoutConfig,
   PowerPointMarkup,
-} from "../types/common";
+} from "../types/powerpoint.types";
 import pptxgen from "pptxgenjs";
 import { isNumber } from "../utils/common";
 

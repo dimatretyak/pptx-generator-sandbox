@@ -4,7 +4,7 @@ import {
   PowerPointConfig,
   PowerPointLayoutConfig,
   PowerPointValue,
-} from "../types/common";
+} from "../types/powerpoint.types";
 import { formatValue } from "../utils/formatters";
 import { PowerPointLayout } from "./PowerPointLayout";
 

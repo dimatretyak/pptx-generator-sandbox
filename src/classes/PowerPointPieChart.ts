@@ -3,7 +3,7 @@ import {
   PowerPointConfig,
   PowerPointLayoutConfig,
   PowerPointSlideConfig,
-} from "../types/common";
+} from "../types/powerpoint.types";
 import { PowerPointLayout } from "./PowerPointLayout";
 
 export type PowerPointPieChartData = {

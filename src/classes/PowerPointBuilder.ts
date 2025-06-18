@@ -1,5 +1,5 @@
 import pptxgen from "pptxgenjs";
-import { PowerPointConfig, PowerPointValue } from "../types/common";
+import { PowerPointConfig, PowerPointValue } from "../types/powerpoint.types";
 import { isNumber, isString } from "../utils/common";
 import { formatNumber, formatPercent } from "../utils/formatters";
 import { PowerPointTable, PowerPointTablePayload } from ".//PowerPointTable";

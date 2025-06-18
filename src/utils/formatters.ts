@@ -1,5 +1,8 @@
 import { isNumber } from "./common";
-import { PowerPointValue, PowerPointValueFormatter } from "../types/common";
+import {
+  PowerPointValue,
+  PowerPointValueFormatter,
+} from "../types/powerpoint.types";
 
 export const formatNumber = (value: number) => {
   const formatter = new Intl.NumberFormat("en-US", {

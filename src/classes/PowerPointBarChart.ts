@@ -3,7 +3,7 @@ import {
   PowerPointConfig,
   PowerPointLayoutConfig,
   PowerPointSlideConfig,
-} from "../types/common";
+} from "../types/powerpoint.types";
 import { normalizeBarsChartData } from "../utils/charts";
 import { PowerPointLayout } from "./PowerPointLayout";
 
