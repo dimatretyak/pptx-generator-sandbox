@@ -3,7 +3,7 @@ import {
   PowerPointValueFormatter,
   PowerPointConfig,
   PowerPointValue,
-  PowerPointSlideOptions,
+  PowerPointSlideConfig,
 } from "../types/powerpoint.types";
 import { formatValue } from "../utils/formatters";
 import { PowerPointLayout } from "./PowerPointLayout";
@@ -30,20 +30,8 @@ export class PowerPointBoxes {
   render(
     slide: pptxgen.Slide,
     payload: PowerPointBoxesPayload,
-    options?: PowerPointSlideOptions
+    slideConfig: PowerPointSlideConfig
   ) {
-    const rect = options?.rect;
-    let { width, height } = this.layout.getSlideSizes(options);
-    let { x, y } = this.layout.getContentCoords(options);
-
-    // If a specific rectangle is provided, use its dimensions and coordinates
-    if (rect) {
-      width = rect.width;
-      height = rect.height;
-      x = rect.x;
-      y = rect.y;
-    }
-
     payload.data.forEach((row, rowIndex) => {
       row.forEach((col, colIndex) => {
         const info = this.layout.getCardSizeByRowCol({
@@ -52,12 +40,12 @@ export class PowerPointBoxes {
           rowIndex,
           colIndex,
           sizes: {
-            width,
-            height,
+            width: slideConfig.width,
+            height: slideConfig.height,
           },
           coords: {
-            x,
-            y,
+            x: slideConfig.x,
+            y: slideConfig.y,
           },
         });
 

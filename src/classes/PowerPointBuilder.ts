@@ -139,9 +139,9 @@ class PowerPointBuilder {
     options: PowerPointSlideOptions
   ) {
     this.slideGenerators.push((slide) => {
-      this.addMarkup(slide, options);
+      const config = this.addMarkup(slide, options);
 
-      this.boxes.render(slide, payload, options);
+      this.boxes.render(slide, payload, config);
     });
 
     return this;
@@ -223,22 +223,7 @@ class PowerPointBuilder {
           }
 
           if (col.type === "boxes") {
-            this.boxes.render(slide, col.payload, {
-              rect: {
-                width: info.width,
-                height: info.height,
-                x: info.x,
-                y: info.y,
-              },
-
-              // TODO: Remove markup
-              markup: {
-                text: {
-                  header: "",
-                  footer: "",
-                },
-              },
-            });
+            this.boxes.render(slide, col.payload, slideConfig);
           }
         });
       });
