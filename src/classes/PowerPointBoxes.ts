@@ -42,8 +42,14 @@ export class PowerPointBoxes {
           colsCount: Math.max(2, payload.data.length),
           rowIndex,
           colIndex,
-          sizes,
-          coords,
+          sizes: {
+            width: options?.width ?? sizes.width,
+            height: options?.height ?? sizes.height,
+          },
+          coords: {
+            x: options?.x ?? coords.x,
+            y: options?.y ?? coords.y,
+          },
         });
 
         slide.addText(

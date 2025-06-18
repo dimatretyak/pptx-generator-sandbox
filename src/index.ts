@@ -441,6 +441,44 @@ builder.addMultipleToSlide(
         },
       },
     ],
+    [
+      {
+        type: "boxes",
+        payload: {
+          data: [
+            [
+              {
+                title: "Impressions",
+                value: 177000000,
+                format: formatNumberWithSuffix,
+              },
+              {
+                title: "Clicks",
+                value: 269000,
+                format: formatNumberWithSuffix,
+              },
+              {
+                title: "CTR(%)",
+                value: 0.15261760710334837,
+                format: PowerPointBuilder.formatPercent,
+              },
+            ],
+            [
+              {
+                title: "Impressions",
+                value: 33300000,
+                format: formatNumberWithSuffix,
+              },
+              {
+                title: "Site Conversions",
+                value: 2700,
+                format: formatNumberWithSuffix,
+              },
+            ],
+          ],
+        },
+      },
+    ],
   ],
   {
     markup: {

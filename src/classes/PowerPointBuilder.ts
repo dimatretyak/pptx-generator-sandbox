@@ -139,7 +139,7 @@ class PowerPointBuilder {
     options: PowerPointSlideOptions
   ) {
     this.slideGenerators.push((slide) => {
-      const config = this.addMarkup(slide, options);
+      this.addMarkup(slide, options);
 
       this.boxes.render(slide, payload, options);
     });
@@ -193,6 +193,9 @@ class PowerPointBuilder {
     this.slideGenerators.push((slide) => {
       this.addMarkup(slide, options);
 
+      const sizes = this.layout.getSlideSizes(options);
+      const coords = this.layout.getContentCoords(options);
+
       entities.forEach((row, rowIndex) => {
         row.forEach((col, colIndex) => {
           const info = this.layout.getCardSizeByRowCol({
@@ -200,7 +203,8 @@ class PowerPointBuilder {
             colIndex,
             rowsCount: row.length,
             colsCount: entities.length,
-            options,
+            sizes,
+            coords,
           });
 
           const slideConfig: PowerPointSlideConfig = {
@@ -216,6 +220,23 @@ class PowerPointBuilder {
 
           if (col.type === "bar") {
             this.charts.bar.render(slide, col.payload, slideConfig);
+          }
+
+          if (col.type === "boxes") {
+            this.boxes.render(slide, col.payload, {
+              width: info.width,
+              height: info.height,
+              x: info.x,
+              y: info.y,
+
+              // TODO: Remove markup
+              markup: {
+                text: {
+                  header: "",
+                  footer: "",
+                },
+              },
+            });
           }
         });
       });

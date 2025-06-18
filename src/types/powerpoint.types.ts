@@ -52,4 +52,8 @@ export type PowerPointMarkup = {
 
 export type PowerPointSlideOptions = {
   markup: PowerPointMarkup;
+  width?: number;
+  height?: number;
+  x?: number;
+  y?: number;
 };
