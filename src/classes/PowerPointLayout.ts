@@ -23,12 +23,11 @@ export class PowerPointLayout {
     const horizontal = this.config.margin.left + this.config.margin.right;
     const vertical = this.config.margin.top + this.config.margin.bottom;
     let height =
-      this.config.slide.height -
-      vertical -
-      HEADER_SIZE -
-      FOOTER_SIZE -
-      CONTENT_TITLE_SIZE -
-      SLIDE_TITLE_SPACER;
+      this.config.slide.height - vertical - HEADER_SIZE - FOOTER_SIZE;
+
+    if (options.markup?.text.content) {
+      height -= CONTENT_TITLE_SIZE + SLIDE_TITLE_SPACER;
+    }
 
     if (isNumber(options.markup?.contentVerticalOffset)) {
       height -= options.markup.contentVerticalOffset * 2;
@@ -41,12 +40,14 @@ export class PowerPointLayout {
   }
 
   getContentCoords(options: Partial<PowerPointSlideOptions> = {}) {
-    let y =
-      HEADER_SIZE +
-      CONTENT_TITLE_SIZE +
-      this.config.margin.top +
-      SLIDE_TITLE_SPACER;
+    let y = HEADER_SIZE + this.config.margin.top;
 
+    // If content text is provided, add an offset
+    if (options.markup?.text.content) {
+      y += CONTENT_TITLE_SIZE + SLIDE_TITLE_SPACER;
+    }
+
+    // If vertical offset is specified, add an offset
     if (isNumber(options.markup?.contentVerticalOffset)) {
       y += options.markup.contentVerticalOffset;
     }
