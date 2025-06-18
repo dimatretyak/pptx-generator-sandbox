@@ -174,7 +174,7 @@ export class PowerPointLayout {
       },
     });
 
-    slide.addText(options.markup.text.content, {
+    slide.addText(options.markup.text.content!, {
       x: this.config.margin.left + HORIZONTAL_OFFSET,
       y,
       w: sizes.width - HORIZONTAL_OFFSET * 2,

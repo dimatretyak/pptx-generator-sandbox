@@ -399,48 +399,58 @@ builder.addBoxesSlide(
   }
 );
 
-builder.addMultipleToSlide([
+builder.addMultipleToSlide(
   [
-    {
-      type: "pie",
-      payload: {
-        data: {
-          name: "Project Status",
-          labels: [
-            "mobile_app",
-            "mobile_web",
-            "desktop",
-            "Smartphone",
-            "Desktop",
-          ],
-          values: [2265852, 12640, 33414, 40621, 1953],
-          colors: ["0088FE", "00C49F", "FFBB28", "FF8042"],
+    [
+      {
+        type: "pie",
+        payload: {
+          data: {
+            name: "Project Status",
+            labels: [
+              "mobile_app",
+              "mobile_web",
+              "desktop",
+              "Smartphone",
+              "Desktop",
+            ],
+            values: [2265852, 12640, 33414, 40621, 1953],
+            colors: ["0088FE", "00C49F", "FFBB28", "FF8042"],
+          },
         },
       },
-    },
-    {
-      type: "bar",
-      payload: {
-        labelFormatCode: "0.00%",
-        data: [
-          {
-            name: "Display - CTR Last 6 Months",
-            color: "cdd8f2",
-            labels: [
-              "2024-12",
-              "2025-01",
-              "2025-02",
-              "2025-03",
-              "2025-04",
-              "2025-05",
-            ],
-            values: [0.00093, 0.00127, 0.00127, 0.00115, 0.00145, 0.00145],
-          },
-        ],
+      {
+        type: "bar",
+        payload: {
+          labelFormatCode: "0.00%",
+          data: [
+            {
+              name: "Display - CTR Last 6 Months",
+              color: "cdd8f2",
+              labels: [
+                "2024-12",
+                "2025-01",
+                "2025-02",
+                "2025-03",
+                "2025-04",
+                "2025-05",
+              ],
+              values: [0.00093, 0.00127, 0.00127, 0.00115, 0.00145, 0.00145],
+            },
+          ],
+        },
+      },
+    ],
+  ],
+  {
+    markup: {
+      text: {
+        header: "Multiple Charts",
+        footer: "05/12 - 06/01 2025",
       },
     },
-  ],
-]);
+  }
+);
 
 // Add slides with cards
 // for (const data of cards) {

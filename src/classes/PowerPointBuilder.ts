@@ -186,8 +186,13 @@ class PowerPointBuilder {
     return this;
   }
 
-  addMultipleToSlide(entities: PowerPointMultipleEntity[][]) {
+  addMultipleToSlide(
+    entities: PowerPointMultipleEntity[][],
+    options: PowerPointSlideOptions
+  ) {
     this.slideGenerators.push((slide) => {
+      this.addMarkup(slide, options);
+
       entities.forEach((row, rowIndex) => {
         row.forEach((col, colIndex) => {
           const info = this.layout.getCardSizeByRowCol({
@@ -195,6 +200,7 @@ class PowerPointBuilder {
             colIndex,
             rowsCount: row.length,
             colsCount: entities.length,
+            options,
           });
 
           const slideConfig: PowerPointSlideConfig = {

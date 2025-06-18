@@ -45,7 +45,7 @@ export type PowerPointMarkup = {
   contentVerticalOffset?: number;
   text: {
     header: string;
-    content: string;
+    content?: string;
     footer: string;
   };
 };
