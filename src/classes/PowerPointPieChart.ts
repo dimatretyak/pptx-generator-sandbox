@@ -2,7 +2,7 @@ import pptxgen from "pptxgenjs";
 import {
   PowerPointConfig,
   PowerPointLayoutConfig,
-  SlideConfig,
+  PowerPointSlideConfig,
 } from "../types/common";
 import { PowerPointLayout } from "./PowerPointLayout";
 
@@ -29,7 +29,7 @@ export class PowerPointPieChart {
   render(
     slide: pptxgen.Slide,
     payload: PowerPointPieChartPayload,
-    slideConfig: SlideConfig
+    slideConfig: PowerPointSlideConfig
   ) {
     this.layout.renderSlideMarkup(slide, {
       markup: payload.markup,

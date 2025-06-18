@@ -4,7 +4,7 @@ import {
   PowerPointConfig,
   PowerPointLayoutConfig,
   PowerPointValue,
-  SlideConfig,
+  PowerPointSlideConfig,
 } from "../types/common";
 import {
   generateHeatmapColor,
@@ -46,7 +46,7 @@ export class PowerPointTable {
   render(
     slide: pptxgen.Slide,
     payload: PowerPointTablePayload,
-    slideConfig: SlideConfig
+    slideConfig: PowerPointSlideConfig
   ) {
     this.layout.renderSlideMarkup(slide, {
       markup: payload.markup,
