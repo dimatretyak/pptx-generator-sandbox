@@ -121,8 +121,8 @@ class PowerPointBuilder {
     slide: pptxgen.Slide,
     options: PowerPointSlideOptions
   ): PowerPointSlideConfig {
-    const { width, height } = this.layout.getSlideSizes(options.markup);
-    const coords = this.layout.getContentCoords(options.markup);
+    const { width, height } = this.layout.getSlideSizes(options);
+    const coords = this.layout.getContentCoords(options);
 
     this.layout.renderSlideMarkup(slide, options);
 

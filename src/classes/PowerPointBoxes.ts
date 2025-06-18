@@ -39,7 +39,7 @@ export class PowerPointBoxes {
           colsCount: Math.max(2, payload.data.length),
           rowIndex,
           colIndex,
-          markup: options.markup,
+          options,
         });
 
         slide.addText(
