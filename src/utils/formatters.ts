@@ -1,5 +1,5 @@
 import { isNumber } from "./common";
-import { PowerPointValue } from "../types/common";
+import { PowerPointValue, PowerPointValueFormatter } from "../types/common";
 
 export const formatNumber = (value: number) => {
   const formatter = new Intl.NumberFormat("en-US", {
@@ -54,7 +54,7 @@ export function formatNumberWithSuffix(value: unknown) {
 
 export const formatValue = (
   value: PowerPointValue,
-  formatter?: (value: PowerPointValue) => string
+  formatter?: PowerPointValueFormatter
 ): string => {
   if (typeof formatter === "function") {
     return formatter(value);

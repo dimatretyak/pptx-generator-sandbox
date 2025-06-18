@@ -1,6 +1,6 @@
 import pptxgen from "pptxgenjs";
 import {
-  Formatter,
+  PowerPointValueFormatter,
   PowerPointConfig,
   PowerPointLayoutConfig,
   PowerPointValue,
@@ -11,7 +11,7 @@ import { PowerPointLayout } from "./PowerPointLayout";
 export type PowerPointBoxEntity = {
   title: string;
   value: PowerPointValue;
-  format?: Formatter;
+  format?: PowerPointValueFormatter;
 };
 
 export type PowerPointBoxesPayload = PowerPointLayoutConfig & {

@@ -1,5 +1,5 @@
 export type PowerPointValue = string | number | undefined;
-export type Formatter = (value: PowerPointValue) => string;
+export type PowerPointValueFormatter = (value: PowerPointValue) => string;
 
 export type PowerPointChartDataEntity = {
   labels: string[];

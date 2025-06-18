@@ -1,6 +1,6 @@
 import pptxgen from "pptxgenjs";
 import {
-  Formatter,
+  PowerPointValueFormatter,
   PowerPointConfig,
   PowerPointLayoutConfig,
   PowerPointValue,
@@ -26,7 +26,7 @@ type PowerPointTableTableHeader = {
 
 export type PowerPointTableCell = {
   value: PowerPointValue;
-  format?: Formatter;
+  format?: PowerPointValueFormatter;
 };
 
 export type PowerPointTablePayload = PowerPointLayoutConfig & {
