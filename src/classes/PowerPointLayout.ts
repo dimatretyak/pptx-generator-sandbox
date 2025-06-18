@@ -63,19 +63,24 @@ export class PowerPointLayout {
     colsCount: number;
     rowIndex: number;
     colIndex: number;
-    options?: PowerPointSlideOptions;
+    sizes: {
+      width: number;
+      height: number;
+    };
+    coords: {
+      x: number;
+      y: number;
+    };
   }) {
-    const { rowsCount, colsCount, rowIndex, colIndex, options } = payload;
-    const slide = this.getSlideSizes(options);
-    const coords = this.getContentCoords(options);
+    const { rowsCount, colsCount, rowIndex, colIndex, sizes, coords } = payload;
 
     // Calculate cell size based on the number of rows
     const CELL_SIZE =
-      (slide.width - this.config.spacer * (rowsCount - 1)) / rowsCount;
+      (sizes.width - this.config.spacer * (rowsCount - 1)) / rowsCount;
 
     // Calculate column size based on the number of columns
     let COL_SIZE =
-      (slide.height - this.config.spacer * (colsCount - 1)) / colsCount;
+      (sizes.height - this.config.spacer * (colsCount - 1)) / colsCount;
 
     // Calculate offsets for positioning the cells
     const X_OFFSET = CELL_SIZE + this.config.spacer;
@@ -85,7 +90,7 @@ export class PowerPointLayout {
 
     // Center the cards vertically if there's only one row
     if (colsCount === 1) {
-      Y_BASE = (slide.height - COL_SIZE) / 2;
+      Y_BASE = (sizes.height - COL_SIZE) / 2;
     }
 
     return {

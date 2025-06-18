@@ -30,8 +30,11 @@ export class PowerPointBoxes {
   render(
     slide: pptxgen.Slide,
     payload: PowerPointBoxesPayload,
-    options: PowerPointSlideOptions
+    options?: PowerPointSlideOptions
   ) {
+    const sizes = this.layout.getSlideSizes(options);
+    const coords = this.layout.getContentCoords(options);
+
     payload.data.forEach((row, rowIndex) => {
       row.forEach((col, colIndex) => {
         const info = this.layout.getCardSizeByRowCol({
@@ -39,7 +42,8 @@ export class PowerPointBoxes {
           colsCount: Math.max(2, payload.data.length),
           rowIndex,
           colIndex,
-          options,
+          sizes,
+          coords,
         });
 
         slide.addText(
