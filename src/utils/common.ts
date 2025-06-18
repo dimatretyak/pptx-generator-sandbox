@@ -28,10 +28,6 @@ export const getTextColorByBackground = (backgroundColor: string) => {
   return "#000000";
 };
 
-export const stripHexHash = (color: string) => {
-  return color.replace("#", "");
-};
-
 export function isNumber(value: unknown): value is number {
   return typeof value === "number" && !isNaN(value);
 }

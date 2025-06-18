@@ -10,10 +10,10 @@ import {
   generateHeatmapColor,
   getTextColorByBackground,
   isNumber,
-  stripHexHash,
 } from "../utils/common";
 import { formatValue } from "../utils/formatters";
 import { PowerPointLayout } from "./PowerPointLayout";
+import { stripHexHash } from "../utils/powerpoint/common";
 
 type PowerPointTableTableHeader = {
   text: string;

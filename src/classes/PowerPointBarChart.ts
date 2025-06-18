@@ -4,7 +4,7 @@ import {
   PowerPointLayoutConfig,
   PowerPointSlideConfig,
 } from "../types/powerpoint.types";
-import { normalizeBarsChartData } from "../utils/charts";
+import { normalizeBarsChartData } from "../utils/powerpoint/charts";
 import { PowerPointLayout } from "./PowerPointLayout";
 
 export type PowerPointBarChartDataEntity = {
