@@ -1,4 +1,4 @@
-import { isNumber } from "./common";
+import { isNumber, isString } from "./common";
 import {
   PowerPointValue,
   PowerPointValueFormatter,
@@ -63,12 +63,8 @@ export const formatValue = (
     return formatter(value);
   }
 
-  if (typeof value === "number") {
-    return value.toString();
-  }
-
-  if (typeof value === "string") {
-    return value;
+  if (isNumber(value) || isString(value)) {
+    return formatNumberWithSuffix(value);
   }
 
   return "-";

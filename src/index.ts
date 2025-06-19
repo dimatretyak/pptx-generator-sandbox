@@ -356,6 +356,57 @@ builder.addBoxesSlide(
   }
 );
 
+builder.addBoxesSlide(
+  {
+    data: [
+      [
+        {
+          title: "Impressions",
+          value: 175200392,
+          prevValue: 185352006,
+          changePercentage: -5.476937757015697,
+          format: formatNumberWithSuffix,
+        },
+        {
+          title: "Clicks",
+          value: 269417,
+          prevValue: 275696,
+          changePercentage: -2.2775085601532123,
+        },
+        {
+          title: "CTR(%)",
+          value: 0.15377648241791605,
+          prevValue: 0.14874184852361405,
+          changePercentage: 3.384813315334529,
+        },
+      ],
+      [
+        {
+          title: "Clicks",
+          value: 269417,
+          prevValue: 275696,
+          changePercentage: -2.2775085601532123,
+        },
+        {
+          title: "CTR(%)",
+          value: 0.15377648241791605,
+          prevValue: 0.14874184852361405,
+          changePercentage: 3.384813315334529,
+        },
+      ],
+    ],
+  },
+  {
+    markup: {
+      text: {
+        header: "Display Ads - Overall Performance",
+        content: "Display - Top KPIs",
+        footer: "05/12 - 06/01 2025",
+      },
+    },
+  }
+);
+
 const videoTopKPIData = [
   {
     title: "Impressions",

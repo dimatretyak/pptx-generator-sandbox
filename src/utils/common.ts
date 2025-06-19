@@ -28,6 +28,18 @@ export const getTextColorByBackground = (backgroundColor: string) => {
   return "#000000";
 };
 
+// TODO: Reuse this function from Lumina in the future
+export const determineChangeIndicator = (
+  changePercentage: number | string
+): "neutral" | "increase" | "decrease" => {
+  if (typeof changePercentage !== "number") {
+    changePercentage = Number(changePercentage.replace("%", "")) || 0;
+  }
+  if (changePercentage === 0) return "neutral";
+
+  return changePercentage < 0 ? "decrease" : "increase";
+};
+
 export function isNumber(value: unknown): value is number {
   return typeof value === "number" && !isNaN(value);
 }
