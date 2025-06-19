@@ -36,7 +36,7 @@ export class PowerPointBoxes {
       row.forEach((col, colIndex) => {
         const info = this.layout.getCardSizeByRowCol({
           rowsCount: row.length,
-          colsCount: Math.max(2, payload.data.length),
+          colsCount: payload.data.length,
           rowIndex,
           colIndex,
           sizes: {
