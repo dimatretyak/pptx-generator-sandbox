@@ -7,7 +7,7 @@ import {
 } from "../types/powerpoint.types";
 import { formatValue } from "../utils/formatters";
 import { PowerPointLayout } from "./PowerPointLayout";
-import { isNumber } from "../utils/common";
+import { determineChangeIndicator, isNumber } from "../utils/common";
 
 export type PowerPointBoxEntity = {
   title: string;
@@ -71,11 +71,30 @@ export class PowerPointBoxes {
         ];
 
         if (isNumber(col.changePercentage)) {
+          const value = formatValue(col.changePercentage, col.format);
+          const changeIndicator = determineChangeIndicator(
+            col.changePercentage
+          );
+
+          let text = `${value}`;
+          let color = "000000";
+
+          if (changeIndicator === "decrease") {
+            text = `${value} ▼`;
+            color = "d32f2f";
+          }
+
+          if (changeIndicator === "increase") {
+            text = `${value} ▲`;
+            color = "2e7d32";
+          }
+
           texts.push({
-            text: formatValue(col.changePercentage, col.format),
+            text,
             options: {
               fontSize: 16,
               breakLine: true,
+              color,
             },
           });
         }
