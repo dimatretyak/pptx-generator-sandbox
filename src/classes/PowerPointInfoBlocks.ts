@@ -37,14 +37,14 @@ export class PowerPointInfoBlocks {
       {
         text: entity.title,
         options: {
-          fontSize: 14,
+          fontSize: 12,
           breakLine: true,
         },
       },
       {
         text: formatValue(entity.value, entity.format),
         options: {
-          fontSize: 24,
+          fontSize: 18,
           bold: true,
           breakLine: true,
         },
@@ -71,7 +71,7 @@ export class PowerPointInfoBlocks {
       texts.push({
         text,
         options: {
-          fontSize: 16,
+          fontSize: 12,
           breakLine: true,
           color,
         },
@@ -82,7 +82,7 @@ export class PowerPointInfoBlocks {
       texts.push({
         text: `vs ${formatValue(entity.prevValue, entity.format)} prev.`,
         options: {
-          fontSize: 14,
+          fontSize: 10,
           color: "9e9e9e",
         },
       });
