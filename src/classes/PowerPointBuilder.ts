@@ -40,6 +40,11 @@ type PowerPointMultipleEntity =
       type: "boxes";
       title: string;
       payload: PowerPointBoxesPayload;
+    }
+  | {
+      type: "table";
+      title: string;
+      payload: PowerPointTablePayload;
     };
 
 class PowerPointBuilder {
@@ -233,6 +238,10 @@ class PowerPointBuilder {
 
           if (col.type === "boxes") {
             this.boxes.render(slide, col.payload, slideConfig);
+          }
+
+          if (col.type === "table") {
+            this.table.render(slide, col.payload, slideConfig);
           }
         });
       });

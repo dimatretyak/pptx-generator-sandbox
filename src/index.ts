@@ -605,6 +605,83 @@ builder.addMultipleToSlide(
   }
 );
 
+builder.addMultipleToSlide(
+  [
+    [
+      {
+        type: "pie",
+        title: "Pie",
+        payload: {
+          data: {
+            name: "Project Status",
+            labels: [
+              "mobile_app",
+              "mobile_web",
+              "desktop",
+              "Smartphone",
+              "Desktop",
+            ],
+            values: [2265852, 12640, 33414, 40621, 1953],
+            colors: ["0088FE", "00C49F", "FFBB28", "FF8042"],
+          },
+        },
+      },
+      {
+        type: "table",
+        title: "Table",
+        payload: {
+          headers: [
+            { text: "Product" },
+            { text: "Impressions" },
+            {
+              text: "Clicks",
+              heatMap: {
+                colorPalette: ["#e3f2fd", "#0d47a1"],
+                maxValue: clicks.max,
+                minValue: clicks.min,
+              },
+            },
+            { text: "CTR(%)" },
+            {
+              text: "Total Conversions",
+              heatMap: {
+                colorPalette: ["#fadcb4", "#f29111"],
+                maxValue: totalConversions.max,
+                minValue: totalConversions.min,
+              },
+            },
+          ],
+          data: displayProductPerformance.slice(0, 3).map((entity) => {
+            const result: PowerPointTableCell[] = [
+              { value: entity._id.subProduct },
+              {
+                value: entity.impressions,
+                format: PowerPointBuilder.formatNumber,
+              },
+              { value: entity.clicks, format: PowerPointBuilder.formatNumber },
+              { value: entity.ctr, format: PowerPointBuilder.formatPercent },
+              {
+                value: entity.conversions,
+                format: PowerPointBuilder.formatNumber,
+              },
+            ];
+
+            return result;
+          }),
+        },
+      },
+    ],
+  ],
+  {
+    markup: {
+      text: {
+        header: "Multiple Charts - 2 rows with table",
+        footer: "05/12 - 06/01 2025",
+      },
+    },
+  }
+);
+
 // Add slides with cards
 // for (const data of cards) {
 //   builder.addBoxesSlide(data);
