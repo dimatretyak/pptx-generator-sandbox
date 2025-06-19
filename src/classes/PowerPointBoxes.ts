@@ -23,8 +23,6 @@ export type PowerPointBoxesPayload = {
   data: PowerPointBoxEntity[][];
 };
 
-// const CIRCLE_SIZE =
-
 export class PowerPointBoxes {
   private config: PowerPointConfig;
   private layout: PowerPointLayout;
