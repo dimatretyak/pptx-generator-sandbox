@@ -30,6 +30,65 @@ export class PowerPointBoxes {
     this.layout = layout;
   }
 
+  private getTexts(entity: PowerPointBoxEntity) {
+    const texts: pptxgen.TextProps[] = [
+      {
+        text: entity.title,
+        options: {
+          fontSize: 14,
+          breakLine: true,
+        },
+      },
+      {
+        text: formatValue(entity.value, entity.format),
+        options: {
+          fontSize: 24,
+          bold: true,
+          breakLine: true,
+        },
+      },
+    ];
+
+    if (isNumber(entity.changePercentage)) {
+      const value = formatValue(entity.changePercentage, entity.format);
+      const changeIndicator = determineChangeIndicator(entity.changePercentage);
+
+      let text = `${value}`;
+      let color = "000000";
+
+      if (changeIndicator === "decrease") {
+        text = `${value} ▼`;
+        color = "d32f2f";
+      }
+
+      if (changeIndicator === "increase") {
+        text = `${value} ▲`;
+        color = "2e7d32";
+      }
+
+      texts.push({
+        text,
+        options: {
+          fontSize: 16,
+          breakLine: true,
+          color,
+        },
+      });
+    }
+
+    if (isNumber(entity.prevValue)) {
+      texts.push({
+        text: `vs ${formatValue(entity.prevValue, entity.format)} prev.`,
+        options: {
+          fontSize: 14,
+          color: "9e9e9e",
+        },
+      });
+    }
+
+    return texts;
+  }
+
   render(
     slide: pptxgen.Slide,
     payload: PowerPointBoxesPayload,
@@ -52,62 +111,7 @@ export class PowerPointBoxes {
           },
         });
 
-        const texts: pptxgen.TextProps[] = [
-          {
-            text: col.title,
-            options: {
-              fontSize: 14,
-              breakLine: true,
-            },
-          },
-          {
-            text: formatValue(col.value, col.format),
-            options: {
-              fontSize: 24,
-              bold: true,
-              breakLine: true,
-            },
-          },
-        ];
-
-        if (isNumber(col.changePercentage)) {
-          const value = formatValue(col.changePercentage, col.format);
-          const changeIndicator = determineChangeIndicator(
-            col.changePercentage
-          );
-
-          let text = `${value}`;
-          let color = "000000";
-
-          if (changeIndicator === "decrease") {
-            text = `${value} ▼`;
-            color = "d32f2f";
-          }
-
-          if (changeIndicator === "increase") {
-            text = `${value} ▲`;
-            color = "2e7d32";
-          }
-
-          texts.push({
-            text,
-            options: {
-              fontSize: 16,
-              breakLine: true,
-              color,
-            },
-          });
-        }
-
-        if (isNumber(col.prevValue)) {
-          texts.push({
-            text: `vs ${formatValue(col.prevValue, col.format)} prev.`,
-            options: {
-              fontSize: 14,
-              color: "9e9e9e",
-            },
-          });
-        }
+        const texts = this.getTexts(col);
 
         slide.addText(texts, {
           shape: "roundRect",
