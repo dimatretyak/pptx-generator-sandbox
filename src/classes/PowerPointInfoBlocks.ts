@@ -19,11 +19,11 @@ export type PowerPointBoxEntity = {
   format?: PowerPointValueFormatter;
 };
 
-export type PowerPointBoxesPayload = {
+export type PowerPointInfoBlockPayload = {
   data: PowerPointBoxEntity[][];
 };
 
-export class PowerPointBoxes {
+export class PowerPointInfoBlocks {
   private config: PowerPointConfig;
   private layout: PowerPointLayout;
 
@@ -91,9 +91,9 @@ export class PowerPointBoxes {
     return texts;
   }
 
-  render(
+  renderRoundedRectangles(
     slide: pptxgen.Slide,
-    payload: PowerPointBoxesPayload,
+    payload: PowerPointInfoBlockPayload,
     slideConfig: PowerPointSlideConfig
   ) {
     payload.data.forEach((row, rowIndex) => {
@@ -135,7 +135,7 @@ export class PowerPointBoxes {
 
   renderCircles(
     slide: pptxgen.Slide,
-    payload: PowerPointBoxesPayload,
+    payload: PowerPointInfoBlockPayload,
     slideConfig: PowerPointSlideConfig
   ) {
     payload.data.forEach((row, rowIndex) => {
