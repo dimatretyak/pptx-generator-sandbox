@@ -155,8 +155,7 @@ export class PowerPointBoxes {
           },
         });
 
-        // TOOD: Dynamic size when cols count > 2
-        const size = 1.5;
+        const size = 1.75;
         const totalWidth =
           row.length * size + (row.length - 1) * this.config.spacer;
         const leftOffset = slideConfig.x + (slideConfig.width - totalWidth) / 2;
@@ -164,17 +163,24 @@ export class PowerPointBoxes {
 
         const texts = this.getTexts(col);
 
+        slide.addShape("ellipse", {
+          x: leftOffset + (size + this.config.spacer) * colIndex,
+          y: topOffset,
+          w: size,
+          h: size,
+          line: {
+            color: this.config.border.color,
+            size: this.config.border.size,
+          },
+        });
+
         slide.addText(texts, {
-          shape: "rect",
+          shape: "rect", // TODO: remove in the future
           x: leftOffset + (size + this.config.spacer) * colIndex,
           y: topOffset,
           w: size,
           h: size,
           align: "center",
-          line: {
-            color: this.config.border.color,
-            size: this.config.border.size,
-          },
         });
       });
     });
