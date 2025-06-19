@@ -157,7 +157,7 @@ export class PowerPointBoxes {
           },
         });
 
-        const size = 1.75;
+        const size = Math.min(1.75, info.height);
         const offset = 0.15;
         const totalWidth =
           row.length * size + (row.length - 1) * this.config.spacer;
@@ -167,7 +167,7 @@ export class PowerPointBoxes {
         const y = topOffset;
 
         const texts = this.getTexts(col);
-        const backgroundImage = path.join(config.path.images, "circle.svg");
+        const backgroundImage = path.join(config.path.images, "circle-bg.svg");
 
         slide.addImage({
           x: x - offset / 2,
