@@ -380,6 +380,20 @@ builder.addBoxesSlide(
           changePercentage: 3.384813315334529,
         },
       ],
+      [
+        {
+          title: "Clicks",
+          value: 269417,
+          prevValue: 275696,
+          changePercentage: -2.2775085601532123,
+        },
+        {
+          title: "CTR(%)",
+          value: 0.15377648241791605,
+          prevValue: 0.14874184852361405,
+          changePercentage: 3.384813315334529,
+        },
+      ],
     ],
   },
   {
