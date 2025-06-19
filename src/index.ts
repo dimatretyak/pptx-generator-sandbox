@@ -314,6 +314,39 @@ builder.addBoxesSlide(
           format: PowerPointBuilder.formatPercent,
         },
       ],
+    ],
+  },
+  {
+    markup: {
+      text: {
+        header: "Display Ads - Overall Performance",
+        content: "Display - Top KPIs",
+        footer: "05/12 - 06/01 2025",
+      },
+    },
+  }
+);
+
+builder.addBoxesSlide(
+  {
+    data: [
+      [
+        {
+          title: "Impressions",
+          value: 177000000,
+          format: formatNumberWithSuffix,
+        },
+        {
+          title: "Clicks",
+          value: 269000,
+          format: formatNumberWithSuffix,
+        },
+        {
+          title: "CTR(%)",
+          value: 0.15261760710334837,
+          format: PowerPointBuilder.formatPercent,
+        },
+      ],
       [
         {
           title: "Impressions",
@@ -444,6 +477,90 @@ builder.addBoxesSlide(
       text: {
         header: "Video Ads - Overall Performance",
         content: "Video - Top KPIs",
+        footer: "05/12 - 06/01 2025",
+      },
+    },
+  }
+);
+
+builder.addCirclesSlide(
+  {
+    data: [
+      [
+        {
+          title: "Impressions",
+          value: 177000000,
+          format: formatNumberWithSuffix,
+        },
+        {
+          title: "Clicks",
+          value: 269000,
+          format: formatNumberWithSuffix,
+        },
+        {
+          title: "CTR(%)",
+          value: 0.15261760710334837,
+          format: PowerPointBuilder.formatPercent,
+        },
+      ],
+    ],
+  },
+  {
+    markup: {
+      text: {
+        header: "Display Ads - Overall Performance",
+        content: "Display - Top KPIs",
+        footer: "05/12 - 06/01 2025",
+      },
+    },
+  }
+);
+
+builder.addCirclesSlide(
+  {
+    data: [
+      [
+        {
+          title: "Impressions",
+          value: 175200392,
+          prevValue: 185352006,
+          changePercentage: -5.476937757015697,
+          format: formatNumberWithSuffix,
+        },
+        {
+          title: "Clicks",
+          value: 269417,
+          prevValue: 275696,
+          changePercentage: -2.2775085601532123,
+        },
+        {
+          title: "CTR(%)",
+          value: 0.15377648241791605,
+          prevValue: 0.14874184852361405,
+          changePercentage: 3.384813315334529,
+        },
+      ],
+      [
+        {
+          title: "Clicks",
+          value: 269417,
+          prevValue: 275696,
+          changePercentage: -2.2775085601532123,
+        },
+        {
+          title: "CTR(%)",
+          value: 0.15377648241791605,
+          prevValue: 0.14874184852361405,
+          changePercentage: 3.384813315334529,
+        },
+      ],
+    ],
+  },
+  {
+    markup: {
+      text: {
+        header: "Display Ads - Overall Performance",
+        content: "Display - Top KPIs",
         footer: "05/12 - 06/01 2025",
       },
     },
@@ -820,6 +937,298 @@ builder.addMultipleToSlide(
     markup: {
       text: {
         header: "Multiple - 2 rows and 2 cols",
+        footer: "05/12 - 06/01 2025",
+      },
+    },
+  }
+);
+
+builder.addMultipleToSlide(
+  [
+    [
+      {
+        type: "pie",
+        title: "Pie",
+        payload: {
+          data: {
+            name: "Project Status",
+            labels: [
+              "mobile_app",
+              "mobile_web",
+              "desktop",
+              "Smartphone",
+              "Desktop",
+            ],
+            values: [2265852, 12640, 33414, 40621, 1953],
+            colors: ["0088FE", "00C49F", "FFBB28", "FF8042"],
+          },
+        },
+      },
+      {
+        type: "bar",
+        title: "Bar",
+        payload: {
+          labelFormatCode: "0.00%",
+          data: [
+            {
+              name: "Display - CTR Last 6 Months",
+              color: "cdd8f2",
+              labels: [
+                "2024-12",
+                "2025-01",
+                "2025-02",
+                "2025-03",
+                "2025-04",
+                "2025-05",
+              ],
+              values: [0.00093, 0.00127, 0.00127, 0.00115, 0.00145, 0.00145],
+            },
+          ],
+        },
+      },
+    ],
+    [
+      {
+        type: "circles",
+        title: "Circles",
+        payload: {
+          data: [
+            [
+              {
+                title: "Impressions",
+                value: 177000000,
+                format: formatNumberWithSuffix,
+              },
+              {
+                title: "Clicks",
+                value: 269000,
+                format: formatNumberWithSuffix,
+              },
+              {
+                title: "CTR(%)",
+                value: 0.15261760710334837,
+                format: PowerPointBuilder.formatPercent,
+              },
+            ],
+          ],
+        },
+      },
+    ],
+  ],
+  {
+    markup: {
+      text: {
+        header: "Multiple - 2 rows and 1 col",
+        footer: "05/12 - 06/01 2025",
+      },
+    },
+  }
+);
+
+builder.addMultipleToSlide(
+  [
+    [
+      {
+        type: "pie",
+        title: "Pie",
+        payload: {
+          data: {
+            name: "Project Status",
+            labels: [
+              "mobile_app",
+              "mobile_web",
+              "desktop",
+              "Smartphone",
+              "Desktop",
+            ],
+            values: [2265852, 12640, 33414, 40621, 1953],
+            colors: ["0088FE", "00C49F", "FFBB28", "FF8042"],
+          },
+        },
+      },
+      {
+        type: "bar",
+        title: "Bar",
+        payload: {
+          labelFormatCode: "0.00%",
+          data: [
+            {
+              name: "Display - CTR Last 6 Months",
+              color: "cdd8f2",
+              labels: [
+                "2024-12",
+                "2025-01",
+                "2025-02",
+                "2025-03",
+                "2025-04",
+                "2025-05",
+              ],
+              values: [0.00093, 0.00127, 0.00127, 0.00115, 0.00145, 0.00145],
+            },
+          ],
+        },
+      },
+    ],
+    [
+      {
+        type: "circles",
+        title: "Circles",
+        payload: {
+          data: [
+            [
+              {
+                title: "Impressions",
+                value: 175200392,
+                prevValue: 185352006,
+                changePercentage: -5.476937757015697,
+                format: formatNumberWithSuffix,
+              },
+              {
+                title: "Clicks",
+                value: 269417,
+                prevValue: 275696,
+                changePercentage: -2.2775085601532123,
+              },
+              {
+                title: "CTR(%)",
+                value: 0.15377648241791605,
+                prevValue: 0.14874184852361405,
+                changePercentage: 3.384813315334529,
+              },
+            ],
+          ],
+        },
+      },
+    ],
+  ],
+  {
+    markup: {
+      text: {
+        header: "Multiple - 2 rows and 1 col",
+        footer: "05/12 - 06/01 2025",
+      },
+    },
+  }
+);
+
+builder.addMultipleToSlide(
+  [
+    [
+      {
+        type: "pie",
+        title: "Pie",
+        payload: {
+          data: {
+            name: "Project Status",
+            labels: [
+              "mobile_app",
+              "mobile_web",
+              "desktop",
+              "Smartphone",
+              "Desktop",
+            ],
+            values: [2265852, 12640, 33414, 40621, 1953],
+            colors: ["0088FE", "00C49F", "FFBB28", "FF8042"],
+          },
+        },
+      },
+      {
+        type: "circles",
+        title: "Circles",
+        payload: {
+          data: [
+            [
+              {
+                title: "Impressions",
+                value: 175200392,
+                prevValue: 185352006,
+                changePercentage: -5.476937757015697,
+                format: formatNumberWithSuffix,
+              },
+              {
+                title: "Clicks",
+                value: 269417,
+                prevValue: 275696,
+                changePercentage: -2.2775085601532123,
+              },
+            ],
+          ],
+        },
+      },
+    ],
+  ],
+  {
+    markup: {
+      text: {
+        header: "Multiple - 2 rows",
+        footer: "05/12 - 06/01 2025",
+      },
+    },
+  }
+);
+
+builder.addMultipleToSlide(
+  [
+    [
+      {
+        type: "circles",
+        title: "Circles",
+        payload: {
+          data: [
+            [
+              {
+                title: "Impressions",
+                value: 175200392,
+                prevValue: 185352006,
+                changePercentage: -5.476937757015697,
+                format: formatNumberWithSuffix,
+              },
+              {
+                title: "Clicks",
+                value: 269417,
+                prevValue: 275696,
+                changePercentage: -2.2775085601532123,
+              },
+            ],
+          ],
+        },
+      },
+      {
+        type: "circles",
+        title: "Circles",
+        payload: {
+          data: [
+            [
+              {
+                title: "Impressions",
+                value: 175200392,
+                format: formatNumberWithSuffix,
+              },
+              {
+                title: "Clicks",
+                value: 269417,
+              },
+            ],
+            [
+              {
+                title: "Impressions",
+                value: 175200392,
+                format: formatNumberWithSuffix,
+              },
+              {
+                title: "Clicks",
+                value: 269417,
+              },
+            ],
+          ],
+        },
+      },
+    ],
+  ],
+  {
+    markup: {
+      text: {
+        header: "Multiple - 2 rows",
         footer: "05/12 - 06/01 2025",
       },
     },
