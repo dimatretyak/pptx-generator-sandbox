@@ -668,6 +668,113 @@ builder.addMultipleToSlide(
   }
 );
 
+builder.addMultipleToSlide(
+  [
+    [
+      {
+        type: "pie",
+        title: "Pie",
+        payload: {
+          data: {
+            name: "Project Status",
+            labels: [
+              "mobile_app",
+              "mobile_web",
+              "desktop",
+              "Smartphone",
+              "Desktop",
+            ],
+            values: [2265852, 12640, 33414, 40621, 1953],
+            colors: ["0088FE", "00C49F", "FFBB28", "FF8042"],
+          },
+        },
+      },
+      {
+        type: "table",
+        title: "Table",
+        payload: {
+          headers: [
+            { text: "Product" },
+            { text: "Impressions" },
+            {
+              text: "Clicks",
+              heatMap: {
+                colorPalette: ["#e3f2fd", "#0d47a1"],
+                maxValue: clicks.max,
+                minValue: clicks.min,
+              },
+            },
+          ],
+          data: displayProductPerformance.slice(0, 2).map((entity) => {
+            const result: PowerPointTableCell[] = [
+              { value: entity._id.subProduct },
+              {
+                value: entity.impressions,
+                format: PowerPointBuilder.formatNumber,
+              },
+              { value: entity.clicks, format: PowerPointBuilder.formatNumber },
+            ];
+
+            return result;
+          }),
+        },
+      },
+    ],
+    [
+      {
+        type: "boxes",
+        title: "Boxes",
+        payload: {
+          data: [
+            [
+              {
+                title: "Impressions",
+                value: 177000000,
+                format: formatNumberWithSuffix,
+              },
+              {
+                title: "Clicks",
+                value: 269000,
+                format: formatNumberWithSuffix,
+              },
+            ],
+          ],
+        },
+      },
+      {
+        type: "bar",
+        title: "Bar",
+        payload: {
+          labelFormatCode: "0.00%",
+          data: [
+            {
+              name: "Display - CTR Last 6 Months",
+              color: "cdd8f2",
+              labels: [
+                "2024-12",
+                "2025-01",
+                "2025-02",
+                "2025-03",
+                "2025-04",
+                "2025-05",
+              ],
+              values: [0.00093, 0.00127, 0.00127, 0.00115, 0.00145, 0.00145],
+            },
+          ],
+        },
+      },
+    ],
+  ],
+  {
+    markup: {
+      text: {
+        header: "Multiple - 2 rows and 2 cols",
+        footer: "05/12 - 06/01 2025",
+      },
+    },
+  }
+);
+
 // Add slides with cards
 // for (const data of cards) {
 //   builder.addBoxesSlide(data);
