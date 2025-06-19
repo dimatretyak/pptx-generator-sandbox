@@ -486,7 +486,7 @@ builder.addMultipleToSlide(
   {
     markup: {
       text: {
-        header: "Multiple Charts",
+        header: "Multiple",
         footer: "05/12 - 06/01 2025",
       },
     },
@@ -541,7 +541,7 @@ builder.addMultipleToSlide(
   {
     markup: {
       text: {
-        header: "Multiple Charts - 2 cols",
+        header: "Multiple - 2 cols",
         footer: "05/12 - 06/01 2025",
       },
     },
@@ -598,7 +598,7 @@ builder.addMultipleToSlide(
   {
     markup: {
       text: {
-        header: "Multiple Charts - 2 rows",
+        header: "Multiple - 2 rows",
         footer: "05/12 - 06/01 2025",
       },
     },
@@ -641,17 +641,8 @@ builder.addMultipleToSlide(
                 minValue: clicks.min,
               },
             },
-            { text: "CTR(%)" },
-            {
-              text: "Total Conversions",
-              heatMap: {
-                colorPalette: ["#fadcb4", "#f29111"],
-                maxValue: totalConversions.max,
-                minValue: totalConversions.min,
-              },
-            },
           ],
-          data: displayProductPerformance.slice(0, 3).map((entity) => {
+          data: displayProductPerformance.slice(0, 5).map((entity) => {
             const result: PowerPointTableCell[] = [
               { value: entity._id.subProduct },
               {
@@ -659,11 +650,6 @@ builder.addMultipleToSlide(
                 format: PowerPointBuilder.formatNumber,
               },
               { value: entity.clicks, format: PowerPointBuilder.formatNumber },
-              { value: entity.ctr, format: PowerPointBuilder.formatPercent },
-              {
-                value: entity.conversions,
-                format: PowerPointBuilder.formatNumber,
-              },
             ];
 
             return result;
@@ -675,7 +661,7 @@ builder.addMultipleToSlide(
   {
     markup: {
       text: {
-        header: "Multiple Charts - 2 rows with table",
+        header: "Multiple - 2 rows with table",
         footer: "05/12 - 06/01 2025",
       },
     },
