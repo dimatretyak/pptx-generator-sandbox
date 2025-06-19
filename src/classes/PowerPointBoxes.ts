@@ -164,11 +164,13 @@ export class PowerPointBoxes {
 
         const texts = this.getTexts(col);
 
-        slide.addShape("rect", {
+        slide.addText(texts, {
+          shape: "rect",
           x: leftOffset + (size + this.config.spacer) * colIndex,
           y: topOffset,
           w: size,
           h: size,
+          align: "center",
           line: {
             color: this.config.border.color,
             size: this.config.border.size,
