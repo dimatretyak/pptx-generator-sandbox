@@ -2,7 +2,6 @@ import pptxgen from "pptxgenjs";
 import {
   PowerPointValueFormatter,
   PowerPointConfig,
-  PowerPointLayoutConfig,
   PowerPointValue,
   PowerPointSlideConfig,
 } from "../types/powerpoint.types";
@@ -12,7 +11,6 @@ import {
   isNumber,
 } from "../utils/common";
 import { formatValue } from "../utils/formatters";
-import { PowerPointLayout } from "./PowerPointLayout";
 import { stripHexHash } from "../utils/powerpoint/common";
 
 type PowerPointTableTableHeader = {
@@ -29,18 +27,16 @@ export type PowerPointTableCell = {
   format?: PowerPointValueFormatter;
 };
 
-export type PowerPointTablePayload = PowerPointLayoutConfig & {
+export type PowerPointTablePayload = {
   headers: PowerPointTableTableHeader[];
   data: PowerPointTableCell[][];
 };
 
 export class PowerPointTable {
   private config: PowerPointConfig;
-  private layout: PowerPointLayout;
 
-  constructor(config: PowerPointConfig, layout: PowerPointLayout) {
+  constructor(config: PowerPointConfig) {
     this.config = config;
-    this.layout = layout;
   }
 
   render(
@@ -48,12 +44,6 @@ export class PowerPointTable {
     payload: PowerPointTablePayload,
     slideConfig: PowerPointSlideConfig
   ) {
-    this.layout.renderSlideMarkup(slide, {
-      markup: payload.markup,
-    });
-
-    const coords = this.layout.getContentCoords(payload.markup);
-
     const headers: pptxgen.TableCell[] = payload.headers.map((header) => {
       return {
         text: header.text,
@@ -116,8 +106,8 @@ export class PowerPointTable {
         ...content,
       ],
       {
-        x: coords.x,
-        y: coords.y,
+        x: slideConfig.x,
+        y: slideConfig.y,
         w: slideConfig.width,
         autoPage: true,
         autoPageSlideStartY: this.config.margin.bottom,

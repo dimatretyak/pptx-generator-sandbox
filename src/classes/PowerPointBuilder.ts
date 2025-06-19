@@ -1,14 +1,18 @@
 import pptxgen from "pptxgenjs";
-import { PowerPointConfig, PowerPointValue } from "../types/powerpoint.types";
+import {
+  PowerPointConfig,
+  PowerPointSlideConfig,
+  PowerPointSlideOptions,
+  PowerPointValue,
+} from "../types/powerpoint.types";
 import { isNumber, isString } from "../utils/common";
 import { formatNumber, formatPercent } from "../utils/formatters";
 import { PowerPointTable, PowerPointTablePayload } from ".//PowerPointTable";
 import {
   PowerPointBarChart,
-  PowerPointBarChartOptions,
   PowerPointBarChartPayload,
 } from ".//PowerPointBarChart";
-import { PowerPointLayout } from ".//PowerPointLayout";
+import { PowerPointLayout, SLIDE_TITLE_FULL_HEIGHT } from ".//PowerPointLayout";
 import { PowerPointBoxes, PowerPointBoxesPayload } from ".//PowerPointBoxes";
 import {
   PowerPointPieChart,
@@ -20,6 +24,28 @@ const LAYOUT_NAME = "APP";
 const SLIDE_WIDTH = 10;
 const SLIDE_HEIGHT = 5.625;
 const FALLBACK_POWER_POINT_VALUE = "-";
+
+type PowerPointMultipleEntity =
+  | {
+      type: "pie";
+      title: string;
+      payload: PowerPointPieChartPayload;
+    }
+  | {
+      type: "bar";
+      title: string;
+      payload: PowerPointBarChartPayload;
+    }
+  | {
+      type: "boxes";
+      title: string;
+      payload: PowerPointBoxesPayload;
+    }
+  | {
+      type: "table";
+      title: string;
+      payload: PowerPointTablePayload;
+    };
 
 class PowerPointBuilder {
   private slideGenerators: Array<(slide: pptxgen.Slide) => void> = [];
@@ -90,31 +116,53 @@ class PowerPointBuilder {
 
     this.presentation.layout = LAYOUT_NAME;
 
-    this.table = new PowerPointTable(this.config, this.layout);
+    this.table = new PowerPointTable(this.config);
     this.boxes = new PowerPointBoxes(this.config, this.layout);
 
     this.charts = {
-      bar: new PowerPointBarChart(this.config, this.layout),
-      pie: new PowerPointPieChart(this.config, this.layout),
+      bar: new PowerPointBarChart(),
+      pie: new PowerPointPieChart(),
     };
   }
 
-  addBoxesSlide(payload: PowerPointBoxesPayload) {
+  addMarkup(
+    slide: pptxgen.Slide,
+    options: PowerPointSlideOptions
+  ): PowerPointSlideConfig {
+    const { width, height } = this.layout.getSlideSizes(options);
+    const coords = this.layout.getContentCoords(options);
+
+    this.layout.renderSlideMarkup(slide, options);
+
+    return {
+      width,
+      height,
+      x: coords.x,
+      y: coords.y,
+    };
+  }
+
+  addBoxesSlide(
+    payload: PowerPointBoxesPayload,
+    options: PowerPointSlideOptions
+  ) {
     this.slideGenerators.push((slide) => {
-      this.boxes.render(slide, payload);
+      const config = this.addMarkup(slide, options);
+
+      this.boxes.render(slide, payload, config);
     });
 
     return this;
   }
 
-  addTableSlide(payload: PowerPointTablePayload) {
-    const { width, height } = this.layout.getSlideSizes(payload.markup);
-
+  addTableSlide(
+    payload: PowerPointTablePayload,
+    options: PowerPointSlideOptions
+  ) {
     this.slideGenerators.push((slide) => {
-      this.table.render(slide, payload, {
-        width,
-        height,
-      });
+      const config = this.addMarkup(slide, options);
+
+      this.table.render(slide, payload, config);
     });
 
     return this;
@@ -122,27 +170,80 @@ class PowerPointBuilder {
 
   addBarChartSlide(
     payload: PowerPointBarChartPayload,
-    options: PowerPointBarChartOptions = {}
+    options: PowerPointSlideOptions
   ) {
-    const { width, height } = this.layout.getSlideSizes(payload.markup);
-
     this.slideGenerators.push((slide) => {
-      this.charts.bar.render(slide, payload, options, {
-        width,
-        height,
-      });
+      const config = this.addMarkup(slide, options);
+
+      this.charts.bar.render(slide, payload, config);
     });
 
     return this;
   }
 
-  addPieChartSlide(payload: PowerPointPieChartPayload) {
-    const { width, height } = this.layout.getSlideSizes(payload.markup);
-
+  addPieChartSlide(
+    payload: PowerPointPieChartPayload,
+    options: PowerPointSlideOptions
+  ) {
     this.slideGenerators.push((slide) => {
-      this.charts.pie.render(slide, payload, {
-        width,
-        height,
+      const config = this.addMarkup(slide, options);
+
+      this.charts.pie.render(slide, payload, config);
+    });
+
+    return this;
+  }
+
+  addMultipleToSlide(
+    entities: PowerPointMultipleEntity[][],
+    options: PowerPointSlideOptions
+  ) {
+    this.slideGenerators.push((slide) => {
+      this.addMarkup(slide, options);
+
+      const sizes = this.layout.getSlideSizes(options);
+      const coords = this.layout.getContentCoords(options);
+
+      entities.forEach((row, rowIndex) => {
+        row.forEach((col, colIndex) => {
+          const info = this.layout.getCardSizeByRowCol({
+            rowIndex,
+            colIndex,
+            rowsCount: row.length,
+            colsCount: entities.length,
+            sizes,
+            coords,
+          });
+
+          const slideConfig: PowerPointSlideConfig = {
+            width: info.width,
+            height: info.height - SLIDE_TITLE_FULL_HEIGHT,
+            x: info.x,
+            y: info.y + SLIDE_TITLE_FULL_HEIGHT,
+          };
+
+          this.layout.renderContentTitle(slide, col.title, {
+            width: info.width,
+            x: info.x,
+            y: info.y,
+          });
+
+          if (col.type === "pie") {
+            this.charts.pie.render(slide, col.payload, slideConfig);
+          }
+
+          if (col.type === "bar") {
+            this.charts.bar.render(slide, col.payload, slideConfig);
+          }
+
+          if (col.type === "boxes") {
+            this.boxes.render(slide, col.payload, slideConfig);
+          }
+
+          if (col.type === "table") {
+            this.table.render(slide, col.payload, slideConfig);
+          }
+        });
       });
     });
 

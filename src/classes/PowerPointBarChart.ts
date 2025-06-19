@@ -1,11 +1,6 @@
 import pptxgen from "pptxgenjs";
-import {
-  PowerPointConfig,
-  PowerPointLayoutConfig,
-  PowerPointSlideConfig,
-} from "../types/powerpoint.types";
+import { PowerPointSlideConfig } from "../types/powerpoint.types";
 import { normalizeBarsChartData } from "../utils/powerpoint/charts";
-import { PowerPointLayout } from "./PowerPointLayout";
 
 export type PowerPointBarChartDataEntity = {
   labels: string[];
@@ -14,57 +9,27 @@ export type PowerPointBarChartDataEntity = {
   color: string;
 };
 
-export type PowerPointBarChartPayload = PowerPointLayoutConfig & {
+export type PowerPointBarChartPayload = {
   data: PowerPointBarChartDataEntity[];
   lines?: Pick<PowerPointBarChartDataEntity, "values" | "name" | "color">[];
   labelFormatCode?: string;
-};
-
-export type PowerPointBarChartOptions = {
   normalizeData?: boolean;
 };
 
 export class PowerPointBarChart {
-  private config: PowerPointConfig;
-  private layout: PowerPointLayout;
-
-  constructor(config: PowerPointConfig, layout: PowerPointLayout) {
-    this.config = config;
-    this.layout = layout;
-  }
-
   render(
     slide: pptxgen.Slide,
     payload: PowerPointBarChartPayload,
-    options: PowerPointBarChartOptions,
     slideConfig: PowerPointSlideConfig
   ) {
-    this.layout.renderSlideMarkup(slide, {
-      markup: payload.markup,
-    });
-
-    const coords = this.layout.getContentCoords(payload.markup);
     const shouldRenderLines =
       Array.isArray(payload.lines) && payload.lines.length > 0;
 
-    // Add background shape
-    slide.addShape("roundRect", {
-      x: coords.x,
-      y: coords.y,
+    const chartOptions: pptxgen.IChartOpts = {
+      x: slideConfig.x,
+      y: slideConfig.y,
       w: slideConfig.width,
       h: slideConfig.height,
-      rectRadius: this.config.roundess,
-      line: {
-        color: this.config.border.color,
-        size: this.config.border.size,
-      },
-    });
-
-    const chartOptions: pptxgen.IChartOpts = {
-      x: coords.x + this.config.spacer,
-      y: coords.y + this.config.spacer,
-      w: slideConfig.width - 2 * this.config.spacer,
-      h: slideConfig.height - 2 * this.config.spacer,
       barDir: "col",
       valAxisLabelFormatCode: payload.labelFormatCode,
       barGapWidthPct: 25,
@@ -116,7 +81,7 @@ export class PowerPointBarChart {
       }
     }
 
-    if (options.normalizeData) {
+    if (payload.normalizeData) {
       entities = normalizeBarsChartData(entities);
     }
 

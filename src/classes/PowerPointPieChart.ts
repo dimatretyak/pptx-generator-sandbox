@@ -1,10 +1,5 @@
 import pptxgen from "pptxgenjs";
-import {
-  PowerPointConfig,
-  PowerPointLayoutConfig,
-  PowerPointSlideConfig,
-} from "../types/powerpoint.types";
-import { PowerPointLayout } from "./PowerPointLayout";
+import { PowerPointSlideConfig } from "../types/powerpoint.types";
 
 export type PowerPointPieChartData = {
   name: string;
@@ -13,30 +8,16 @@ export type PowerPointPieChartData = {
   colors: string[];
 };
 
-export type PowerPointPieChartPayload = PowerPointLayoutConfig & {
+export type PowerPointPieChartPayload = {
   data: PowerPointPieChartData;
 };
 
 export class PowerPointPieChart {
-  private config: PowerPointConfig;
-  private layout: PowerPointLayout;
-
-  constructor(config: PowerPointConfig, layout: PowerPointLayout) {
-    this.config = config;
-    this.layout = layout;
-  }
-
   render(
     slide: pptxgen.Slide,
     payload: PowerPointPieChartPayload,
     slideConfig: PowerPointSlideConfig
   ) {
-    this.layout.renderSlideMarkup(slide, {
-      markup: payload.markup,
-    });
-
-    const coords = this.layout.getContentCoords(payload.markup);
-
     const labels = payload.data.labels.map((label, index) => {
       return `${label} - ${payload.data.values[index]}`;
     });
@@ -55,8 +36,8 @@ export class PowerPointPieChart {
         },
       ],
       {
-        x: coords.x,
-        y: coords.y,
+        x: slideConfig.x,
+        y: slideConfig.y,
         w: slideConfig.width,
         h: slideConfig.height,
         chartColors: colors,

@@ -37,17 +37,19 @@ export type PowerPointConfig = {
 export type PowerPointSlideConfig = {
   width: number;
   height: number;
+  x: number;
+  y: number;
 };
 
 export type PowerPointMarkup = {
   contentVerticalOffset?: number;
   text: {
     header: string;
-    content: string;
+    content?: string;
     footer: string;
   };
 };
 
-export type PowerPointLayoutConfig = {
+export type PowerPointSlideOptions = {
   markup: PowerPointMarkup;
 };

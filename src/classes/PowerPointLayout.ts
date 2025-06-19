@@ -1,16 +1,18 @@
 import {
   PowerPointConfig,
-  PowerPointLayoutConfig,
-  PowerPointMarkup,
+  PowerPointSlideOptions,
+  PowerPointSlideConfig,
 } from "../types/powerpoint.types";
 import pptxgen from "pptxgenjs";
 import { isNumber } from "../utils/common";
 
-const HEADER_SIZE = 0.5;
-const FOOTER_SIZE = 0.35;
-const CONTENT_TITLE_SIZE = 0.35;
-const SLIDE_TITLE_SPACER = 0.25;
+const HEADER_HEIGHT = 0.5;
+const FOOTER_HEIGHT = 0.35;
+const CONTENT_TITLE_HEIGHT = 0.35;
 const HORIZONTAL_OFFSET = 0.15;
+
+// Slide title size + bottom offset
+export const SLIDE_TITLE_FULL_HEIGHT = CONTENT_TITLE_HEIGHT + 0.25;
 
 export class PowerPointLayout {
   private config: PowerPointConfig;
@@ -19,19 +21,18 @@ export class PowerPointLayout {
     this.config = config;
   }
 
-  getSlideSizes(payload: PowerPointMarkup) {
+  getSlideSizes(options: Partial<PowerPointSlideOptions> = {}) {
     const horizontal = this.config.margin.left + this.config.margin.right;
     const vertical = this.config.margin.top + this.config.margin.bottom;
     let height =
-      this.config.slide.height -
-      vertical -
-      HEADER_SIZE -
-      FOOTER_SIZE -
-      CONTENT_TITLE_SIZE -
-      SLIDE_TITLE_SPACER;
+      this.config.slide.height - vertical - HEADER_HEIGHT - FOOTER_HEIGHT;
 
-    if (isNumber(payload.contentVerticalOffset)) {
-      height -= payload.contentVerticalOffset * 2;
+    if (options.markup?.text.content) {
+      height -= SLIDE_TITLE_FULL_HEIGHT;
+    }
+
+    if (isNumber(options.markup?.contentVerticalOffset)) {
+      height -= options.markup.contentVerticalOffset * 2;
     }
 
     return {
@@ -40,15 +41,17 @@ export class PowerPointLayout {
     };
   }
 
-  getContentCoords(payload: PowerPointMarkup) {
-    let y =
-      HEADER_SIZE +
-      CONTENT_TITLE_SIZE +
-      this.config.margin.top +
-      SLIDE_TITLE_SPACER;
+  getContentCoords(options: Partial<PowerPointSlideOptions> = {}) {
+    let y = HEADER_HEIGHT + this.config.margin.top;
 
-    if (isNumber(payload.contentVerticalOffset)) {
-      y += payload.contentVerticalOffset;
+    // If content text is provided, add an offset
+    if (options.markup?.text.content) {
+      y += SLIDE_TITLE_FULL_HEIGHT;
+    }
+
+    // If vertical offset is specified, add an offset
+    if (isNumber(options.markup?.contentVerticalOffset)) {
+      y += options.markup.contentVerticalOffset;
     }
 
     return {
@@ -57,25 +60,29 @@ export class PowerPointLayout {
     };
   }
 
-  getCardSizeByRowCol(
-    payload: PowerPointLayoutConfig & {
-      rowsCount: number;
-      colsCount: number;
-      rowIndex: number;
-      colIndex: number;
-    }
-  ) {
-    const { rowsCount, colsCount, rowIndex, colIndex, markup } = payload;
-    const slide = this.getSlideSizes(markup);
-    const coords = this.getContentCoords(markup);
+  getCardSizeByRowCol(payload: {
+    rowsCount: number;
+    colsCount: number;
+    rowIndex: number;
+    colIndex: number;
+    sizes: {
+      width: number;
+      height: number;
+    };
+    coords: {
+      x: number;
+      y: number;
+    };
+  }) {
+    const { rowsCount, colsCount, rowIndex, colIndex, sizes, coords } = payload;
 
     // Calculate cell size based on the number of rows
     const CELL_SIZE =
-      (slide.width - this.config.spacer * (rowsCount - 1)) / rowsCount;
+      (sizes.width - this.config.spacer * (rowsCount - 1)) / rowsCount;
 
     // Calculate column size based on the number of columns
     let COL_SIZE =
-      (slide.height - this.config.spacer * (colsCount - 1)) / colsCount;
+      (sizes.height - this.config.spacer * (colsCount - 1)) / colsCount;
 
     // Calculate offsets for positioning the cells
     const X_OFFSET = CELL_SIZE + this.config.spacer;
@@ -85,7 +92,7 @@ export class PowerPointLayout {
 
     // Center the cards vertically if there's only one row
     if (colsCount === 1) {
-      Y_BASE = (slide.height - COL_SIZE) / 2;
+      Y_BASE = (sizes.height - COL_SIZE) / 2;
     }
 
     return {
@@ -100,7 +107,7 @@ export class PowerPointLayout {
     slide.addShape("rect", {
       x: 0,
       y: 0,
-      h: HEADER_SIZE,
+      h: HEADER_HEIGHT,
       w: this.config.slide.width,
       fill: {
         color: "FF0000",
@@ -111,7 +118,7 @@ export class PowerPointLayout {
       x: HORIZONTAL_OFFSET,
       y: 0,
       w: this.config.slide.width - HORIZONTAL_OFFSET * 2,
-      h: HEADER_SIZE,
+      h: HEADER_HEIGHT,
       valign: "middle",
       bold: true,
       fontSize: 18,
@@ -122,13 +129,13 @@ export class PowerPointLayout {
 
   renderFooter(slide: pptxgen.Slide, text: string) {
     const width = this.config.slide.width;
-    const height = this.config.slide.height - FOOTER_SIZE;
+    const height = this.config.slide.height - FOOTER_HEIGHT;
 
     slide.addShape("rect", {
       x: 0,
       y: height,
       w: this.config.slide.width,
-      h: FOOTER_SIZE,
+      h: FOOTER_HEIGHT,
       fill: {
         color: "0000FF",
       },
@@ -138,7 +145,7 @@ export class PowerPointLayout {
       x: HORIZONTAL_OFFSET,
       y: height,
       w: width - HORIZONTAL_OFFSET * 2,
-      h: FOOTER_SIZE,
+      h: FOOTER_HEIGHT,
       valign: "middle",
       align: "right",
       fontSize: 14,
@@ -147,39 +154,47 @@ export class PowerPointLayout {
     });
   }
 
-  renderSlideMarkup(slide: pptxgen.Slide, payload: PowerPointLayoutConfig) {
-    this.renderHeader(slide, payload.markup.text.header);
-    this.renderFooter(slide, payload.markup.text.footer);
+  renderSlideMarkup(slide: pptxgen.Slide, options: PowerPointSlideOptions) {
+    this.renderHeader(slide, options.markup.text.header);
+    this.renderFooter(slide, options.markup.text.footer);
 
-    if (payload.markup.text.content) {
-      this.renderContentTitle(slide, payload.markup);
+    if (options.markup.text.content) {
+      const sizes = this.getSlideSizes(options);
+      let y = HEADER_HEIGHT + this.config.margin.top;
+
+      if (isNumber(options.markup.contentVerticalOffset)) {
+        y += options.markup.contentVerticalOffset;
+      }
+
+      this.renderContentTitle(slide, options.markup.text.content, {
+        width: sizes.width,
+        x: this.config.margin.left,
+        y,
+      });
     }
   }
 
-  renderContentTitle(slide: pptxgen.Slide, markup: PowerPointMarkup) {
-    const sizes = this.getSlideSizes(markup);
-    let y = HEADER_SIZE + this.config.margin.top;
-
-    if (isNumber(markup.contentVerticalOffset)) {
-      y += markup.contentVerticalOffset;
-    }
-
+  renderContentTitle(
+    slide: pptxgen.Slide,
+    title: string,
+    slideConfig: Omit<PowerPointSlideConfig, "height">
+  ) {
     // Add a background shape first, then overlay text for better control over padding and layout.
     slide.addShape("rect", {
-      x: this.config.margin.left,
-      y,
-      w: sizes.width,
-      h: CONTENT_TITLE_SIZE,
+      x: slideConfig.x,
+      y: slideConfig.y,
+      w: slideConfig.width,
+      h: CONTENT_TITLE_HEIGHT,
       fill: {
         color: "e7e6e6",
       },
     });
 
-    slide.addText(markup.text.content, {
-      x: this.config.margin.left + HORIZONTAL_OFFSET,
-      y,
-      w: sizes.width - HORIZONTAL_OFFSET * 2,
-      h: CONTENT_TITLE_SIZE,
+    slide.addText(title, {
+      x: slideConfig.x + HORIZONTAL_OFFSET,
+      y: slideConfig.y,
+      w: slideConfig.width - HORIZONTAL_OFFSET * 2,
+      h: CONTENT_TITLE_HEIGHT,
       valign: "middle",
       bold: true,
       fontSize: 14,
