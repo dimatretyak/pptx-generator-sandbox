@@ -21,6 +21,8 @@ export type PowerPointBoxesPayload = {
   data: PowerPointBoxEntity[][];
 };
 
+// const CIRCLE_SIZE =
+
 export class PowerPointBoxes {
   private config: PowerPointConfig;
   private layout: PowerPointLayout;
@@ -122,6 +124,49 @@ export class PowerPointBoxes {
           align: "center",
           fontSize: 14,
           rectRadius: this.config.roundess,
+          line: {
+            color: this.config.border.color,
+            size: this.config.border.size,
+          },
+        });
+      });
+    });
+  }
+
+  renderCircles(
+    slide: pptxgen.Slide,
+    payload: PowerPointBoxesPayload,
+    slideConfig: PowerPointSlideConfig
+  ) {
+    payload.data.forEach((row, rowIndex) => {
+      row.forEach((col, colIndex) => {
+        const info = this.layout.getCardSizeByRowCol({
+          rowsCount: row.length,
+          colsCount: payload.data.length,
+          rowIndex,
+          colIndex,
+          sizes: {
+            width: slideConfig.width,
+            height: slideConfig.height,
+          },
+          coords: {
+            x: slideConfig.x,
+            y: slideConfig.y,
+          },
+        });
+
+        const size = info.height;
+        const totalWidth =
+          row.length * size + (row.length - 1) * this.config.spacer;
+        const leftOffset = slideConfig.x + (slideConfig.width - totalWidth) / 2;
+
+        const texts = this.getTexts(col);
+
+        slide.addShape("rect", {
+          x: leftOffset + (size + this.config.spacer) * colIndex,
+          y: info.y,
+          w: size,
+          h: size,
           line: {
             color: this.config.border.color,
             size: this.config.border.size,

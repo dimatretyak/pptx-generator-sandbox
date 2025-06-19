@@ -149,7 +149,7 @@ class PowerPointBuilder {
     this.slideGenerators.push((slide) => {
       const config = this.addMarkup(slide, options);
 
-      this.boxes.render(slide, payload, config);
+      this.boxes.renderCircles(slide, payload, config);
     });
 
     return this;
