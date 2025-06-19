@@ -486,7 +486,7 @@ builder.addMultipleToSlide(
   {
     markup: {
       text: {
-        header: "Multiple",
+        header: "Multiple - 2 rows and 1 col",
         footer: "05/12 - 06/01 2025",
       },
     },
@@ -661,7 +661,7 @@ builder.addMultipleToSlide(
   {
     markup: {
       text: {
-        header: "Multiple - 2 rows with table",
+        header: "Multiple - 2 cols with table",
         footer: "05/12 - 06/01 2025",
       },
     },
