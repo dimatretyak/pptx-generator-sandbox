@@ -155,16 +155,18 @@ export class PowerPointBoxes {
           },
         });
 
-        const size = info.height;
+        // TOOD: Dynamic size when cols count > 2
+        const size = 1.5;
         const totalWidth =
           row.length * size + (row.length - 1) * this.config.spacer;
         const leftOffset = slideConfig.x + (slideConfig.width - totalWidth) / 2;
+        const topOffset = info.y + info.height / 2 - size / 2;
 
         const texts = this.getTexts(col);
 
         slide.addShape("rect", {
           x: leftOffset + (size + this.config.spacer) * colIndex,
-          y: info.y,
+          y: topOffset,
           w: size,
           h: size,
           line: {
