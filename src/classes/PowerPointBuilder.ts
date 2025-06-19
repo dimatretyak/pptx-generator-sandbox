@@ -12,7 +12,7 @@ import {
   PowerPointBarChart,
   PowerPointBarChartPayload,
 } from ".//PowerPointBarChart";
-import { PowerPointLayout } from ".//PowerPointLayout";
+import { PowerPointLayout, SLIDE_TITLE_FULL_SIZE } from ".//PowerPointLayout";
 import { PowerPointBoxes, PowerPointBoxesPayload } from ".//PowerPointBoxes";
 import {
   PowerPointPieChart,
@@ -212,10 +212,16 @@ class PowerPointBuilder {
 
           const slideConfig: PowerPointSlideConfig = {
             width: info.width,
-            height: info.height,
+            height: info.height - SLIDE_TITLE_FULL_SIZE,
+            x: info.x,
+            y: info.y + SLIDE_TITLE_FULL_SIZE,
+          };
+
+          this.layout.renderContentTitle(slide, col.title, {
+            width: info.width,
             x: info.x,
             y: info.y,
-          };
+          });
 
           if (col.type === "pie") {
             this.charts.pie.render(slide, col.payload, slideConfig);
