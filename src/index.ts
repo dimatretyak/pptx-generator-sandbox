@@ -404,6 +404,7 @@ builder.addMultipleToSlide(
     [
       {
         type: "pie",
+        title: "Pie",
         payload: {
           data: {
             name: "Project Status",
@@ -421,6 +422,7 @@ builder.addMultipleToSlide(
       },
       {
         type: "bar",
+        title: "Bar",
         payload: {
           labelFormatCode: "0.00%",
           data: [
@@ -444,6 +446,7 @@ builder.addMultipleToSlide(
     [
       {
         type: "boxes",
+        title: "Boxes",
         payload: {
           data: [
             [

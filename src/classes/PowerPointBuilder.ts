@@ -28,14 +28,17 @@ const FALLBACK_POWER_POINT_VALUE = "-";
 type PowerPointMultipleEntity =
   | {
       type: "pie";
+      title: string;
       payload: PowerPointPieChartPayload;
     }
   | {
       type: "bar";
+      title: string;
       payload: PowerPointBarChartPayload;
     }
   | {
       type: "boxes";
+      title: string;
       payload: PowerPointBoxesPayload;
     };
 
