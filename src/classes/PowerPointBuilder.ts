@@ -42,6 +42,11 @@ type PowerPointMultipleEntity =
       payload: PowerPointBoxesPayload;
     }
   | {
+      type: "circles";
+      title: string;
+      payload: PowerPointBoxesPayload;
+    }
+  | {
       type: "table";
       title: string;
       payload: PowerPointTablePayload;
@@ -149,6 +154,19 @@ class PowerPointBuilder {
     this.slideGenerators.push((slide) => {
       const config = this.addMarkup(slide, options);
 
+      this.boxes.render(slide, payload, config);
+    });
+
+    return this;
+  }
+
+  addCirclesSlide(
+    payload: PowerPointBoxesPayload,
+    options: PowerPointSlideOptions
+  ) {
+    this.slideGenerators.push((slide) => {
+      const config = this.addMarkup(slide, options);
+
       this.boxes.renderCircles(slide, payload, config);
     });
 
@@ -238,6 +256,10 @@ class PowerPointBuilder {
 
           if (col.type === "boxes") {
             this.boxes.render(slide, col.payload, slideConfig);
+          }
+
+          if (col.type === "circles") {
+            this.boxes.renderCircles(slide, col.payload, slideConfig);
           }
 
           if (col.type === "table") {
