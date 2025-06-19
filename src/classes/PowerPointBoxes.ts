@@ -8,6 +8,8 @@ import {
 import { formatValue } from "../utils/formatters";
 import { PowerPointLayout } from "./PowerPointLayout";
 import { determineChangeIndicator, isNumber } from "../utils/common";
+import { config } from "../config";
+import path from "node:path";
 
 export type PowerPointBoxEntity = {
   title: string;
@@ -156,26 +158,38 @@ export class PowerPointBoxes {
         });
 
         const size = 1.75;
+        const offset = 0.15;
         const totalWidth =
           row.length * size + (row.length - 1) * this.config.spacer;
         const leftOffset = slideConfig.x + (slideConfig.width - totalWidth) / 2;
         const topOffset = info.y + info.height / 2 - size / 2;
+        const x = leftOffset + (size + this.config.spacer) * colIndex;
+        const y = topOffset;
 
         const texts = this.getTexts(col);
+        const backgroundImage = path.join(config.path.images, "circle.svg");
 
-        slide.addShape("ellipse", {
-          x: leftOffset + (size + this.config.spacer) * colIndex,
-          y: topOffset,
-          w: size,
-          h: size,
-          line: {
-            color: this.config.border.color,
-            size: this.config.border.size,
-          },
+        slide.addImage({
+          x: x - offset / 2,
+          y: y - offset / 2,
+          w: size + offset,
+          h: size + offset,
+          path: backgroundImage,
         });
 
+        // TODO: For debug purposes
+        // slide.addShape("ellipse", {
+        //   x,
+        //   y,
+        //   w: size,
+        //   h: size,
+        //   line: {
+        //     color: this.config.border.color,
+        //     size: this.config.border.size,
+        //   },
+        // });
+
         slide.addText(texts, {
-          shape: "rect", // TODO: remove in the future
           x: leftOffset + (size + this.config.spacer) * colIndex,
           y: topOffset,
           w: size,
