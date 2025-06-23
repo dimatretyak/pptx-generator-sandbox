@@ -121,7 +121,7 @@ export class PowerPointTable {
           color: this.config.border.color,
         },
         margin: 0.1,
-        fontSize: 14,
+        fontSize: 10,
       }
     );
   }
