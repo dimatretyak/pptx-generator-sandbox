@@ -32,13 +32,6 @@ export type PowerPointConfig = {
     height: number;
   };
   spacer: number;
-  graph: {
-    bars: {
-      fontSize: number;
-      color: string;
-      valueColor: string;
-    };
-  };
 };
 
 export type PowerPointSlideConfig = {

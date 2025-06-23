@@ -1,9 +1,10 @@
 import pptxgen from "pptxgenjs";
-import {
-  PowerPointConfig,
-  PowerPointSlideConfig,
-} from "../types/powerpoint.types";
+import { PowerPointSlideConfig } from "../types/powerpoint.types";
 import { normalizeBarsChartData } from "../utils/powerpoint/charts";
+
+const TEXT_FONT_SIZE = 10;
+const TEXT_COLOR = "666666";
+const TEXT_VALUE_COLOR = "000000";
 
 export type PowerPointBarChartDataEntity = {
   labels: string[];
@@ -20,8 +21,6 @@ export type PowerPointBarChartPayload = {
 };
 
 export class PowerPointBarChart {
-  constructor(private config: PowerPointConfig) {}
-
   render(
     slide: pptxgen.Slide,
     payload: PowerPointBarChartPayload,
@@ -43,15 +42,15 @@ export class PowerPointBarChart {
       },
       showLegend: true,
       legendPos: "b",
-      legendFontSize: this.config.graph.bars.fontSize,
-      legendColor: this.config.graph.bars.valueColor,
+      legendFontSize: TEXT_FONT_SIZE,
+      legendColor: TEXT_VALUE_COLOR,
       showValue: !shouldRenderLines,
       dataLabelFormatCode: payload.labelFormatCode,
-      dataLabelFontSize: this.config.graph.bars.fontSize,
-      catAxisLabelFontSize: this.config.graph.bars.fontSize,
-      catAxisLabelColor: this.config.graph.bars.color,
-      valAxisLabelFontSize: this.config.graph.bars.fontSize,
-      valAxisLabelColor: this.config.graph.bars.color,
+      dataLabelFontSize: TEXT_FONT_SIZE,
+      catAxisLabelFontSize: TEXT_FONT_SIZE,
+      catAxisLabelColor: TEXT_COLOR,
+      valAxisLabelFontSize: TEXT_FONT_SIZE,
+      valAxisLabelColor: TEXT_COLOR,
     };
 
     let entities: pptxgen.IChartMulti[] = [
