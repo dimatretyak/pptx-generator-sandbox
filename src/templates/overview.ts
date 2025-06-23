@@ -1,9 +1,36 @@
 import PowerPointBuilder from "../classes/PowerPointBuilder";
 import colors, { palette } from "../data/constants";
-import { preparePercentageValues } from "../utils/common";
+import { displayPeriod6Month } from "../data/displayPeriod6Month";
+import { displayProduct } from "../data/displayProduct";
+import { displayTopKpi } from "../data/displayTopKpi";
+import { semTopKpi } from "../data/responses/semTopKpi";
+import { socialDisplayProduct } from "../data/responses/socialDisplayProduct";
+import { socialDisplayTopKpi } from "../data/responses/socialDisplayTopKpi";
+import { socialVideoProduct } from "../data/responses/socialVideoProduct";
+import { socialVideoTopKpi } from "../data/responses/socialVideoTopKpi";
+import { stvProduct } from "../data/responses/stvProduct";
+import { stvTopKpi } from "../data/responses/stvTopKpi";
+import { videoProduct } from "../data/videoProduct";
+import { videoTopKpi } from "../data/videoTopKpi";
+import {
+  extractInfoBlockEntity,
+  extractTableData,
+  preparePercentageValues,
+} from "../utils/common";
 
 const builder = new PowerPointBuilder();
 const footer = "06/23/2025-06/23/2025";
+
+const displayProductPerformance = extractTableData(
+  [
+    { text: "Product", fieldExtractor: (v) => v._id.subProduct },
+    { text: "Impressions", fieldExtractor: (v) => v.impressions },
+    { text: "Clicks", fieldExtractor: (v) => v.clicks },
+    { text: "CTR(%)", fieldExtractor: (v) => v.ctr },
+    { text: "Total Conversions", fieldExtractor: (v) => v.conversions },
+  ],
+  displayProduct.result.data
+);
 
 builder.addMultipleToSlide(
   [
@@ -13,11 +40,14 @@ builder.addMultipleToSlide(
         title: "Display - Top KPIs",
         payload: {
           data: [
-            [
-              { title: "Impressions", value: 168209120 },
-              { title: "Clicks", value: 263517 },
-              { title: "CTR(%)", value: 0.15666035230432215 },
-            ],
+            extractInfoBlockEntity(
+              [
+                { text: "Impressions", fieldExtract: (v) => v.impressions },
+                { text: "Clicks", fieldExtract: (v) => v.clicks },
+                { text: "CTR(%)", fieldExtract: (v) => v.ctr },
+              ],
+              displayTopKpi.result.data
+            ),
           ],
         },
       },
@@ -27,50 +57,8 @@ builder.addMultipleToSlide(
         type: "table",
         title: "Display - Product Performance",
         payload: {
-          headers: [
-            { text: "Product" },
-            { text: "Impressions" },
-            { text: "Clicks" },
-            { text: "CTR(%)" },
-            { text: "Total Conversions" },
-          ],
-          data: [
-            [
-              { value: "Targeted Display" },
-              { value: 108736375 },
-              { value: 144135 },
-              { value: 0.13255453844217266 },
-              { value: 96752 },
-            ],
-            [
-              { value: "Addressable Display" },
-              { value: 32187470 },
-              { value: 67405 },
-              { value: 0.20941378741479214 },
-              { value: 3121 },
-            ],
-            [
-              { value: "Geo-Fencing w/ Foot Traffic" },
-              { value: 22928000 },
-              { value: 41551 },
-              { value: 0.1812238311235171 },
-              { value: 5101 },
-            ],
-            [
-              { value: "Social Display" },
-              { value: 2365567 },
-              { value: 7269 },
-              { value: 0.30728362375701046 },
-              { value: 573 },
-            ],
-            [
-              { value: "Targeted Native" },
-              { value: 1991708 },
-              { value: 3157 },
-              { value: 0.15850717072984594 },
-              { value: 227 },
-            ],
-          ],
+          headers: displayProductPerformance.headers,
+          data: displayProductPerformance.values,
         },
       },
     ],
@@ -92,18 +80,12 @@ builder.addBarChartSlide(
       {
         name: "Display - CTR Last 6 Months",
         color: colors.chartBar1,
-        labels: [
-          "2024-12",
-          "2025-01",
-          "2025-02",
-          "2025-03",
-          "2025-04",
-          "2025-05",
-        ],
-        values: preparePercentageValues([
-          0.10255475655375332, 0.12592758378737542, 0.12647139566235044,
-          0.12473442597853315, 0.15245978647888853, 0.15257094896145726,
-        ]),
+        labels: displayPeriod6Month.result.data.map(
+          (v) => v._id.monthYearNumbers
+        ),
+        values: preparePercentageValues(
+          displayPeriod6Month.result.data.map((v) => v.ctr)
+        ),
       },
     ],
   },
@@ -117,6 +99,18 @@ builder.addBarChartSlide(
   }
 );
 
+const videoTopKPIs = extractTableData(
+  [
+    { text: "Product", fieldExtractor: (v) => v._id.subProduct },
+    { text: "Impressions", fieldExtractor: (v) => v.impressions },
+    { text: "Video Completes", fieldExtractor: (v) => v.videoCompletions },
+    { text: "VCR(%)", fieldExtractor: (v) => v.vcr },
+    { text: "Clicks", fieldExtractor: (v) => v.clicks },
+    { text: "CTR(%)", fieldExtractor: (v) => v.ctr },
+  ],
+  videoProduct.result.data
+);
+
 builder.addMultipleToSlide(
   [
     [
@@ -125,13 +119,31 @@ builder.addMultipleToSlide(
         title: "Video - Top KPIs",
         payload: {
           data: [
-            [
-              { title: "Impressions", value: 23683618 },
-              { title: "Video Completes", value: 10658642 },
-              { title: "VCR(%)", value: 45.00428101821267 },
-              { title: "Clicks", value: 38831 },
-              { title: "CTR(%)", value: 0.16395721295622992 },
-            ],
+            extractInfoBlockEntity(
+              [
+                {
+                  text: "Impressions",
+                  fieldExtract: (v) => v.impressions,
+                },
+                {
+                  text: "Video Completes",
+                  fieldExtract: (v) => v.videoCompletions,
+                },
+                {
+                  text: "VCR(%)",
+                  fieldExtract: (v) => v.vcr,
+                },
+                {
+                  text: "Clicks",
+                  fieldExtract: (v) => v.clicks,
+                },
+                {
+                  text: "CTR(%)",
+                  fieldExtract: (v) => v.ctr,
+                },
+              ],
+              videoTopKpi.result.data
+            ),
           ],
         },
       },
@@ -141,56 +153,8 @@ builder.addMultipleToSlide(
         type: "table",
         title: "Video - Product Performance",
         payload: {
-          headers: [
-            { text: "Product" },
-            { text: "Impressions" },
-            { text: "Video Completes" },
-            { text: "VCR(%)" },
-            { text: "Clicks" },
-            { text: "CTR(%)" },
-          ],
-          data: [
-            [
-              { value: "Targeted Video" },
-              { value: 8818920 },
-              { value: 5508731 },
-              { value: 62.46491633896214 },
-              { value: 25852 },
-              { value: 0.29314247096016294 },
-            ],
-            [
-              { value: "Addressable Video" },
-              { value: 3015579 },
-              { value: 1569324 },
-              { value: 52.040553406161806 },
-              { value: 6900 },
-              { value: 0.22881178042425684 },
-            ],
-            [
-              { value: "Targeted Native" },
-              { value: 1992221 },
-              { value: 0 },
-              { value: "-" },
-              { value: 3157 },
-              { value: 0.1584663548873343 },
-            ],
-            [
-              { value: "YouTube True View" },
-              { value: 9489484 },
-              { value: 3402072 },
-              { value: 35.85096934669999 },
-              { value: 2856 },
-              { value: 0.03009647310644077 },
-            ],
-            [
-              { value: "YouTube Bumper" },
-              { value: 367414 },
-              { value: 178515 },
-              { value: 48.58688019509327 },
-              { value: 66 },
-              { value: 0.017963387350509234 },
-            ],
-          ],
+          headers: videoTopKPIs.headers,
+          data: videoTopKPIs.values,
         },
       },
     ],
@@ -240,6 +204,17 @@ builder.addBarChartSlide(
   }
 );
 
+const stvProductPerformance = extractTableData(
+  [
+    { text: "Product", fieldExtractor: (v) => v._id.subProduct },
+    { text: "Impressions", fieldExtractor: (v) => v.impressions },
+    { text: "Video Completes", fieldExtractor: (v) => v.videoCompletions },
+    { text: "VCR(%)", fieldExtractor: (v) => v.vcr },
+    { text: "Total Conversions", fieldExtractor: (v) => v.conversions },
+  ],
+  stvProduct.result.data
+);
+
 builder.addMultipleToSlide(
   [
     [
@@ -248,13 +223,22 @@ builder.addMultipleToSlide(
         title: "STV - Top KPIs",
         payload: {
           data: [
-            [
-              { title: "Impressions", value: 28885490 },
-              { title: "Video Completes", value: 28461592 },
-              { title: "VCR(%)", value: 98.44440937938042 },
-              { title: "Clicks", value: 131 },
-              { title: "Total Conversions", value: 2006 },
-            ],
+            extractInfoBlockEntity(
+              [
+                { text: "Impressions", fieldExtract: (v) => v.impressions },
+                {
+                  text: "Video Completes",
+                  fieldExtract: (v) => v.videoCompletions,
+                },
+                { text: "VCR(%)", fieldExtract: (v) => v.vcr },
+                { text: "Clicks", fieldExtract: (v) => v.clicks },
+                {
+                  text: "Total Conversions",
+                  fieldExtract: (v) => v.conversions,
+                },
+              ],
+              stvTopKpi.result.data
+            ),
           ],
         },
       },
@@ -264,43 +248,8 @@ builder.addMultipleToSlide(
         type: "table",
         title: "STV - Product Performance",
         payload: {
-          headers: [
-            { text: "Product" },
-            { text: "Impressions" },
-            { text: "Video Completes" },
-            { text: "VCR(%)" },
-            { text: "Total Conversions" },
-          ],
-          data: [
-            [
-              { value: "Addressable STV" },
-              { value: 7351054 },
-              { value: 7260689 },
-              { value: 98.44945967765337 },
-              { value: 2005 },
-            ],
-            [
-              { value: "Targeted STV" },
-              { value: 19813540 },
-              { value: 19501264 },
-              { value: 98.50841656923384 },
-              { value: 1 },
-            ],
-            [
-              { value: "STV" },
-              { value: 1332716 },
-              { value: 1315261 },
-              { value: 97.30435348724346 },
-              { value: 0 },
-            ],
-            [
-              { value: "Hulu" },
-              { value: 388180 },
-              { value: 384378 },
-              { value: 99.05424071248918 },
-              { value: "-" },
-            ],
-          ],
+          headers: stvProductPerformance.headers,
+          data: stvProductPerformance.values,
         },
       },
     ],
@@ -348,6 +297,18 @@ builder.addBarChartSlide(
   }
 );
 
+const productPerformanceDisplay = extractTableData(
+  [
+    { text: "Product", fieldExtractor: (v) => v._id.subProduct },
+    { text: "Impressions", fieldExtractor: (v) => v.impressions },
+    { text: "Clicks", fieldExtractor: (v) => v.clicks },
+    { text: "CTR(%)", fieldExtractor: (v) => v.ctr },
+    { text: "Engagement", fieldExtractor: (v) => v.pageengagements },
+    { text: "Conversions/Leads", fieldExtractor: (v) => v.conversions },
+  ],
+  socialDisplayProduct.result.data
+);
+
 builder.addMultipleToSlide(
   [
     [
@@ -356,13 +317,19 @@ builder.addMultipleToSlide(
         title: "Key Performance Indicators (Display)",
         payload: {
           data: [
-            [
-              { title: "Impressions", value: 408136770 },
-              { title: "Clicks", value: 5482618 },
-              { title: "CTR(%)", value: 1.3433286101617359 },
-              { title: "Engagement", value: 8213120 },
-              { title: "Total Conversions/Leads", value: 774137 },
-            ],
+            extractInfoBlockEntity(
+              [
+                { text: "Impressions", fieldExtract: (v) => v.impressions },
+                { text: "Clicks", fieldExtract: (v) => v.clicks },
+                { text: "CTR(%)", fieldExtract: (v) => v.ctr },
+                { text: "Engagement", fieldExtract: (v) => v.pageengagements },
+                {
+                  text: "Total Conversions/Leads",
+                  fieldExtract: (v) => v.conversions,
+                },
+              ],
+              socialDisplayTopKpi.result.data
+            ),
           ],
         },
       },
@@ -372,56 +339,8 @@ builder.addMultipleToSlide(
         type: "table",
         title: "Product Performance (Display)",
         payload: {
-          headers: [
-            { text: "Product" },
-            { text: "Impressions" },
-            { text: "Clicks" },
-            { text: "CTR(%)" },
-            { text: "Engagement" },
-            { text: "Conversions/Leads" },
-          ],
-          data: [
-            [
-              { value: "Link Clicks" },
-              { value: 195226162 },
-              { value: 2841688 },
-              { value: 1.4555876993576302 },
-              { value: "-" },
-              { value: 306714 },
-            ],
-            [
-              { value: "Unknown" },
-              { value: 45349928 },
-              { value: 834437 },
-              { value: 1.8399963060580824 },
-              { value: "-" },
-              { value: 0 },
-            ],
-            [
-              { value: "Conversions" },
-              { value: 41672164 },
-              { value: 716307 },
-              { value: 1.7189100138884077 },
-              { value: "-" },
-              { value: 291849 },
-            ],
-            [
-              { value: "Link Clicks" },
-              { value: 52892686 },
-              { value: 665715 },
-              { value: 1.258614470817383 },
-              { value: 4385560 },
-              { value: 49738 },
-            ],
-            [
-              { value: "Sponsored Social Mentions" },
-              { value: 24315475 },
-              { value: 163447 },
-              { value: 0.6721933254439817 },
-              { value: 1306055 },
-              { value: 3 },
-            ],
-          ],
+          headers: productPerformanceDisplay.headers,
+          data: productPerformanceDisplay.values,
         },
       },
     ],
@@ -436,6 +355,16 @@ builder.addMultipleToSlide(
   }
 );
 
+const productPerformanceVideo = extractTableData(
+  [
+    { text: "Product", fieldExtractor: (v) => v._id.subProduct },
+    { text: "Video Start(s)", fieldExtractor: (v) => v.videoStarts },
+    { text: "Video Complete(s)", fieldExtractor: (v) => v.videoCompletions },
+    { text: "VCR(%)", fieldExtractor: (v) => v.vcr },
+  ],
+  socialVideoProduct.result.data
+);
+
 builder.addMultipleToSlide(
   [
     [
@@ -444,11 +373,23 @@ builder.addMultipleToSlide(
         title: "Key Performance Indicators (Video)",
         payload: {
           data: [
-            [
-              { title: "Video Start(s)", value: 32535270 },
-              { title: "Video Complete(s)", value: 2473143 },
-              { title: "VCR(%)", value: 7.60142147275864 },
-            ],
+            extractInfoBlockEntity(
+              [
+                {
+                  text: "Video Start(s)",
+                  fieldExtract: (v) => v.videoStarts,
+                },
+                {
+                  text: "Video Complete(s)",
+                  fieldExtract: (v) => v.videoCompletions,
+                },
+                {
+                  text: "VCR(%)",
+                  fieldExtract: (v) => v.vcr,
+                },
+              ],
+              socialVideoTopKpi.result.data
+            ),
           ],
         },
       },
@@ -458,44 +399,8 @@ builder.addMultipleToSlide(
         type: "table",
         title: "Product Performance (Video)",
         payload: {
-          headers: [
-            { text: "Product" },
-            { text: "Video Start(s)" },
-            { text: "Video Complete(s)" },
-            { text: "VCR(%)" },
-          ],
-          data: [
-            [
-              { value: "Link Clicks" },
-              { value: 10703604 },
-              { value: 1227691 },
-              { value: 11.469884349234146 },
-            ],
-            [
-              { value: "Conversions" },
-              { value: 7054509 },
-              { value: 716844 },
-              { value: 10.16150096342637 },
-            ],
-            [
-              { value: "Sponsored Social Mentions" },
-              { value: 4727701 },
-              { value: 234306 },
-              { value: 4.956024080203041 },
-            ],
-            [
-              { value: "Awareness" },
-              { value: 2670619 },
-              { value: 79873 },
-              { value: 2.9908047535047118 },
-            ],
-            [
-              { value: "Link Clicks" },
-              { value: 2366616 },
-              { value: 49685 },
-              { value: 2.099411142323047 },
-            ],
-          ],
+          headers: productPerformanceVideo.headers,
+          data: productPerformanceVideo.values,
         },
       },
     ],
@@ -560,15 +465,30 @@ builder.addMultipleToSlide(
         title: "Search Engine Marketing",
         payload: {
           data: [
-            [
-              { title: "Impressions", value: 6120953 },
-              { title: "Clicks", value: 544928 },
-              { title: "CTR(%)", value: 8.902665973746245 },
-              { title: "Primary Conversions", value: 87946 },
-              { title: "Primary Conv. Rate", value: 13.471150208241747 },
-              { title: "All Conversions", value: 125882.73684983421 },
-              { title: "All Conv. Rate", value: 19.282159525891977 },
-            ],
+            extractInfoBlockEntity(
+              [
+                { text: "Impressions", fieldExtract: (v) => v.impressions },
+                { text: "Clicks", fieldExtract: (v) => v.clicks },
+                { text: "CTR(%)", fieldExtract: (v) => v.ctr },
+                {
+                  text: "Primary Conversions",
+                  fieldExtract: (v) => v.conversions,
+                },
+                {
+                  text: "Primary Conv. Rate",
+                  fieldExtract: (v) => v.conversionsRate,
+                },
+                {
+                  text: "All Conversions",
+                  fieldExtract: (v) => v.allConversions,
+                },
+                {
+                  text: "All Conv. Rate",
+                  fieldExtract: (v) => v.allconversionsRate,
+                },
+              ],
+              semTopKpi.result.data
+            ),
           ],
         },
       },

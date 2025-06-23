@@ -1,4 +1,11 @@
 import chroma from "chroma-js";
+import { FALLBACK_POWERPOINT_VALUE } from "./formatters";
+import { PowerPointBoxEntity } from "../classes/PowerPointInfoBlocks";
+import { PowerPointValue } from "../types/powerpoint.types";
+import {
+  PowerPointTableCell,
+  PowerPointTableTableHeader,
+} from "../classes/PowerPointTable";
 
 // TODO: Reuse this function from Lumina in the future
 export const getMinMax = <T>(data: T[], field: keyof T) => {
@@ -50,4 +57,51 @@ export function isString(value: unknown): value is string {
 
 export function preparePercentageValues(values: number[]) {
   return values.map((value) => value / 100);
+}
+
+export function extractInfoBlockEntity<Data = Record<string, unknown>>(
+  entities: { text: string; fieldExtract: (value: Data) => PowerPointValue }[],
+  data: Data[]
+): PowerPointBoxEntity[] {
+  return entities.map((entity) => {
+    const value = entity.fieldExtract(data[0]);
+
+    return {
+      title: entity.text,
+      value: (value ?? FALLBACK_POWERPOINT_VALUE) as PowerPointValue,
+    };
+  });
+}
+
+export function extractTableData<
+  Data extends Record<string, unknown> = Record<string, unknown>
+>(
+  entities: (PowerPointTableTableHeader &
+    Pick<PowerPointTableCell, "format"> & {
+      fieldExtractor: (v: Data) => PowerPointValue | null;
+    })[],
+  data: Data[]
+) {
+  const headers: PowerPointTableTableHeader[] = entities.map((v) => {
+    return {
+      text: v.text,
+      heatMap: v.heatMap,
+    };
+  });
+
+  const values: PowerPointTableCell[][] = data.map((v) => {
+    return entities.map((e) => {
+      const value = e.fieldExtractor(v);
+
+      return {
+        value: (value ?? FALLBACK_POWERPOINT_VALUE) as PowerPointValue,
+        formater: e.format,
+      };
+    });
+  });
+
+  return {
+    headers,
+    values: values.slice(0, 5),
+  };
 }
