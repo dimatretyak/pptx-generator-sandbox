@@ -188,7 +188,7 @@ export class PowerPointLayout {
       w: slideConfig.width,
       h: CONTENT_TITLE_HEIGHT,
       fill: {
-        color: "e7e6e6",
+        color: "eeeeee",
       },
     });
 

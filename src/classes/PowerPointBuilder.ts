@@ -70,7 +70,7 @@ class PowerPointBuilder {
     this.config = {
       border: {
         size: 1,
-        color: "cccccc",
+        color: "e0e0e0",
       },
       roundess: 0.025,
       margin: {
