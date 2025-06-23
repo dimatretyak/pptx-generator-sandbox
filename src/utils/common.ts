@@ -47,3 +47,7 @@ export function isNumber(value: unknown): value is number {
 export function isString(value: unknown): value is string {
   return typeof value === "string";
 }
+
+export function preparePercentageValues(values: number[]) {
+  return values.map((value) => value / 100);
+}

@@ -228,7 +228,7 @@ export const videoProductPerformance = [
 ];
 
 // TODO: Reuse from lumina in the future
-const palette = {
+export const palette = {
   green: "#0392a3",
   red: "#d72d8d",
   color1: "#0062a8",
@@ -239,7 +239,7 @@ const palette = {
 };
 
 // TODO: Reuse from lumina in the future
-const colors = {
+export const colors = {
   tableHighlight1: palette.color2,
   tableHighlight2: palette.color1,
   tableHighlight3: palette.color5,
