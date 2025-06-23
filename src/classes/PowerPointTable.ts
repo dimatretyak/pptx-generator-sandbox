@@ -58,7 +58,10 @@ export class PowerPointTable {
         const heatMap = payload.headers[columnIndex].heatMap;
 
         const entity: pptxgen.TableCell = {
-          text: formatValue(column.value, column.format),
+          text: formatValue(column.value, {
+            formatter: column.format,
+            formatNumberWithSuffix: false,
+          }),
           options: {},
         };
 

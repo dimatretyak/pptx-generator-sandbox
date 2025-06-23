@@ -3,7 +3,6 @@ import {
   videoProductPerformance,
 } from "./data/constants";
 import { getMinMax } from "./utils/common";
-import { formatNumberWithSuffix } from "./utils/formatters";
 import splitArrayIntoChunks from "./utils/splitArrayIntoChunks";
 import { PowerPointTableCell } from "./classes/PowerPointTable";
 import PowerPointBuilder from "./classes/PowerPointBuilder";
@@ -210,10 +209,10 @@ builder.addTableSlide(
     data: displayProductPerformance.map((entity) => {
       const result: PowerPointTableCell[] = [
         { value: entity._id.subProduct },
-        { value: entity.impressions, format: PowerPointBuilder.formatNumber },
-        { value: entity.clicks, format: PowerPointBuilder.formatNumber },
-        { value: entity.ctr, format: PowerPointBuilder.formatPercent },
-        { value: entity.conversions, format: PowerPointBuilder.formatNumber },
+        { value: entity.impressions },
+        { value: entity.clicks },
+        { value: entity.ctr },
+        { value: entity.conversions },
       ];
 
       return result;
@@ -235,14 +234,13 @@ const videoClicks = getMinMax(videoProductPerformance, "clicks");
 const entities = videoProductPerformance.map((entity) => {
   const result: PowerPointTableCell[] = [
     { value: entity._id.subProduct },
-    { value: entity.impressions, format: PowerPointBuilder.formatNumber },
+    { value: entity.impressions },
     {
       value: entity.videoCompletions,
-      format: PowerPointBuilder.formatNumber,
     },
-    { value: entity.vcr, format: PowerPointBuilder.formatPercent },
-    { value: entity.clicks, format: PowerPointBuilder.formatNumber },
-    { value: entity.ctr, format: PowerPointBuilder.formatPercent },
+    { value: entity.vcr },
+    { value: entity.clicks },
+    { value: entity.ctr },
   ];
 
   return result;
@@ -301,17 +299,14 @@ builder.addBoxesSlide(
         {
           title: "Impressions",
           value: 177000000,
-          format: formatNumberWithSuffix,
         },
         {
           title: "Clicks",
           value: 269000,
-          format: formatNumberWithSuffix,
         },
         {
           title: "CTR(%)",
           value: 0.15261760710334837,
-          format: PowerPointBuilder.formatPercent,
         },
       ],
     ],
@@ -334,46 +329,38 @@ builder.addBoxesSlide(
         {
           title: "Impressions",
           value: 177000000,
-          format: formatNumberWithSuffix,
         },
         {
           title: "Clicks",
           value: 269000,
-          format: formatNumberWithSuffix,
         },
         {
           title: "CTR(%)",
           value: 0.15261760710334837,
-          format: PowerPointBuilder.formatPercent,
         },
       ],
       [
         {
           title: "Impressions",
           value: 33300000,
-          format: formatNumberWithSuffix,
         },
         {
           title: "Site Conversions",
           value: 2700,
-          format: formatNumberWithSuffix,
         },
       ],
       [
         {
           title: "Foot Traffic Visits",
           value: 4400,
-          format: formatNumberWithSuffix,
         },
         {
           title: "Video Start(s)",
           value: 2600000,
-          format: formatNumberWithSuffix,
         },
         {
           title: "Video Complete(s)",
           value: 1300000,
-          format: formatNumberWithSuffix,
         },
       ],
     ],
@@ -398,7 +385,6 @@ builder.addBoxesSlide(
           value: 175200392,
           prevValue: 185352006,
           changePercentage: -5.476937757015697,
-          format: formatNumberWithSuffix,
         },
         {
           title: "Clicks",
@@ -444,27 +430,22 @@ const videoTopKPIData = [
   {
     title: "Impressions",
     value: 24150000,
-    format: formatNumberWithSuffix,
   },
   {
     title: "Video Completes",
     value: 10500000,
-    format: formatNumberWithSuffix,
   },
   {
     title: "VCR(%)",
     value: 45.0,
-    format: PowerPointBuilder.formatPercent,
   },
   {
     title: "Clicks",
     value: 42000,
-    format: formatNumberWithSuffix,
   },
   {
     title: "CTR(%)",
     value: 0.17,
-    format: PowerPointBuilder.formatPercent,
   },
 ];
 
@@ -490,17 +471,14 @@ builder.addCirclesSlide(
         {
           title: "Impressions",
           value: 177000000,
-          format: formatNumberWithSuffix,
         },
         {
           title: "Clicks",
           value: 269000,
-          format: formatNumberWithSuffix,
         },
         {
           title: "CTR(%)",
           value: 0.15261760710334837,
-          format: PowerPointBuilder.formatPercent,
         },
       ],
     ],
@@ -525,7 +503,6 @@ builder.addCirclesSlide(
           value: 175200392,
           prevValue: 185352006,
           changePercentage: -5.476937757015697,
-          format: formatNumberWithSuffix,
         },
         {
           title: "Clicks",
@@ -621,29 +598,24 @@ builder.addMultipleToSlide(
               {
                 title: "Impressions",
                 value: 177000000,
-                format: formatNumberWithSuffix,
               },
               {
                 title: "Clicks",
                 value: 269000,
-                format: formatNumberWithSuffix,
               },
               {
                 title: "CTR(%)",
                 value: 0.15261760710334837,
-                format: PowerPointBuilder.formatPercent,
               },
             ],
             [
               {
                 title: "Impressions",
                 value: 33300000,
-                format: formatNumberWithSuffix,
               },
               {
                 title: "Site Conversions",
                 value: 2700,
-                format: formatNumberWithSuffix,
               },
             ],
           ],
@@ -815,9 +787,8 @@ builder.addMultipleToSlide(
               { value: entity._id.subProduct },
               {
                 value: entity.impressions,
-                format: PowerPointBuilder.formatNumber,
               },
-              { value: entity.clicks, format: PowerPointBuilder.formatNumber },
+              { value: entity.clicks },
             ];
 
             return result;
@@ -878,9 +849,8 @@ builder.addMultipleToSlide(
               { value: entity._id.subProduct },
               {
                 value: entity.impressions,
-                format: PowerPointBuilder.formatNumber,
               },
-              { value: entity.clicks, format: PowerPointBuilder.formatNumber },
+              { value: entity.clicks },
             ];
 
             return result;
@@ -898,12 +868,10 @@ builder.addMultipleToSlide(
               {
                 title: "Impressions",
                 value: 177000000,
-                format: formatNumberWithSuffix,
               },
               {
                 title: "Clicks",
                 value: 269000,
-                format: formatNumberWithSuffix,
               },
             ],
           ],
@@ -997,17 +965,14 @@ builder.addMultipleToSlide(
               {
                 title: "Impressions",
                 value: 177000000,
-                format: formatNumberWithSuffix,
               },
               {
                 title: "Clicks",
                 value: 269000,
-                format: formatNumberWithSuffix,
               },
               {
                 title: "CTR(%)",
                 value: 0.15261760710334837,
-                format: PowerPointBuilder.formatPercent,
               },
             ],
           ],
@@ -1081,7 +1046,6 @@ builder.addMultipleToSlide(
                 value: 175200392,
                 prevValue: 185352006,
                 changePercentage: -5.476937757015697,
-                format: formatNumberWithSuffix,
               },
               {
                 title: "Clicks",
@@ -1143,7 +1107,6 @@ builder.addMultipleToSlide(
                 value: 175200392,
                 prevValue: 185352006,
                 changePercentage: -5.476937757015697,
-                format: formatNumberWithSuffix,
               },
               {
                 title: "Clicks",
@@ -1181,7 +1144,6 @@ builder.addMultipleToSlide(
                 value: 175200392,
                 prevValue: 185352006,
                 changePercentage: -5.476937757015697,
-                format: formatNumberWithSuffix,
               },
               {
                 title: "Clicks",
@@ -1202,7 +1164,6 @@ builder.addMultipleToSlide(
               {
                 title: "Impressions",
                 value: 175200392,
-                format: formatNumberWithSuffix,
               },
               {
                 title: "Clicks",
@@ -1213,7 +1174,6 @@ builder.addMultipleToSlide(
               {
                 title: "Impressions",
                 value: 175200392,
-                format: formatNumberWithSuffix,
               },
               {
                 title: "Clicks",

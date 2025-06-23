@@ -42,7 +42,9 @@ export class PowerPointInfoBlocks {
         },
       },
       {
-        text: formatValue(entity.value, entity.format),
+        text: formatValue(entity.value, {
+          formatter: entity.format,
+        }),
         options: {
           fontSize: 18,
           bold: true,
@@ -52,7 +54,9 @@ export class PowerPointInfoBlocks {
     ];
 
     if (isNumber(entity.changePercentage)) {
-      const value = formatValue(entity.changePercentage, entity.format);
+      const value = formatValue(entity.changePercentage, {
+        formatter: entity.format,
+      });
       const changeIndicator = determineChangeIndicator(entity.changePercentage);
 
       let text = `${value}`;
@@ -79,8 +83,12 @@ export class PowerPointInfoBlocks {
     }
 
     if (isNumber(entity.prevValue)) {
+      const value = formatValue(entity.prevValue, {
+        formatter: entity.format,
+      });
+
       texts.push({
-        text: `vs ${formatValue(entity.prevValue, entity.format)} prev.`,
+        text: `vs ${value} prev.`,
         options: {
           fontSize: 10,
           color: "9e9e9e",

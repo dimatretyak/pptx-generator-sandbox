@@ -57,14 +57,29 @@ export function formatNumberWithSuffix(value: unknown) {
 
 export const formatValue = (
   value: PowerPointValue,
-  formatter?: PowerPointValueFormatter
+  options: {
+    formatter?: PowerPointValueFormatter;
+    formatNumberWithSuffix?: boolean;
+  } = {}
 ): string => {
-  if (typeof formatter === "function") {
-    return formatter(value);
+  if (typeof options.formatter === "function") {
+    return options.formatter(value);
   }
 
   if (isNumber(value) || isString(value)) {
-    return formatNumberWithSuffix(value);
+    const formatWithSuffix = options.formatNumberWithSuffix ?? true;
+
+    if (formatWithSuffix) {
+      return formatNumberWithSuffix(value);
+    }
+
+    if (isNumber(value)) {
+      return formatNumber(value);
+    }
+
+    if (isString(value)) {
+      return value;
+    }
   }
 
   return "-";
