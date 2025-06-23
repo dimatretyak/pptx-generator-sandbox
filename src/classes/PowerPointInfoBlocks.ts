@@ -172,7 +172,7 @@ export class PowerPointInfoBlocks {
         });
 
         const size = Math.min(1.25, info.height);
-        const offset = 0.15;
+        const offset = 0.1;
         const totalWidth =
           row.length * size + (row.length - 1) * this.config.spacer;
         const leftOffset = slideConfig.x + (slideConfig.width - totalWidth) / 2;
