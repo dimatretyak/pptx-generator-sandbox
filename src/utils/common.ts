@@ -4,6 +4,7 @@ import { PowerPointBoxEntity } from "../classes/PowerPointInfoBlocks";
 import { PowerPointValue } from "../types/powerpoint.types";
 import {
   PowerPointTableCell,
+  PowerPointTablePayload,
   PowerPointTableTableHeader,
 } from "../classes/PowerPointTable";
 import splitArrayIntoChunks from "./splitArrayIntoChunks";
@@ -87,7 +88,7 @@ export function extractTableData<
       fieldExtractor: (v: Data) => PowerPointValue | null;
     })[],
   data: Data[]
-) {
+): PowerPointTablePayload {
   const headers: PowerPointTableTableHeader[] = entities.map((v) => {
     return {
       text: v.text,
@@ -108,6 +109,6 @@ export function extractTableData<
 
   return {
     headers,
-    values: values.slice(0, 5),
+    data: values.slice(0, 5),
   };
 }

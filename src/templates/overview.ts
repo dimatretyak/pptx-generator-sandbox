@@ -21,17 +21,6 @@ import {
 const builder = new PowerPointBuilder();
 const footer = "06/23/2025-06/23/2025";
 
-const displayProductPerformance = extractTableData(
-  [
-    { text: "Product", fieldExtractor: (v) => v._id.subProduct },
-    { text: "Impressions", fieldExtractor: (v) => v.impressions },
-    { text: "Clicks", fieldExtractor: (v) => v.clicks },
-    { text: "CTR(%)", fieldExtractor: (v) => v.ctr },
-    { text: "Total Conversions", fieldExtractor: (v) => v.conversions },
-  ],
-  displayProduct.result.data
-);
-
 builder.addMultipleToSlide(
   [
     [
@@ -54,10 +43,16 @@ builder.addMultipleToSlide(
       {
         type: "table",
         title: "Display - Product Performance",
-        payload: {
-          headers: displayProductPerformance.headers,
-          data: displayProductPerformance.values,
-        },
+        payload: extractTableData(
+          [
+            { text: "Product", fieldExtractor: (v) => v._id.subProduct },
+            { text: "Impressions", fieldExtractor: (v) => v.impressions },
+            { text: "Clicks", fieldExtractor: (v) => v.clicks },
+            { text: "CTR(%)", fieldExtractor: (v) => v.ctr },
+            { text: "Total Conversions", fieldExtractor: (v) => v.conversions },
+          ],
+          displayProduct.result.data
+        ),
       },
     ],
   ],
@@ -95,18 +90,6 @@ builder.addBarChartSlide(
       },
     },
   }
-);
-
-const videoTopKPIs = extractTableData(
-  [
-    { text: "Product", fieldExtractor: (v) => v._id.subProduct },
-    { text: "Impressions", fieldExtractor: (v) => v.impressions },
-    { text: "Video Completes", fieldExtractor: (v) => v.videoCompletions },
-    { text: "VCR(%)", fieldExtractor: (v) => v.vcr },
-    { text: "Clicks", fieldExtractor: (v) => v.clicks },
-    { text: "CTR(%)", fieldExtractor: (v) => v.ctr },
-  ],
-  videoProduct.result.data
 );
 
 builder.addMultipleToSlide(
@@ -148,10 +131,20 @@ builder.addMultipleToSlide(
       {
         type: "table",
         title: "Video - Product Performance",
-        payload: {
-          headers: videoTopKPIs.headers,
-          data: videoTopKPIs.values,
-        },
+        payload: extractTableData(
+          [
+            { text: "Product", fieldExtractor: (v) => v._id.subProduct },
+            { text: "Impressions", fieldExtractor: (v) => v.impressions },
+            {
+              text: "Video Completes",
+              fieldExtractor: (v) => v.videoCompletions,
+            },
+            { text: "VCR(%)", fieldExtractor: (v) => v.vcr },
+            { text: "Clicks", fieldExtractor: (v) => v.clicks },
+            { text: "CTR(%)", fieldExtractor: (v) => v.ctr },
+          ],
+          videoProduct.result.data
+        ),
       },
     ],
   ],
@@ -200,17 +193,6 @@ builder.addBarChartSlide(
   }
 );
 
-const stvProductPerformance = extractTableData(
-  [
-    { text: "Product", fieldExtractor: (v) => v._id.subProduct },
-    { text: "Impressions", fieldExtractor: (v) => v.impressions },
-    { text: "Video Completes", fieldExtractor: (v) => v.videoCompletions },
-    { text: "VCR(%)", fieldExtractor: (v) => v.vcr },
-    { text: "Total Conversions", fieldExtractor: (v) => v.conversions },
-  ],
-  stvProduct.result.data
-);
-
 builder.addMultipleToSlide(
   [
     [
@@ -241,10 +223,19 @@ builder.addMultipleToSlide(
       {
         type: "table",
         title: "STV - Product Performance",
-        payload: {
-          headers: stvProductPerformance.headers,
-          data: stvProductPerformance.values,
-        },
+        payload: extractTableData(
+          [
+            { text: "Product", fieldExtractor: (v) => v._id.subProduct },
+            { text: "Impressions", fieldExtractor: (v) => v.impressions },
+            {
+              text: "Video Completes",
+              fieldExtractor: (v) => v.videoCompletions,
+            },
+            { text: "VCR(%)", fieldExtractor: (v) => v.vcr },
+            { text: "Total Conversions", fieldExtractor: (v) => v.conversions },
+          ],
+          stvProduct.result.data
+        ),
       },
     ],
   ],
@@ -291,18 +282,6 @@ builder.addBarChartSlide(
   }
 );
 
-const productPerformanceDisplay = extractTableData(
-  [
-    { text: "Product", fieldExtractor: (v) => v._id.subProduct },
-    { text: "Impressions", fieldExtractor: (v) => v.impressions },
-    { text: "Clicks", fieldExtractor: (v) => v.clicks },
-    { text: "CTR(%)", fieldExtractor: (v) => v.ctr },
-    { text: "Engagement", fieldExtractor: (v) => v.pageengagements },
-    { text: "Conversions/Leads", fieldExtractor: (v) => v.conversions },
-  ],
-  socialDisplayProduct.result.data
-);
-
 builder.addMultipleToSlide(
   [
     [
@@ -330,10 +309,17 @@ builder.addMultipleToSlide(
       {
         type: "table",
         title: "Product Performance (Display)",
-        payload: {
-          headers: productPerformanceDisplay.headers,
-          data: productPerformanceDisplay.values,
-        },
+        payload: extractTableData(
+          [
+            { text: "Product", fieldExtractor: (v) => v._id.subProduct },
+            { text: "Impressions", fieldExtractor: (v) => v.impressions },
+            { text: "Clicks", fieldExtractor: (v) => v.clicks },
+            { text: "CTR(%)", fieldExtractor: (v) => v.ctr },
+            { text: "Engagement", fieldExtractor: (v) => v.pageengagements },
+            { text: "Conversions/Leads", fieldExtractor: (v) => v.conversions },
+          ],
+          socialDisplayProduct.result.data
+        ),
       },
     ],
   ],
@@ -345,16 +331,6 @@ builder.addMultipleToSlide(
       },
     },
   }
-);
-
-const productPerformanceVideo = extractTableData(
-  [
-    { text: "Product", fieldExtractor: (v) => v._id.subProduct },
-    { text: "Video Start(s)", fieldExtractor: (v) => v.videoStarts },
-    { text: "Video Complete(s)", fieldExtractor: (v) => v.videoCompletions },
-    { text: "VCR(%)", fieldExtractor: (v) => v.vcr },
-  ],
-  socialVideoProduct.result.data
 );
 
 builder.addMultipleToSlide(
@@ -388,10 +364,18 @@ builder.addMultipleToSlide(
       {
         type: "table",
         title: "Product Performance (Video)",
-        payload: {
-          headers: productPerformanceVideo.headers,
-          data: productPerformanceVideo.values,
-        },
+        payload: extractTableData(
+          [
+            { text: "Product", fieldExtractor: (v) => v._id.subProduct },
+            { text: "Video Start(s)", fieldExtractor: (v) => v.videoStarts },
+            {
+              text: "Video Complete(s)",
+              fieldExtractor: (v) => v.videoCompletions,
+            },
+            { text: "VCR(%)", fieldExtractor: (v) => v.vcr },
+          ],
+          socialVideoProduct.result.data
+        ),
       },
     ],
   ],
