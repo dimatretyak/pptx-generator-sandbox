@@ -3,10 +3,7 @@ import {
   PowerPointConfig,
   PowerPointSlideConfig,
   PowerPointSlideOptions,
-  PowerPointValue,
 } from "../types/powerpoint.types";
-import { isNumber, isString } from "../utils/common";
-import { formatNumber, formatPercent } from "../utils/formatters";
 import { PowerPointTable, PowerPointTablePayload } from "./PowerPointTable";
 import {
   PowerPointBarChart,
@@ -26,7 +23,6 @@ import {
 const LAYOUT_NAME = "APP";
 const SLIDE_WIDTH = 10;
 const SLIDE_HEIGHT = 5.625;
-const FALLBACK_POWER_POINT_VALUE = "-";
 
 type PowerPointMultipleEntity =
   | {
@@ -67,30 +63,6 @@ class PowerPointBuilder {
     pie: PowerPointPieChart;
     bar: PowerPointBarChart;
   };
-
-  static formatNumber(value: PowerPointValue): string {
-    if (isNumber(value)) {
-      return formatNumber(value);
-    }
-
-    if (isString(value)) {
-      return value;
-    }
-
-    return FALLBACK_POWER_POINT_VALUE;
-  }
-
-  static formatPercent(value: PowerPointValue): string {
-    if (isNumber(value)) {
-      return formatPercent(value);
-    }
-
-    if (isString(value)) {
-      return value;
-    }
-
-    return FALLBACK_POWER_POINT_VALUE;
-  }
 
   constructor() {
     this.presentation = new pptxgen();
