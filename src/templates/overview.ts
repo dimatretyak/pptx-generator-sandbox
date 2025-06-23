@@ -30,9 +30,18 @@ builder.addMultipleToSlide(
         payload: {
           data: extractInfoBlockEntity(
             [
-              { text: "Impressions", fieldExtract: (v) => v.impressions },
-              { text: "Clicks", fieldExtract: (v) => v.clicks },
-              { text: "CTR(%)", fieldExtract: (v) => v.ctr },
+              {
+                text: "Impressions",
+                fieldExtract: (v) => v.impressions,
+              },
+              {
+                text: "Clicks",
+                fieldExtract: (v) => v.clicks,
+              },
+              {
+                text: "CTR(%)",
+                fieldExtract: (v) => v.ctr,
+              },
             ],
             displayTopKpi.result.data
           ),
@@ -45,11 +54,26 @@ builder.addMultipleToSlide(
         title: "Display - Product Performance",
         payload: extractTableData(
           [
-            { text: "Product", fieldExtractor: (v) => v._id.subProduct },
-            { text: "Impressions", fieldExtractor: (v) => v.impressions },
-            { text: "Clicks", fieldExtractor: (v) => v.clicks },
-            { text: "CTR(%)", fieldExtractor: (v) => v.ctr },
-            { text: "Total Conversions", fieldExtractor: (v) => v.conversions },
+            {
+              text: "Product",
+              fieldExtractor: (v) => v._id.subProduct,
+            },
+            {
+              text: "Impressions",
+              fieldExtractor: (v) => v.impressions,
+            },
+            {
+              text: "Clicks",
+              fieldExtractor: (v) => v.clicks,
+            },
+            {
+              text: "CTR(%)",
+              fieldExtractor: (v) => v.ctr,
+            },
+            {
+              text: "Total Conversions",
+              fieldExtractor: (v) => v.conversions,
+            },
           ],
           displayProduct.result.data
         ),
@@ -133,15 +157,30 @@ builder.addMultipleToSlide(
         title: "Video - Product Performance",
         payload: extractTableData(
           [
-            { text: "Product", fieldExtractor: (v) => v._id.subProduct },
-            { text: "Impressions", fieldExtractor: (v) => v.impressions },
+            {
+              text: "Product",
+              fieldExtractor: (v) => v._id.subProduct,
+            },
+            {
+              text: "Impressions",
+              fieldExtractor: (v) => v.impressions,
+            },
             {
               text: "Video Completes",
               fieldExtractor: (v) => v.videoCompletions,
             },
-            { text: "VCR(%)", fieldExtractor: (v) => v.vcr },
-            { text: "Clicks", fieldExtractor: (v) => v.clicks },
-            { text: "CTR(%)", fieldExtractor: (v) => v.ctr },
+            {
+              text: "VCR(%)",
+              fieldExtractor: (v) => v.vcr,
+            },
+            {
+              text: "Clicks",
+              fieldExtractor: (v) => v.clicks,
+            },
+            {
+              text: "CTR(%)",
+              fieldExtractor: (v) => v.ctr,
+            },
           ],
           videoProduct.result.data
         ),
@@ -202,13 +241,22 @@ builder.addMultipleToSlide(
         payload: {
           data: extractInfoBlockEntity(
             [
-              { text: "Impressions", fieldExtract: (v) => v.impressions },
+              {
+                text: "Impressions",
+                fieldExtract: (v) => v.impressions,
+              },
               {
                 text: "Video Completes",
                 fieldExtract: (v) => v.videoCompletions,
               },
-              { text: "VCR(%)", fieldExtract: (v) => v.vcr },
-              { text: "Clicks", fieldExtract: (v) => v.clicks },
+              {
+                text: "VCR(%)",
+                fieldExtract: (v) => v.vcr,
+              },
+              {
+                text: "Clicks",
+                fieldExtract: (v) => v.clicks,
+              },
               {
                 text: "Total Conversions",
                 fieldExtract: (v) => v.conversions,
@@ -225,14 +273,26 @@ builder.addMultipleToSlide(
         title: "STV - Product Performance",
         payload: extractTableData(
           [
-            { text: "Product", fieldExtractor: (v) => v._id.subProduct },
-            { text: "Impressions", fieldExtractor: (v) => v.impressions },
+            {
+              text: "Product",
+              fieldExtractor: (v) => v._id.subProduct,
+            },
+            {
+              text: "Impressions",
+              fieldExtractor: (v) => v.impressions,
+            },
             {
               text: "Video Completes",
               fieldExtractor: (v) => v.videoCompletions,
             },
-            { text: "VCR(%)", fieldExtractor: (v) => v.vcr },
-            { text: "Total Conversions", fieldExtractor: (v) => v.conversions },
+            {
+              text: "VCR(%)",
+              fieldExtractor: (v) => v.vcr,
+            },
+            {
+              text: "Total Conversions",
+              fieldExtractor: (v) => v.conversions,
+            },
           ],
           stvProduct.result.data
         ),
@@ -291,10 +351,22 @@ builder.addMultipleToSlide(
         payload: {
           data: extractInfoBlockEntity(
             [
-              { text: "Impressions", fieldExtract: (v) => v.impressions },
-              { text: "Clicks", fieldExtract: (v) => v.clicks },
-              { text: "CTR(%)", fieldExtract: (v) => v.ctr },
-              { text: "Engagement", fieldExtract: (v) => v.pageengagements },
+              {
+                text: "Impressions",
+                fieldExtract: (v) => v.impressions,
+              },
+              {
+                text: "Clicks",
+                fieldExtract: (v) => v.clicks,
+              },
+              {
+                text: "CTR(%)",
+                fieldExtract: (v) => v.ctr,
+              },
+              {
+                text: "Engagement",
+                fieldExtract: (v) => v.pageengagements,
+              },
               {
                 text: "Total Conversions/Leads",
                 fieldExtract: (v) => v.conversions,
@@ -311,12 +383,30 @@ builder.addMultipleToSlide(
         title: "Product Performance (Display)",
         payload: extractTableData(
           [
-            { text: "Product", fieldExtractor: (v) => v._id.subProduct },
-            { text: "Impressions", fieldExtractor: (v) => v.impressions },
-            { text: "Clicks", fieldExtractor: (v) => v.clicks },
-            { text: "CTR(%)", fieldExtractor: (v) => v.ctr },
-            { text: "Engagement", fieldExtractor: (v) => v.pageengagements },
-            { text: "Conversions/Leads", fieldExtractor: (v) => v.conversions },
+            {
+              text: "Product",
+              fieldExtractor: (v) => v._id.subProduct,
+            },
+            {
+              text: "Impressions",
+              fieldExtractor: (v) => v.impressions,
+            },
+            {
+              text: "Clicks",
+              fieldExtractor: (v) => v.clicks,
+            },
+            {
+              text: "CTR(%)",
+              fieldExtractor: (v) => v.ctr,
+            },
+            {
+              text: "Engagement",
+              fieldExtractor: (v) => v.pageengagements,
+            },
+            {
+              text: "Conversions/Leads",
+              fieldExtractor: (v) => v.conversions,
+            },
           ],
           socialDisplayProduct.result.data
         ),
@@ -366,13 +456,22 @@ builder.addMultipleToSlide(
         title: "Product Performance (Video)",
         payload: extractTableData(
           [
-            { text: "Product", fieldExtractor: (v) => v._id.subProduct },
-            { text: "Video Start(s)", fieldExtractor: (v) => v.videoStarts },
+            {
+              text: "Product",
+              fieldExtractor: (v) => v._id.subProduct,
+            },
+            {
+              text: "Video Start(s)",
+              fieldExtractor: (v) => v.videoStarts,
+            },
             {
               text: "Video Complete(s)",
               fieldExtractor: (v) => v.videoCompletions,
             },
-            { text: "VCR(%)", fieldExtractor: (v) => v.vcr },
+            {
+              text: "VCR(%)",
+              fieldExtractor: (v) => v.vcr,
+            },
           ],
           socialVideoProduct.result.data
         ),
@@ -440,9 +539,18 @@ builder.addMultipleToSlide(
         payload: {
           data: extractInfoBlockEntity(
             [
-              { text: "Impressions", fieldExtract: (v) => v.impressions },
-              { text: "Clicks", fieldExtract: (v) => v.clicks },
-              { text: "CTR(%)", fieldExtract: (v) => v.ctr },
+              {
+                text: "Impressions",
+                fieldExtract: (v) => v.impressions,
+              },
+              {
+                text: "Clicks",
+                fieldExtract: (v) => v.clicks,
+              },
+              {
+                text: "CTR(%)",
+                fieldExtract: (v) => v.ctr,
+              },
               {
                 text: "Primary Conversions",
                 fieldExtract: (v) => v.conversions,
