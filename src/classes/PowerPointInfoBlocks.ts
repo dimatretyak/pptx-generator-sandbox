@@ -8,6 +8,8 @@ import {
 import { formatValue } from "../utils/formatters";
 import { PowerPointLayout } from "./PowerPointLayout";
 import { determineChangeIndicator, isNumber } from "../utils/common";
+import { config } from "../config";
+import path from "node:path";
 
 export type PowerPointBoxEntity = {
   title: string;
@@ -17,11 +19,11 @@ export type PowerPointBoxEntity = {
   format?: PowerPointValueFormatter;
 };
 
-export type PowerPointBoxesPayload = {
+export type PowerPointInfoBlockPayload = {
   data: PowerPointBoxEntity[][];
 };
 
-export class PowerPointBoxes {
+export class PowerPointInfoBlocks {
   private config: PowerPointConfig;
   private layout: PowerPointLayout;
 
@@ -35,14 +37,14 @@ export class PowerPointBoxes {
       {
         text: entity.title,
         options: {
-          fontSize: 14,
+          fontSize: 12,
           breakLine: true,
         },
       },
       {
         text: formatValue(entity.value, entity.format),
         options: {
-          fontSize: 24,
+          fontSize: 18,
           bold: true,
           breakLine: true,
         },
@@ -69,7 +71,7 @@ export class PowerPointBoxes {
       texts.push({
         text,
         options: {
-          fontSize: 16,
+          fontSize: 12,
           breakLine: true,
           color,
         },
@@ -80,7 +82,7 @@ export class PowerPointBoxes {
       texts.push({
         text: `vs ${formatValue(entity.prevValue, entity.format)} prev.`,
         options: {
-          fontSize: 14,
+          fontSize: 10,
           color: "9e9e9e",
         },
       });
@@ -89,9 +91,9 @@ export class PowerPointBoxes {
     return texts;
   }
 
-  render(
+  renderRoundedRectangles(
     slide: pptxgen.Slide,
-    payload: PowerPointBoxesPayload,
+    payload: PowerPointInfoBlockPayload,
     slideConfig: PowerPointSlideConfig
   ) {
     payload.data.forEach((row, rowIndex) => {
@@ -126,6 +128,71 @@ export class PowerPointBoxes {
             color: this.config.border.color,
             size: this.config.border.size,
           },
+        });
+      });
+    });
+  }
+
+  renderCircles(
+    slide: pptxgen.Slide,
+    payload: PowerPointInfoBlockPayload,
+    slideConfig: PowerPointSlideConfig
+  ) {
+    payload.data.forEach((row, rowIndex) => {
+      row.forEach((col, colIndex) => {
+        const info = this.layout.getCardSizeByRowCol({
+          rowsCount: row.length,
+          colsCount: payload.data.length,
+          rowIndex,
+          colIndex,
+          sizes: {
+            width: slideConfig.width,
+            height: slideConfig.height,
+          },
+          coords: {
+            x: slideConfig.x,
+            y: slideConfig.y,
+          },
+        });
+
+        const size = Math.min(1.75, info.height);
+        const offset = 0.15;
+        const totalWidth =
+          row.length * size + (row.length - 1) * this.config.spacer;
+        const leftOffset = slideConfig.x + (slideConfig.width - totalWidth) / 2;
+        const topOffset = info.y + info.height / 2 - size / 2;
+        const x = leftOffset + (size + this.config.spacer) * colIndex;
+        const y = topOffset;
+
+        const texts = this.getTexts(col);
+        const backgroundImage = path.join(config.path.images, "circle-bg.svg");
+
+        slide.addImage({
+          x: x - offset / 2,
+          y: y - offset / 2,
+          w: size + offset,
+          h: size + offset,
+          path: backgroundImage,
+        });
+
+        // TODO: For debug purposes
+        // slide.addShape("ellipse", {
+        //   x,
+        //   y,
+        //   w: size,
+        //   h: size,
+        //   line: {
+        //     color: this.config.border.color,
+        //     size: this.config.border.size,
+        //   },
+        // });
+
+        slide.addText(texts, {
+          x: leftOffset + (size + this.config.spacer) * colIndex,
+          y: topOffset,
+          w: size,
+          h: size,
+          align: "center",
         });
       });
     });

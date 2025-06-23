@@ -7,13 +7,16 @@ import {
 } from "../types/powerpoint.types";
 import { isNumber, isString } from "../utils/common";
 import { formatNumber, formatPercent } from "../utils/formatters";
-import { PowerPointTable, PowerPointTablePayload } from ".//PowerPointTable";
+import { PowerPointTable, PowerPointTablePayload } from "./PowerPointTable";
 import {
   PowerPointBarChart,
   PowerPointBarChartPayload,
-} from ".//PowerPointBarChart";
-import { PowerPointLayout, SLIDE_TITLE_FULL_HEIGHT } from ".//PowerPointLayout";
-import { PowerPointBoxes, PowerPointBoxesPayload } from ".//PowerPointBoxes";
+} from "./PowerPointBarChart";
+import { PowerPointLayout, SLIDE_TITLE_FULL_HEIGHT } from "./PowerPointLayout";
+import {
+  PowerPointInfoBlocks,
+  PowerPointInfoBlockPayload,
+} from "./PowerPointInfoBlocks";
 import {
   PowerPointPieChart,
   PowerPointPieChartPayload,
@@ -39,7 +42,12 @@ type PowerPointMultipleEntity =
   | {
       type: "boxes";
       title: string;
-      payload: PowerPointBoxesPayload;
+      payload: PowerPointInfoBlockPayload;
+    }
+  | {
+      type: "circles";
+      title: string;
+      payload: PowerPointInfoBlockPayload;
     }
   | {
       type: "table";
@@ -52,7 +60,7 @@ class PowerPointBuilder {
   private presentation: pptxgen;
   private config: PowerPointConfig;
   private table: PowerPointTable;
-  private boxes: PowerPointBoxes;
+  private infoBlock: PowerPointInfoBlocks;
   private layout: PowerPointLayout;
 
   private charts: {
@@ -117,7 +125,7 @@ class PowerPointBuilder {
     this.presentation.layout = LAYOUT_NAME;
 
     this.table = new PowerPointTable(this.config);
-    this.boxes = new PowerPointBoxes(this.config, this.layout);
+    this.infoBlock = new PowerPointInfoBlocks(this.config, this.layout);
 
     this.charts = {
       bar: new PowerPointBarChart(),
@@ -143,13 +151,26 @@ class PowerPointBuilder {
   }
 
   addBoxesSlide(
-    payload: PowerPointBoxesPayload,
+    payload: PowerPointInfoBlockPayload,
     options: PowerPointSlideOptions
   ) {
     this.slideGenerators.push((slide) => {
       const config = this.addMarkup(slide, options);
 
-      this.boxes.render(slide, payload, config);
+      this.infoBlock.renderRoundedRectangles(slide, payload, config);
+    });
+
+    return this;
+  }
+
+  addCirclesSlide(
+    payload: PowerPointInfoBlockPayload,
+    options: PowerPointSlideOptions
+  ) {
+    this.slideGenerators.push((slide) => {
+      const config = this.addMarkup(slide, options);
+
+      this.infoBlock.renderCircles(slide, payload, config);
     });
 
     return this;
@@ -237,7 +258,15 @@ class PowerPointBuilder {
           }
 
           if (col.type === "boxes") {
-            this.boxes.render(slide, col.payload, slideConfig);
+            this.infoBlock.renderRoundedRectangles(
+              slide,
+              col.payload,
+              slideConfig
+            );
+          }
+
+          if (col.type === "circles") {
+            this.infoBlock.renderCircles(slide, col.payload, slideConfig);
           }
 
           if (col.type === "table") {

@@ -1,4 +1,4 @@
-import { PowerPointBoxEntity } from "../classes/PowerPointBoxes";
+import { PowerPointBoxEntity } from "../classes/PowerPointInfoBlocks";
 
 export const cards: Array<PowerPointBoxEntity[][]> = [
   [
