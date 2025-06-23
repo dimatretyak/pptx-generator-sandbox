@@ -6,6 +6,7 @@ import {
   PowerPointTableCell,
   PowerPointTableTableHeader,
 } from "../classes/PowerPointTable";
+import splitArrayIntoChunks from "./splitArrayIntoChunks";
 
 // TODO: Reuse this function from Lumina in the future
 export const getMinMax = <T>(data: T[], field: keyof T) => {
@@ -61,9 +62,12 @@ export function preparePercentageValues(values: number[]) {
 
 export function extractInfoBlockEntity<Data = Record<string, unknown>>(
   entities: { text: string; fieldExtract: (value: Data) => PowerPointValue }[],
-  data: Data[]
-): PowerPointBoxEntity[] {
-  return entities.map((entity) => {
+  data: Data[],
+  options: {
+    perChunk?: number;
+  } = {}
+): PowerPointBoxEntity[][] {
+  const results = entities.map((entity) => {
     const value = entity.fieldExtract(data[0]);
 
     return {
@@ -71,6 +75,8 @@ export function extractInfoBlockEntity<Data = Record<string, unknown>>(
       value: (value ?? FALLBACK_POWERPOINT_VALUE) as PowerPointValue,
     };
   });
+
+  return splitArrayIntoChunks(results, options.perChunk ?? 5);
 }
 
 export function extractTableData<

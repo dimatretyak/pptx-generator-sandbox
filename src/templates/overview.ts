@@ -39,16 +39,14 @@ builder.addMultipleToSlide(
         type: "circles",
         title: "Display - Top KPIs",
         payload: {
-          data: [
-            extractInfoBlockEntity(
-              [
-                { text: "Impressions", fieldExtract: (v) => v.impressions },
-                { text: "Clicks", fieldExtract: (v) => v.clicks },
-                { text: "CTR(%)", fieldExtract: (v) => v.ctr },
-              ],
-              displayTopKpi.result.data
-            ),
-          ],
+          data: extractInfoBlockEntity(
+            [
+              { text: "Impressions", fieldExtract: (v) => v.impressions },
+              { text: "Clicks", fieldExtract: (v) => v.clicks },
+              { text: "CTR(%)", fieldExtract: (v) => v.ctr },
+            ],
+            displayTopKpi.result.data
+          ),
         },
       },
     ],
@@ -118,33 +116,31 @@ builder.addMultipleToSlide(
         type: "circles",
         title: "Video - Top KPIs",
         payload: {
-          data: [
-            extractInfoBlockEntity(
-              [
-                {
-                  text: "Impressions",
-                  fieldExtract: (v) => v.impressions,
-                },
-                {
-                  text: "Video Completes",
-                  fieldExtract: (v) => v.videoCompletions,
-                },
-                {
-                  text: "VCR(%)",
-                  fieldExtract: (v) => v.vcr,
-                },
-                {
-                  text: "Clicks",
-                  fieldExtract: (v) => v.clicks,
-                },
-                {
-                  text: "CTR(%)",
-                  fieldExtract: (v) => v.ctr,
-                },
-              ],
-              videoTopKpi.result.data
-            ),
-          ],
+          data: extractInfoBlockEntity(
+            [
+              {
+                text: "Impressions",
+                fieldExtract: (v) => v.impressions,
+              },
+              {
+                text: "Video Completes",
+                fieldExtract: (v) => v.videoCompletions,
+              },
+              {
+                text: "VCR(%)",
+                fieldExtract: (v) => v.vcr,
+              },
+              {
+                text: "Clicks",
+                fieldExtract: (v) => v.clicks,
+              },
+              {
+                text: "CTR(%)",
+                fieldExtract: (v) => v.ctr,
+              },
+            ],
+            videoTopKpi.result.data
+          ),
         },
       },
     ],
@@ -222,24 +218,22 @@ builder.addMultipleToSlide(
         type: "circles",
         title: "STV - Top KPIs",
         payload: {
-          data: [
-            extractInfoBlockEntity(
-              [
-                { text: "Impressions", fieldExtract: (v) => v.impressions },
-                {
-                  text: "Video Completes",
-                  fieldExtract: (v) => v.videoCompletions,
-                },
-                { text: "VCR(%)", fieldExtract: (v) => v.vcr },
-                { text: "Clicks", fieldExtract: (v) => v.clicks },
-                {
-                  text: "Total Conversions",
-                  fieldExtract: (v) => v.conversions,
-                },
-              ],
-              stvTopKpi.result.data
-            ),
-          ],
+          data: extractInfoBlockEntity(
+            [
+              { text: "Impressions", fieldExtract: (v) => v.impressions },
+              {
+                text: "Video Completes",
+                fieldExtract: (v) => v.videoCompletions,
+              },
+              { text: "VCR(%)", fieldExtract: (v) => v.vcr },
+              { text: "Clicks", fieldExtract: (v) => v.clicks },
+              {
+                text: "Total Conversions",
+                fieldExtract: (v) => v.conversions,
+              },
+            ],
+            stvTopKpi.result.data
+          ),
         },
       },
     ],
@@ -316,21 +310,19 @@ builder.addMultipleToSlide(
         type: "circles",
         title: "Key Performance Indicators (Display)",
         payload: {
-          data: [
-            extractInfoBlockEntity(
-              [
-                { text: "Impressions", fieldExtract: (v) => v.impressions },
-                { text: "Clicks", fieldExtract: (v) => v.clicks },
-                { text: "CTR(%)", fieldExtract: (v) => v.ctr },
-                { text: "Engagement", fieldExtract: (v) => v.pageengagements },
-                {
-                  text: "Total Conversions/Leads",
-                  fieldExtract: (v) => v.conversions,
-                },
-              ],
-              socialDisplayTopKpi.result.data
-            ),
-          ],
+          data: extractInfoBlockEntity(
+            [
+              { text: "Impressions", fieldExtract: (v) => v.impressions },
+              { text: "Clicks", fieldExtract: (v) => v.clicks },
+              { text: "CTR(%)", fieldExtract: (v) => v.ctr },
+              { text: "Engagement", fieldExtract: (v) => v.pageengagements },
+              {
+                text: "Total Conversions/Leads",
+                fieldExtract: (v) => v.conversions,
+              },
+            ],
+            socialDisplayTopKpi.result.data
+          ),
         },
       },
     ],
@@ -372,25 +364,23 @@ builder.addMultipleToSlide(
         type: "circles",
         title: "Key Performance Indicators (Video)",
         payload: {
-          data: [
-            extractInfoBlockEntity(
-              [
-                {
-                  text: "Video Start(s)",
-                  fieldExtract: (v) => v.videoStarts,
-                },
-                {
-                  text: "Video Complete(s)",
-                  fieldExtract: (v) => v.videoCompletions,
-                },
-                {
-                  text: "VCR(%)",
-                  fieldExtract: (v) => v.vcr,
-                },
-              ],
-              socialVideoTopKpi.result.data
-            ),
-          ],
+          data: extractInfoBlockEntity(
+            [
+              {
+                text: "Video Start(s)",
+                fieldExtract: (v) => v.videoStarts,
+              },
+              {
+                text: "Video Complete(s)",
+                fieldExtract: (v) => v.videoCompletions,
+              },
+              {
+                text: "VCR(%)",
+                fieldExtract: (v) => v.vcr,
+              },
+            ],
+            socialVideoTopKpi.result.data
+          ),
         },
       },
     ],
@@ -464,32 +454,33 @@ builder.addMultipleToSlide(
         type: "circles",
         title: "Search Engine Marketing",
         payload: {
-          data: [
-            extractInfoBlockEntity(
-              [
-                { text: "Impressions", fieldExtract: (v) => v.impressions },
-                { text: "Clicks", fieldExtract: (v) => v.clicks },
-                { text: "CTR(%)", fieldExtract: (v) => v.ctr },
-                {
-                  text: "Primary Conversions",
-                  fieldExtract: (v) => v.conversions,
-                },
-                {
-                  text: "Primary Conv. Rate",
-                  fieldExtract: (v) => v.conversionsRate,
-                },
-                {
-                  text: "All Conversions",
-                  fieldExtract: (v) => v.allConversions,
-                },
-                {
-                  text: "All Conv. Rate",
-                  fieldExtract: (v) => v.allconversionsRate,
-                },
-              ],
-              semTopKpi.result.data
-            ),
-          ],
+          data: extractInfoBlockEntity(
+            [
+              { text: "Impressions", fieldExtract: (v) => v.impressions },
+              { text: "Clicks", fieldExtract: (v) => v.clicks },
+              { text: "CTR(%)", fieldExtract: (v) => v.ctr },
+              {
+                text: "Primary Conversions",
+                fieldExtract: (v) => v.conversions,
+              },
+              {
+                text: "Primary Conv. Rate",
+                fieldExtract: (v) => v.conversionsRate,
+              },
+              {
+                text: "All Conversions",
+                fieldExtract: (v) => v.allConversions,
+              },
+              {
+                text: "All Conv. Rate",
+                fieldExtract: (v) => v.allconversionsRate,
+              },
+            ],
+            semTopKpi.result.data,
+            {
+              perChunk: 8,
+            }
+          ),
         },
       },
     ],
