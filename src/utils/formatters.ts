@@ -66,20 +66,16 @@ export const formatValue = (
     return options.formatter(value);
   }
 
-  if (isNumber(value) || isString(value)) {
-    const formatWithSuffix = options.formatNumberWithSuffix ?? true;
+  if (isNumber(value) && (options.formatNumberWithSuffix ?? true)) {
+    return formatNumberWithSuffix(value);
+  }
 
-    if (formatWithSuffix) {
-      return formatNumberWithSuffix(value);
-    }
+  if (isNumber(value)) {
+    return formatNumber(value);
+  }
 
-    if (isNumber(value)) {
-      return formatNumber(value);
-    }
-
-    if (isString(value)) {
-      return value;
-    }
+  if (isString(value)) {
+    return value;
   }
 
   return "-";
