@@ -5,6 +5,8 @@ import {
 } from "../types/powerpoint.types";
 import pptxgen from "pptxgenjs";
 import { isNumber } from "../utils/common";
+import { config } from "../config";
+import path from "node:path";
 
 const HEADER_HEIGHT = 0.4;
 const FOOTER_HEIGHT = 0.3;
@@ -105,14 +107,14 @@ export class PowerPointLayout {
   }
 
   private renderHeader(slide: pptxgen.Slide, text: string) {
-    slide.addShape("rect", {
+    const bg = path.join(config.path.images, "markup-bg.png");
+
+    slide.addImage({
       x: 0,
       y: 0,
       h: HEADER_HEIGHT,
       w: this.config.slide.width,
-      fill: {
-        color: "FF0000",
-      },
+      path: bg,
     });
 
     slide.addText(text, {
@@ -129,17 +131,16 @@ export class PowerPointLayout {
   }
 
   renderFooter(slide: pptxgen.Slide, text: string) {
+    const bg = path.join(config.path.images, "markup-bg.png");
     const width = this.config.slide.width;
     const height = this.config.slide.height - FOOTER_HEIGHT;
 
-    slide.addShape("rect", {
+    slide.addImage({
       x: 0,
       y: height,
       w: this.config.slide.width,
       h: FOOTER_HEIGHT,
-      fill: {
-        color: "0000FF",
-      },
+      path: bg,
     });
 
     slide.addText(text, {
