@@ -61,7 +61,7 @@ export function preparePercentageValues(values: number[]) {
   return values.map((value) => value / 100);
 }
 
-export function extractInfoBlockEntity<Data = Record<string, unknown>>(
+export function extractInfoBlockData<Data = Record<string, unknown>>(
   entities: { text: string; fieldExtract: (value: Data) => PowerPointValue }[],
   data: Data[],
   options: {

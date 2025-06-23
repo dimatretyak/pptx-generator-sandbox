@@ -10,10 +10,11 @@ import { socialVideoProduct } from "../data/responses/socialVideoProduct";
 import { socialVideoTopKpi } from "../data/responses/socialVideoTopKpi";
 import { stvProduct } from "../data/responses/stvProduct";
 import { stvTopKpi } from "../data/responses/stvTopKpi";
+import { videoPeriod6Month } from "../data/responses/videoPeriod6Month";
 import { videoProduct } from "../data/videoProduct";
 import { videoTopKpi } from "../data/videoTopKpi";
 import {
-  extractInfoBlockEntity,
+  extractInfoBlockData,
   extractTableData,
   preparePercentageValues,
 } from "../utils/common";
@@ -28,7 +29,7 @@ builder.addMultipleToSlide(
         type: "circles",
         title: "Display - Top KPIs",
         payload: {
-          data: extractInfoBlockEntity(
+          data: extractInfoBlockData(
             [
               {
                 text: "Impressions",
@@ -123,7 +124,7 @@ builder.addMultipleToSlide(
         type: "circles",
         title: "Video - Top KPIs",
         payload: {
-          data: extractInfoBlockEntity(
+          data: extractInfoBlockData(
             [
               {
                 text: "Impressions",
@@ -205,19 +206,17 @@ builder.addBarChartSlide(
         name: "VCR(%)",
         labels: [],
         color: palette.green,
-        values: preparePercentageValues([
-          41.48591213281817, 40.94513582939654, 41.53409448813366,
-          43.50247806410749, 47.44703179457573, 45.89691678434769,
-        ]),
+        values: preparePercentageValues(
+          videoPeriod6Month.result.data.map((v) => v.vcr)
+        ),
       },
       {
         name: "CTR(%)",
         labels: [],
         color: palette.color1,
-        values: preparePercentageValues([
-          0.15293595212766042, 0.16850330036453867, 0.26369641917544345,
-          0.17700485579938047, 0.14604458661489575, 0.18036372656733593,
-        ]),
+        values: preparePercentageValues(
+          videoPeriod6Month.result.data.map((v) => v.ctr)
+        ),
       },
     ],
   },
@@ -239,7 +238,7 @@ builder.addMultipleToSlide(
         type: "circles",
         title: "STV - Top KPIs",
         payload: {
-          data: extractInfoBlockEntity(
+          data: extractInfoBlockData(
             [
               {
                 text: "Impressions",
@@ -349,7 +348,7 @@ builder.addMultipleToSlide(
         type: "circles",
         title: "Key Performance Indicators (Display)",
         payload: {
-          data: extractInfoBlockEntity(
+          data: extractInfoBlockData(
             [
               {
                 text: "Impressions",
@@ -430,7 +429,7 @@ builder.addMultipleToSlide(
         type: "circles",
         title: "Key Performance Indicators (Video)",
         payload: {
-          data: extractInfoBlockEntity(
+          data: extractInfoBlockData(
             [
               {
                 text: "Video Start(s)",
@@ -537,7 +536,7 @@ builder.addMultipleToSlide(
         type: "circles",
         title: "Search Engine Marketing",
         payload: {
-          data: extractInfoBlockEntity(
+          data: extractInfoBlockData(
             [
               {
                 text: "Impressions",
