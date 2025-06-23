@@ -60,7 +60,7 @@ export class PowerPointTable {
         const entity: pptxgen.TableCell = {
           text: formatValue(column.value, {
             formatter: column.format,
-            formatNumberWithSuffix: false,
+            compactNumber: false,
           }),
           options: {},
         };

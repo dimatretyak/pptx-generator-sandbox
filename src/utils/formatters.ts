@@ -59,14 +59,14 @@ export const formatValue = (
   value: PowerPointValue,
   options: {
     formatter?: PowerPointValueFormatter;
-    formatNumberWithSuffix?: boolean;
+    compactNumber?: boolean;
   } = {}
 ): string => {
   if (typeof options.formatter === "function") {
     return options.formatter(value);
   }
 
-  if (isNumber(value) && (options.formatNumberWithSuffix ?? true)) {
+  if (isNumber(value) && (options.compactNumber ?? true)) {
     return formatNumberWithSuffix(value);
   }
 
