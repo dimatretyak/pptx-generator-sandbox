@@ -38,9 +38,15 @@ export class PowerPointBarChart {
       },
       showLegend: true,
       legendPos: "b",
-      legendFontSize: 12,
+      legendFontSize: 10,
+      legendColor: "000000",
       showValue: !shouldRenderLines,
       dataLabelFormatCode: payload.labelFormatCode,
+      dataLabelFontSize: 10,
+      catAxisLabelFontSize: 10,
+      catAxisLabelColor: "666666",
+      valAxisLabelFontSize: 10,
+      valAxisLabelColor: "666666",
     };
 
     let entities: pptxgen.IChartMulti[] = [
