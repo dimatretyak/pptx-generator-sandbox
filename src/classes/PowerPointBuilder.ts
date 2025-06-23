@@ -84,6 +84,13 @@ class PowerPointBuilder {
         height: SLIDE_HEIGHT,
       },
       spacer: 0.25,
+      graph: {
+        bars: {
+          fontSize: 10,
+          color: "666666",
+          valueColor: "000000",
+        },
+      },
     };
 
     this.layout = new PowerPointLayout(this.config);
@@ -100,7 +107,7 @@ class PowerPointBuilder {
     this.infoBlock = new PowerPointInfoBlocks(this.config, this.layout);
 
     this.charts = {
-      bar: new PowerPointBarChart(),
+      bar: new PowerPointBarChart(this.config),
       pie: new PowerPointPieChart(),
     };
   }

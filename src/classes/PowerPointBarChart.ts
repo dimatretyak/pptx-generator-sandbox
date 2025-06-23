@@ -1,5 +1,8 @@
 import pptxgen from "pptxgenjs";
-import { PowerPointSlideConfig } from "../types/powerpoint.types";
+import {
+  PowerPointConfig,
+  PowerPointSlideConfig,
+} from "../types/powerpoint.types";
 import { normalizeBarsChartData } from "../utils/powerpoint/charts";
 
 export type PowerPointBarChartDataEntity = {
@@ -17,6 +20,8 @@ export type PowerPointBarChartPayload = {
 };
 
 export class PowerPointBarChart {
+  constructor(private config: PowerPointConfig) {}
+
   render(
     slide: pptxgen.Slide,
     payload: PowerPointBarChartPayload,
@@ -38,15 +43,15 @@ export class PowerPointBarChart {
       },
       showLegend: true,
       legendPos: "b",
-      legendFontSize: 10,
-      legendColor: "000000",
+      legendFontSize: this.config.graph.bars.fontSize,
+      legendColor: this.config.graph.bars.valueColor,
       showValue: !shouldRenderLines,
       dataLabelFormatCode: payload.labelFormatCode,
-      dataLabelFontSize: 10,
-      catAxisLabelFontSize: 10,
-      catAxisLabelColor: "666666",
-      valAxisLabelFontSize: 10,
-      valAxisLabelColor: "666666",
+      dataLabelFontSize: this.config.graph.bars.fontSize,
+      catAxisLabelFontSize: this.config.graph.bars.fontSize,
+      catAxisLabelColor: this.config.graph.bars.color,
+      valAxisLabelFontSize: this.config.graph.bars.fontSize,
+      valAxisLabelColor: this.config.graph.bars.color,
     };
 
     let entities: pptxgen.IChartMulti[] = [
