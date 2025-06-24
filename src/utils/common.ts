@@ -112,3 +112,14 @@ export function extractTableData<
     data: values.slice(0, 5),
   };
 }
+
+export function extractMonthLabels<
+  Data extends {
+    [key: string]: unknown;
+    _id: {
+      monthYearNumbers: string;
+    };
+  }
+>(data: Data[]) {
+  return data.map((v) => v._id.monthYearNumbers);
+}

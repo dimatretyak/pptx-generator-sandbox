@@ -10,6 +10,8 @@ import { socialDisplayProduct } from "../data/responses/socialDisplayProduct";
 import { socialDisplayTopKpi } from "../data/responses/socialDisplayTopKpi";
 import { socialVideoProduct } from "../data/responses/socialVideoProduct";
 import { socialVideoTopKpi } from "../data/responses/socialVideoTopKpi";
+import { sparkPeriod6Month } from "../data/responses/sparkPeriod6Month";
+import { sparkTopKpi } from "../data/responses/sparkTopKpi";
 import { stvProduct } from "../data/responses/stvProduct";
 import { stvTopKpi } from "../data/responses/stvTopKpi";
 import { videoPeriod6Month } from "../data/responses/videoPeriod6Month";
@@ -17,6 +19,7 @@ import { videoProduct } from "../data/videoProduct";
 import { videoTopKpi } from "../data/videoTopKpi";
 import {
   extractInfoBlockData,
+  extractMonthLabels,
   extractTableData,
   preparePercentageValues,
 } from "../utils/common";
@@ -100,9 +103,7 @@ builder.addBarChartSlide(
       {
         name: "Display - CTR Last 6 Months",
         color: colors.chartBar1,
-        labels: displayPeriod6Month.result.data.map(
-          (v) => v._id.monthYearNumbers
-        ),
+        labels: extractMonthLabels(displayPeriod6Month.result.data),
         values: preparePercentageValues(
           displayPeriod6Month.result.data.map((v) => v.ctr)
         ),
@@ -494,9 +495,7 @@ builder.addBarChartSlide(
       {
         name: "VCR(%)",
         color: palette.color1,
-        labels: socialDisplayPeriod6Month.result.data.map(
-          (v) => v._id.monthYearNumbers
-        ),
+        labels: extractMonthLabels(socialDisplayPeriod6Month.result.data),
         values: preparePercentageValues(
           socialDisplayPeriod6Month.result.data.map((v) => v.vcr)
         ),
@@ -576,9 +575,7 @@ builder.addMultipleToSlide(
             {
               name: "SEM - CTR Last 6 Months",
               color: colors.chartBar1,
-              labels: semPeriod6Month.result.data.map(
-                (v) => v._id.monthYearNumbers
-              ),
+              labels: extractMonthLabels(semPeriod6Month.result.data),
               values: semPeriod6Month.result.data.map((v) => v.ctr),
             },
           ],
@@ -590,6 +587,66 @@ builder.addMultipleToSlide(
     markup: {
       text: {
         header: "SEM Ads - Overall Performance",
+        footer,
+      },
+    },
+  }
+);
+
+builder.addMultipleToSlide(
+  [
+    [
+      {
+        type: "circles",
+        title: "SPARK - Top KPIs",
+        payload: {
+          data: extractInfoBlockData(
+            [
+              {
+                text: "Impressions",
+                fieldExtract: (v) => v.impressions,
+              },
+              {
+                text: "Clicks",
+                fieldExtract: (v) => v.clicks,
+              },
+              {
+                text: "CTR(%)",
+                fieldExtract: (v) => v.ctr,
+              },
+              {
+                text: "Conversions",
+                fieldExtract: (v) => v.conversions,
+              },
+            ],
+            sparkTopKpi.result.data
+          ),
+        },
+      },
+    ],
+    [
+      {
+        type: "bar",
+        title: "SEM - CTR Last 6 Months",
+        payload: {
+          data: [
+            {
+              name: "SEM - CTR Last 6 Months",
+              color: colors.chartBar1,
+              labels: extractMonthLabels(sparkPeriod6Month.result.data),
+              values: preparePercentageValues(
+                sparkPeriod6Month.result.data.map((v) => v.ctr)
+              ),
+            },
+          ],
+        },
+      },
+    ],
+  ],
+  {
+    markup: {
+      text: {
+        header: "SPARK Ads - Overall Performance",
         footer,
       },
     },
