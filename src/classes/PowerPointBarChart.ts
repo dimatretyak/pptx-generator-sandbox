@@ -7,7 +7,7 @@ const TEXT_COLOR = "666666";
 const TEXT_VALUE_COLOR = "000000";
 
 export type PowerPointBarChartDataEntity = {
-  labels: string[];
+  labels?: string[];
   values: number[];
   name: string;
   color: string;
@@ -60,7 +60,7 @@ export class PowerPointBarChart {
           return {
             name: entity.name,
             values: entity.values,
-            labels: entity.labels,
+            labels: entity.labels ?? [],
           };
         }),
         options: {

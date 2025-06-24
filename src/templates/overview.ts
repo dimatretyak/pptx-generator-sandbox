@@ -204,7 +204,6 @@ builder.addBarChartSlide(
     data: [
       {
         name: "VCR(%)",
-        labels: [],
         color: palette.green,
         values: preparePercentageValues(
           videoPeriod6Month.result.data.map((v) => v.vcr)
@@ -212,7 +211,6 @@ builder.addBarChartSlide(
       },
       {
         name: "CTR(%)",
-        labels: [],
         color: palette.color1,
         values: preparePercentageValues(
           videoPeriod6Month.result.data.map((v) => v.ctr)
@@ -510,7 +508,6 @@ builder.addBarChartSlide(
       {
         name: "VCR(%)",
         color: palette.color3,
-        labels: [],
         values: preparePercentageValues([
           0.7450343140856002, 0.7981875225279288, 0.6589656700743536,
           0.5626097200782556, 0.9106276903916111, 0.9885322684522666,
