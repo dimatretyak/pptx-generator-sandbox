@@ -41,6 +41,7 @@ import { videoTopKpi } from "../data/responses/videoTopKpi";
 
 export default () => {
   // TODO: Fetch data from api endpoints
+  // TODO: Dynamically show or hide slides depending on the report menu
 
   const builder = new PowerPointBuilder();
   const footer = "06/23/2025-06/23/2025";
