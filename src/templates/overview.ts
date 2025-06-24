@@ -119,6 +119,7 @@ export default () => {
   builder.addBarChartSlide(
     {
       labelFormatCode: "0.00%",
+      rotateBottomLabels: true,
       data: [
         {
           name: "Display - CTR Last 6 Months",
@@ -329,6 +330,7 @@ export default () => {
   builder.addBarChartSlide(
     {
       labelFormatCode: "0.00",
+      rotateBottomLabels: true,
       data: [
         {
           name: "STV - VCR Last 6 Months",
@@ -500,6 +502,7 @@ export default () => {
   builder.addBarChartSlide(
     {
       labelFormatCode: "0.00%",
+      rotateBottomLabels: true,
       data: [
         {
           name: "VCR(%)",
@@ -576,6 +579,7 @@ export default () => {
           type: "bar",
           title: "SEM - CTR Last 6 Months",
           payload: {
+            rotateBottomLabels: true,
             data: [
               {
                 name: "SEM - CTR Last 6 Months",
@@ -632,11 +636,12 @@ export default () => {
       [
         {
           type: "bar",
-          title: "SEM - CTR Last 6 Months",
+          title: "SPARK - CTR Last 6 Months",
           payload: {
+            rotateBottomLabels: true,
             data: [
               {
-                name: "SEM - CTR Last 6 Months",
+                name: "SPARK - CTR Last 6 Months",
                 color: colors.chartBar1,
                 labels: extractMonthLabels(sparkPeriod6Month.result.data),
                 values: sparkPeriod6Month.result.data.map((v) => v.ctr),
@@ -689,6 +694,7 @@ export default () => {
           title: "E-mail Marketing - CTR Last 6 Months",
           payload: {
             labelFormatCode: "0.00",
+            rotateBottomLabels: true,
             data: [
               {
                 name: "E-mail Marketing -CTR Last 6 Months",
@@ -778,6 +784,7 @@ export default () => {
   builder.addBarChartSlide(
     {
       labelFormatCode: "0.00",
+      rotateBottomLabels: true,
       data: [
         {
           name: "Digital Endorsements - CTR Last 6 Months",
@@ -866,6 +873,7 @@ export default () => {
 
   builder.addBarChartSlide(
     {
+      rotateBottomLabels: true,
       data: [
         {
           name: "Local Display - CTR Last 6 Months",
@@ -929,6 +937,7 @@ export default () => {
           type: "bar",
           title: "ACR(%)(Last 6 Months)",
           payload: {
+            rotateBottomLabels: true,
             data: [
               {
                 name: "ACR(%)(Last 6 Months)",
@@ -992,6 +1001,7 @@ export default () => {
           type: "bar",
           title: "ACR(%)(Last 6 Months)",
           payload: {
+            rotateBottomLabels: true,
             data: [
               {
                 name: "Call Performance Tracking - Last 6 Months",

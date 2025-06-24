@@ -19,6 +19,7 @@ export type PowerPointBarChartPayload = {
   lines?: Pick<PowerPointBarChartDataEntity, "values" | "name" | "color">[];
   labelFormatCode?: string;
   normalizeData?: boolean;
+  rotateBottomLabels?: boolean;
 };
 
 export class PowerPointBarChart {
@@ -52,6 +53,7 @@ export class PowerPointBarChart {
       catAxisLabelColor: TEXT_COLOR,
       valAxisLabelFontSize: TEXT_FONT_SIZE,
       valAxisLabelColor: TEXT_COLOR,
+      catAxisLabelRotate: payload.rotateBottomLabels ? -45 : undefined,
     };
 
     let entities: pptxgen.IChartMulti[] = [
