@@ -94,15 +94,15 @@ export function extractTableData<
   }[],
   data: Data[]
 ): PowerPointTablePayload {
-  const headers = entities.map((v) => {
+  const headers = entities.map((entity) => {
     const result: PowerPointTableTableHeader = {
-      text: v.text,
+      text: entity.text,
     };
 
     // Add heat map field
-    if (v.heatMapColor) {
-      const values = data.map((entity) => {
-        const value = v.fieldExtractor(entity);
+    if (entity.heatMapColor) {
+      const values = data.map((dataEntity) => {
+        const value = entity.fieldExtractor(dataEntity);
 
         if (isNumber(value)) {
           return value;
@@ -112,8 +112,8 @@ export function extractTableData<
       });
 
       const colorPalette: [string, string] = [
-        chroma(v.heatMapColor).brighten(3).hex(),
-        v.heatMapColor,
+        chroma(entity.heatMapColor).brighten(3).hex(),
+        entity.heatMapColor,
       ];
 
       result.heatMap = {
@@ -127,12 +127,13 @@ export function extractTableData<
   });
 
   const values: PowerPointTableCell[][] = data.map((v) => {
-    return entities.map((e) => {
-      const value = e.fieldExtractor(v);
+    return entities.map((entity) => {
+      const extracted = entity.fieldExtractor(v);
+      const value = (extracted ?? FALLBACK_POWERPOINT_VALUE) as PowerPointValue;
 
       return {
-        value: (value ?? FALLBACK_POWERPOINT_VALUE) as PowerPointValue,
-        formater: e.format,
+        value,
+        formater: entity.format,
       };
     });
   });
