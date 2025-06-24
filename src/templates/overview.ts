@@ -4,7 +4,6 @@ import {
   extractInfoBlockData,
   extractMonthLabels,
   extractTableData,
-  preparePercentageValues,
 } from "../utils/common";
 
 // Responses
@@ -125,9 +124,7 @@ export default () => {
           name: "Display - CTR Last 6 Months",
           color: colors.chartBar1,
           labels: extractMonthLabels(displayPeriod6Month.result.data),
-          values: preparePercentageValues(
-            displayPeriod6Month.result.data.map((v) => v.ctr)
-          ),
+          values: displayPeriod6Month.result.data.map((v) => v.ctr),
         },
       ],
     },
@@ -231,16 +228,12 @@ export default () => {
         {
           name: "VCR(%)",
           color: palette.green,
-          values: preparePercentageValues(
-            videoPeriod6Month.result.data.map((v) => v.vcr)
-          ),
+          values: videoPeriod6Month.result.data.map((v) => v.vcr),
         },
         {
           name: "CTR(%)",
           color: palette.color1,
-          values: preparePercentageValues(
-            videoPeriod6Month.result.data.map((v) => v.ctr)
-          ),
+          values: videoPeriod6Month.result.data.map((v) => v.ctr),
         },
       ],
     },
@@ -512,16 +505,12 @@ export default () => {
           name: "VCR(%)",
           color: palette.color1,
           labels: extractMonthLabels(socialDisplayPeriod6Month.result.data),
-          values: preparePercentageValues(
-            socialDisplayPeriod6Month.result.data.map((v) => v.vcr)
-          ),
+          values: socialDisplayPeriod6Month.result.data.map((v) => v.vcr),
         },
         {
           name: "CTR(%)",
           color: palette.color3,
-          values: preparePercentageValues(
-            socialDisplayPeriod6Month.result.data.map((v) => v.ctr)
-          ),
+          values: socialDisplayPeriod6Month.result.data.map((v) => v.ctr),
         },
       ],
     },
@@ -650,9 +639,7 @@ export default () => {
                 name: "SEM - CTR Last 6 Months",
                 color: colors.chartBar1,
                 labels: extractMonthLabels(sparkPeriod6Month.result.data),
-                values: preparePercentageValues(
-                  sparkPeriod6Month.result.data.map((v) => v.ctr)
-                ),
+                values: sparkPeriod6Month.result.data.map((v) => v.ctr),
               },
             ],
           },

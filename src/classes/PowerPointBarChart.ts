@@ -1,6 +1,7 @@
 import pptxgen from "pptxgenjs";
 import { PowerPointSlideConfig } from "../types/powerpoint.types";
 import { normalizeBarsChartData } from "../utils/powerpoint/charts";
+import { preparePercentageValues } from "../utils/common";
 
 const TEXT_FONT_SIZE = 10;
 const TEXT_COLOR = "666666";
@@ -89,6 +90,15 @@ export class PowerPointBarChart {
           },
         });
       }
+    }
+
+    // The values are in decimal format (e.g., 0.75 = 75%)
+    if (payload.labelFormatCode?.includes("%")) {
+      entities.forEach((entity) => {
+        entity.data.forEach((dataEntity) => {
+          dataEntity.values = preparePercentageValues(dataEntity.values!);
+        });
+      });
     }
 
     if (payload.normalizeData) {
