@@ -1,8 +1,16 @@
 import PowerPointBuilder from "../classes/PowerPointBuilder";
 import colors, { palette } from "../data/constants";
-import { displayPeriod6Month } from "../data/displayPeriod6Month";
-import { displayProduct } from "../data/displayProduct";
-import { displayTopKpi } from "../data/displayTopKpi";
+import {
+  extractInfoBlockData,
+  extractMonthLabels,
+  extractTableData,
+  preparePercentageValues,
+} from "../utils/common";
+
+// Responses
+import { displayPeriod6Month } from "../data/responses/displayPeriod6Month";
+import { displayProduct } from "../data/responses/displayProduct";
+import { displayTopKpi } from "../data/responses/displayTopKpi";
 import { ampedPeriod6Month } from "../data/responses/ampedPeriod6Month";
 import { ampedProduct } from "../data/responses/ampedProduct";
 import { ampedTopKpi } from "../data/responses/ampedTopKpi";
@@ -28,14 +36,8 @@ import { stvPeriod6Month } from "../data/responses/stvPeriod6Month";
 import { stvProduct } from "../data/responses/stvProduct";
 import { stvTopKpi } from "../data/responses/stvTopKpi";
 import { videoPeriod6Month } from "../data/responses/videoPeriod6Month";
-import { videoProduct } from "../data/videoProduct";
-import { videoTopKpi } from "../data/videoTopKpi";
-import {
-  extractInfoBlockData,
-  extractMonthLabels,
-  extractTableData,
-  preparePercentageValues,
-} from "../utils/common";
+import { videoProduct } from "../data/responses/videoProduct";
+import { videoTopKpi } from "../data/responses/videoTopKpi";
 
 const builder = new PowerPointBuilder();
 const footer = "06/23/2025-06/23/2025";
