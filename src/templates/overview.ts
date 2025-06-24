@@ -3,6 +3,18 @@ import colors, { palette } from "../data/constants";
 import { displayPeriod6Month } from "../data/displayPeriod6Month";
 import { displayProduct } from "../data/displayProduct";
 import { displayTopKpi } from "../data/displayTopKpi";
+import { ampedPeriod6Month } from "../data/responses/ampedPeriod6Month";
+import { ampedProduct } from "../data/responses/ampedProduct";
+import { ampedTopKpi } from "../data/responses/ampedTopKpi";
+import { callTrackingPeriod6Month } from "../data/responses/callTrackingPeriod6Month";
+import { callTrackingTopKpi } from "../data/responses/callTrackingTopKpi";
+import { emailMarketingPeriod6Month } from "../data/responses/emailMarketingPeriod6Month";
+import { emailMarketingTopKpi } from "../data/responses/emailMarketingTopKpi";
+import { endorsementPeriod6Month } from "../data/responses/endorsementPeriod6Month";
+import { endorsementProduct } from "../data/responses/endorsementProduct";
+import { endorsementTopKpi } from "../data/responses/endorsementTopKpi";
+import { programmaticAudioPeriod6Month } from "../data/responses/programmaticAudioPeriod6Month";
+import { programmaticAudioTopKpi } from "../data/responses/programmaticAudioTopKpi";
 import { semPeriod6Month } from "../data/responses/semPeriod6Month";
 import { semTopKpi } from "../data/responses/semTopKpi";
 import { socialDisplayPeriod6Month } from "../data/responses/socialDisplayPeriod6Month";
@@ -12,6 +24,7 @@ import { socialVideoProduct } from "../data/responses/socialVideoProduct";
 import { socialVideoTopKpi } from "../data/responses/socialVideoTopKpi";
 import { sparkPeriod6Month } from "../data/responses/sparkPeriod6Month";
 import { sparkTopKpi } from "../data/responses/sparkTopKpi";
+import { stvPeriod6Month } from "../data/responses/stvPeriod6Month";
 import { stvProduct } from "../data/responses/stvProduct";
 import { stvTopKpi } from "../data/responses/stvTopKpi";
 import { videoPeriod6Month } from "../data/responses/videoPeriod6Month";
@@ -21,11 +34,23 @@ import {
   extractInfoBlockData,
   extractMonthLabels,
   extractTableData,
+  getMinMax,
   preparePercentageValues,
 } from "../utils/common";
+import chroma from "chroma-js";
 
 const builder = new PowerPointBuilder();
 const footer = "06/23/2025-06/23/2025";
+
+const displayProductPerformanceClicks = getMinMax(
+  displayProduct.result.data,
+  "clicks"
+);
+
+const displayProductPerformanceConversions = getMinMax(
+  displayProduct.result.data,
+  "conversions"
+);
 
 builder.addMultipleToSlide(
   [
@@ -71,6 +96,14 @@ builder.addMultipleToSlide(
             {
               text: "Clicks",
               fieldExtractor: (v) => v.clicks,
+              heatMap: {
+                colorPalette: [
+                  chroma(colors.tableHighlight1).brighten(3).hex(),
+                  colors.tableHighlight1,
+                ],
+                maxValue: displayProductPerformanceClicks.max,
+                minValue: displayProductPerformanceClicks.min,
+              },
             },
             {
               text: "CTR(%)",
@@ -79,6 +112,14 @@ builder.addMultipleToSlide(
             {
               text: "Total Conversions",
               fieldExtractor: (v) => v.conversions,
+              heatMap: {
+                colorPalette: [
+                  chroma(colors.tableHighlight3).brighten(3).hex(),
+                  colors.tableHighlight3,
+                ],
+                maxValue: displayProductPerformanceConversions.max,
+                minValue: displayProductPerformanceConversions.min,
+              },
             },
           ],
           displayProduct.result.data
@@ -118,6 +159,16 @@ builder.addBarChartSlide(
       },
     },
   }
+);
+
+const videoProductPerformanceVideoCompletions = getMinMax(
+  videoProduct.result.data,
+  "videoCompletions"
+);
+
+const videoProductPerformanceClicks = getMinMax(
+  videoProduct.result.data,
+  "clicks"
 );
 
 builder.addMultipleToSlide(
@@ -172,6 +223,14 @@ builder.addMultipleToSlide(
             {
               text: "Video Completes",
               fieldExtractor: (v) => v.videoCompletions,
+              heatMap: {
+                colorPalette: [
+                  chroma(colors.tableHighlight3).brighten(3).hex(),
+                  colors.tableHighlight3,
+                ],
+                maxValue: videoProductPerformanceVideoCompletions.max,
+                minValue: videoProductPerformanceVideoCompletions.min,
+              },
             },
             {
               text: "VCR(%)",
@@ -180,6 +239,14 @@ builder.addMultipleToSlide(
             {
               text: "Clicks",
               fieldExtractor: (v) => v.clicks,
+              heatMap: {
+                colorPalette: [
+                  chroma(colors.tableHighlight1).brighten(3).hex(),
+                  colors.tableHighlight1,
+                ],
+                maxValue: videoProductPerformanceClicks.max,
+                minValue: videoProductPerformanceClicks.min,
+              },
             },
             {
               text: "CTR(%)",
@@ -230,6 +297,11 @@ builder.addBarChartSlide(
       },
     },
   }
+);
+
+const STVProductPerformanceVideoCompletes = getMinMax(
+  stvProduct.result.data,
+  "videoCompletions"
 );
 
 builder.addMultipleToSlide(
@@ -284,6 +356,14 @@ builder.addMultipleToSlide(
             {
               text: "Video Completes",
               fieldExtractor: (v) => v.videoCompletions,
+              heatMap: {
+                colorPalette: [
+                  chroma(colors.tableHighlight3).brighten(3).hex(),
+                  colors.tableHighlight3,
+                ],
+                maxValue: STVProductPerformanceVideoCompletes.max,
+                minValue: STVProductPerformanceVideoCompletes.min,
+              },
             },
             {
               text: "VCR(%)",
@@ -315,19 +395,9 @@ builder.addBarChartSlide(
     data: [
       {
         name: "STV - VCR Last 6 Months",
-        labels: [
-          "2024-12",
-          "2025-01",
-          "2025-02",
-          "2025-03",
-          "2025-04",
-          "2025-05",
-        ],
+        labels: extractMonthLabels(stvPeriod6Month.result.data),
         color: palette.color1,
-        values: [
-          98.11082691970768, 96.20710360906924, 97.76384959910853,
-          98.42112185084699, 98.19255574031881, 98.37915950001471,
-        ],
+        values: stvPeriod6Month.result.data.map((v) => v.vcr),
       },
     ],
   },
@@ -340,6 +410,11 @@ builder.addBarChartSlide(
       },
     },
   }
+);
+
+const productPerformanceDisplayImpressions = getMinMax(
+  socialDisplayProduct.result.data,
+  "impressions"
 );
 
 builder.addMultipleToSlide(
@@ -390,6 +465,14 @@ builder.addMultipleToSlide(
             {
               text: "Impressions",
               fieldExtractor: (v) => v.impressions,
+              heatMap: {
+                colorPalette: [
+                  chroma(colors.tableHighlight1).brighten(3).hex(),
+                  colors.tableHighlight1,
+                ],
+                maxValue: productPerformanceDisplayImpressions.max,
+                minValue: productPerformanceDisplayImpressions.min,
+              },
             },
             {
               text: "Clicks",
@@ -421,6 +504,11 @@ builder.addMultipleToSlide(
       },
     },
   }
+);
+
+const productPerformanceVideoCompletes = getMinMax(
+  socialVideoProduct.result.data,
+  "videoCompletions"
 );
 
 builder.addMultipleToSlide(
@@ -467,6 +555,14 @@ builder.addMultipleToSlide(
             {
               text: "Video Complete(s)",
               fieldExtractor: (v) => v.videoCompletions,
+              heatMap: {
+                colorPalette: [
+                  chroma(colors.tableHighlight4).brighten(3).hex(),
+                  colors.tableHighlight4,
+                ],
+                maxValue: productPerformanceVideoCompletes.max,
+                minValue: productPerformanceVideoCompletes.min,
+              },
             },
             {
               text: "VCR(%)",
@@ -647,6 +743,384 @@ builder.addMultipleToSlide(
     markup: {
       text: {
         header: "SPARK Ads - Overall Performance",
+        footer,
+      },
+    },
+  }
+);
+
+builder.addMultipleToSlide(
+  [
+    [
+      {
+        type: "circles",
+        title: "E-mail Marketing - Top KPIs",
+        payload: {
+          data: extractInfoBlockData(
+            [
+              {
+                text: "Opens",
+                fieldExtract: (v) => v.opens,
+              },
+              {
+                text: "Clicks",
+                fieldExtract: (v) => v.clicks,
+              },
+              {
+                text: "Click Rate(%)",
+                fieldExtract: (v) => v.clickRate,
+              },
+            ],
+            emailMarketingTopKpi.result.data
+          ),
+        },
+      },
+    ],
+    [
+      {
+        type: "bar",
+        title: "E-mail Marketing - CTR Last 6 Months",
+        payload: {
+          labelFormatCode: "0.00",
+          data: [
+            {
+              name: "E-mail Marketing -CTR Last 6 Months",
+              color: palette.color1,
+              labels: extractMonthLabels(sparkPeriod6Month.result.data),
+              values: emailMarketingPeriod6Month.result.data.map(
+                (v) => v.clickRate
+              ),
+            },
+          ],
+        },
+      },
+    ],
+  ],
+  {
+    markup: {
+      text: {
+        header: "E-mail Marketing - Overall Performance",
+        footer,
+      },
+    },
+  }
+);
+
+const linkClicks = getMinMax(endorsementProduct.result.data, "clicks");
+
+builder.addMultipleToSlide(
+  [
+    [
+      {
+        type: "circles",
+        title: "Digital Endorsements - Top KPIs",
+        payload: {
+          data: extractInfoBlockData(
+            [
+              {
+                text: "Impressions",
+                fieldExtract: (v) => v.impressions,
+              },
+              {
+                text: "Link Clicks",
+                fieldExtract: (v) => v.clicks,
+              },
+              {
+                text: "CTR(%)",
+                fieldExtract: (v) => v.ctr,
+              },
+            ],
+            endorsementTopKpi.result.data
+          ),
+        },
+      },
+    ],
+    [
+      {
+        type: "table",
+        title: "Digital Endorsements - Product Performance",
+        payload: extractTableData(
+          [
+            {
+              text: "Product",
+              fieldExtractor: (v) => v._id.subProduct,
+            },
+            {
+              text: "Impressions",
+              fieldExtractor: (v) => v.impressions,
+            },
+            {
+              text: "Link Clicks",
+              fieldExtractor: (v) => v.clicks,
+              heatMap: {
+                colorPalette: [
+                  chroma(colors.tableHighlight3).brighten(3).hex(),
+                  colors.tableHighlight3,
+                ],
+                maxValue: linkClicks.max,
+                minValue: linkClicks.min,
+              },
+            },
+          ],
+          endorsementProduct.result.data
+        ),
+      },
+    ],
+  ],
+  {
+    markup: {
+      text: {
+        header: "Digital and Local Endorsements - Overall Performance",
+        footer,
+      },
+    },
+  }
+);
+
+builder.addBarChartSlide(
+  {
+    labelFormatCode: "0.00",
+    data: [
+      {
+        name: "Digital Endorsements - CTR Last 6 Months",
+        color: colors.chartBar1,
+        labels: extractMonthLabels(endorsementPeriod6Month.result.data),
+        values: endorsementPeriod6Month.result.data.map((v) => v.ctr),
+      },
+    ],
+  },
+  {
+    markup: {
+      text: {
+        header: "Digital and Local Endorsements - Overall Performance",
+        content: "Digital Endorsements - CTR Last 6 Months",
+        footer,
+      },
+    },
+  }
+);
+
+const ampedClicks = getMinMax(ampedProduct.result.data, "clicks");
+
+builder.addMultipleToSlide(
+  [
+    [
+      {
+        type: "circles",
+        title: "Local Display (AMPED) - Top KPIs",
+        payload: {
+          data: extractInfoBlockData(
+            [
+              {
+                text: "Impressions",
+                fieldExtract: (v) => v.impressions,
+              },
+              {
+                text: "Clicks",
+                fieldExtract: (v) => v.clicks,
+              },
+              {
+                text: "CTR(%)",
+                fieldExtract: (v) => v.ctr,
+              },
+            ],
+            ampedTopKpi.result.data
+          ),
+        },
+      },
+    ],
+    [
+      {
+        type: "table",
+        title: "Local Display (AMPED) - Product Performance",
+        payload: extractTableData(
+          [
+            {
+              text: "Product",
+              fieldExtractor: (v) => v._id.subProduct,
+            },
+            {
+              text: "Impressions",
+              fieldExtractor: (v) => v.impressions,
+            },
+            {
+              text: "Clicks",
+              fieldExtractor: (v) => v.clicks,
+              heatMap: {
+                colorPalette: [
+                  chroma(colors.tableHighlight1).brighten(3).hex(),
+                  colors.tableHighlight1,
+                ],
+                maxValue: ampedClicks.max,
+                minValue: ampedClicks.min,
+              },
+            },
+            {
+              text: "CTR(%)",
+              fieldExtractor: (v) => v.ctr,
+            },
+          ],
+          ampedProduct.result.data
+        ),
+      },
+    ],
+  ],
+  {
+    markup: {
+      text: {
+        header: "AMPED Ads - Overall Performance",
+        footer,
+      },
+    },
+  }
+);
+
+builder.addBarChartSlide(
+  {
+    data: [
+      {
+        name: "Local Display - CTR Last 6 Months",
+        color: colors.chartBar1,
+        labels: extractMonthLabels(ampedPeriod6Month.result.data),
+        values: ampedPeriod6Month.result.data.map((v) => v.clicks),
+      },
+    ],
+  },
+  {
+    markup: {
+      text: {
+        header: "AMPED Ads - Overall Performance",
+        content: "Local Display - CTR Last 6 Months",
+        footer,
+      },
+    },
+  }
+);
+
+builder.addMultipleToSlide(
+  [
+    [
+      {
+        type: "circles",
+        title: "Programmatic Audio Marketing - Top KPIs",
+        payload: {
+          data: extractInfoBlockData(
+            [
+              {
+                text: "Impressions",
+                fieldExtract: (v) => v.impressions,
+              },
+              {
+                text: "Audio Start(s)",
+                fieldExtract: (v) => v.videoStarts,
+              },
+              {
+                text: "Audio Complete(s)",
+                fieldExtract: (v) => v.videoCompletions,
+              },
+              {
+                text: "ACR(%)",
+                fieldExtract: (v) => v.vcr,
+              },
+              {
+                text: "Clicks",
+                fieldExtract: (v) => v.clicks,
+              },
+            ],
+            programmaticAudioTopKpi.result.data,
+            {
+              perChunk: 6,
+            }
+          ),
+        },
+      },
+    ],
+    [
+      {
+        type: "bar",
+        title: "ACR(%)(Last 6 Months)",
+        payload: {
+          data: [
+            {
+              name: "ACR(%)(Last 6 Months)",
+              color: colors.chartBar1,
+              labels: extractMonthLabels(
+                programmaticAudioPeriod6Month.result.data
+              ),
+              values: programmaticAudioPeriod6Month.result.data.map(
+                (v) => v.vcr
+              ),
+            },
+          ],
+        },
+      },
+    ],
+  ],
+  {
+    markup: {
+      text: {
+        header: "Programmatic Audio Marketing Ads - Overall Performance",
+        footer,
+      },
+    },
+  }
+);
+
+builder.addMultipleToSlide(
+  [
+    [
+      {
+        type: "circles",
+        title: "Call Performance - Top KPIs",
+        payload: {
+          data: extractInfoBlockData(
+            [
+              {
+                text: "Total Calls",
+                fieldExtract: (v) => v.callCount,
+              },
+              {
+                text: "First Calls",
+                fieldExtract: (v) => v.firstCall,
+              },
+              {
+                text: "Answered Calls",
+                fieldExtract: (v) => v.answeredCalls,
+              },
+              {
+                text: "Answered(%)",
+                fieldExtract: (v) => v.answeredRate,
+              },
+            ],
+            callTrackingTopKpi.result.data,
+            {
+              perChunk: 2,
+            }
+          ),
+        },
+      },
+      {
+        type: "bar",
+        title: "ACR(%)(Last 6 Months)",
+        payload: {
+          data: [
+            {
+              name: "Call Performance Tracking - Last 6 Months",
+              color: colors.chartBar1,
+              labels: extractMonthLabels(callTrackingPeriod6Month.result.data),
+              values: callTrackingPeriod6Month.result.data.map(
+                (v) => v.callCount
+              ),
+            },
+          ],
+        },
+      },
+    ],
+  ],
+  {
+    markup: {
+      text: {
+        header: "Call Tracking - Overall Performance",
         footer,
       },
     },
