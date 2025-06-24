@@ -96,14 +96,7 @@ builder.addMultipleToSlide(
             {
               text: "Clicks",
               fieldExtractor: (v) => v.clicks,
-              heatMap: {
-                colorPalette: [
-                  chroma(colors.tableHighlight1).brighten(3).hex(),
-                  colors.tableHighlight1,
-                ],
-                maxValue: displayProductPerformanceClicks.max,
-                minValue: displayProductPerformanceClicks.min,
-              },
+              heatMapColor: colors.tableHighlight1,
             },
             {
               text: "CTR(%)",
@@ -112,14 +105,7 @@ builder.addMultipleToSlide(
             {
               text: "Total Conversions",
               fieldExtractor: (v) => v.conversions,
-              heatMap: {
-                colorPalette: [
-                  chroma(colors.tableHighlight3).brighten(3).hex(),
-                  colors.tableHighlight3,
-                ],
-                maxValue: displayProductPerformanceConversions.max,
-                minValue: displayProductPerformanceConversions.min,
-              },
+              heatMapColor: colors.tableHighlight3,
             },
           ],
           displayProduct.result.data
@@ -223,14 +209,7 @@ builder.addMultipleToSlide(
             {
               text: "Video Completes",
               fieldExtractor: (v) => v.videoCompletions,
-              heatMap: {
-                colorPalette: [
-                  chroma(colors.tableHighlight3).brighten(3).hex(),
-                  colors.tableHighlight3,
-                ],
-                maxValue: videoProductPerformanceVideoCompletions.max,
-                minValue: videoProductPerformanceVideoCompletions.min,
-              },
+              heatMapColor: colors.tableHighlight3,
             },
             {
               text: "VCR(%)",
@@ -239,14 +218,7 @@ builder.addMultipleToSlide(
             {
               text: "Clicks",
               fieldExtractor: (v) => v.clicks,
-              heatMap: {
-                colorPalette: [
-                  chroma(colors.tableHighlight1).brighten(3).hex(),
-                  colors.tableHighlight1,
-                ],
-                maxValue: videoProductPerformanceClicks.max,
-                minValue: videoProductPerformanceClicks.min,
-              },
+              heatMapColor: colors.tableHighlight1,
             },
             {
               text: "CTR(%)",
@@ -356,14 +328,7 @@ builder.addMultipleToSlide(
             {
               text: "Video Completes",
               fieldExtractor: (v) => v.videoCompletions,
-              heatMap: {
-                colorPalette: [
-                  chroma(colors.tableHighlight3).brighten(3).hex(),
-                  colors.tableHighlight3,
-                ],
-                maxValue: STVProductPerformanceVideoCompletes.max,
-                minValue: STVProductPerformanceVideoCompletes.min,
-              },
+              heatMapColor: colors.tableHighlight3,
             },
             {
               text: "VCR(%)",
@@ -465,14 +430,7 @@ builder.addMultipleToSlide(
             {
               text: "Impressions",
               fieldExtractor: (v) => v.impressions,
-              heatMap: {
-                colorPalette: [
-                  chroma(colors.tableHighlight1).brighten(3).hex(),
-                  colors.tableHighlight1,
-                ],
-                maxValue: productPerformanceDisplayImpressions.max,
-                minValue: productPerformanceDisplayImpressions.min,
-              },
+              heatMapColor: colors.tableHighlight1,
             },
             {
               text: "Clicks",
@@ -555,14 +513,7 @@ builder.addMultipleToSlide(
             {
               text: "Video Complete(s)",
               fieldExtractor: (v) => v.videoCompletions,
-              heatMap: {
-                colorPalette: [
-                  chroma(colors.tableHighlight4).brighten(3).hex(),
-                  colors.tableHighlight4,
-                ],
-                maxValue: productPerformanceVideoCompletes.max,
-                minValue: productPerformanceVideoCompletes.min,
-              },
+              heatMapColor: colors.tableHighlight4,
             },
             {
               text: "VCR(%)",
@@ -852,14 +803,7 @@ builder.addMultipleToSlide(
             {
               text: "Link Clicks",
               fieldExtractor: (v) => v.clicks,
-              heatMap: {
-                colorPalette: [
-                  chroma(colors.tableHighlight3).brighten(3).hex(),
-                  colors.tableHighlight3,
-                ],
-                maxValue: linkClicks.max,
-                minValue: linkClicks.min,
-              },
+              heatMapColor: colors.tableHighlight3,
             },
           ],
           endorsementProduct.result.data
@@ -946,14 +890,7 @@ builder.addMultipleToSlide(
             {
               text: "Clicks",
               fieldExtractor: (v) => v.clicks,
-              heatMap: {
-                colorPalette: [
-                  chroma(colors.tableHighlight1).brighten(3).hex(),
-                  colors.tableHighlight1,
-                ],
-                maxValue: ampedClicks.max,
-                minValue: ampedClicks.min,
-              },
+              heatMapColor: colors.tableHighlight1,
             },
             {
               text: "CTR(%)",

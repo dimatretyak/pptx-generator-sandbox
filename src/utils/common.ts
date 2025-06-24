@@ -1,7 +1,10 @@
 import chroma from "chroma-js";
 import { FALLBACK_POWERPOINT_VALUE } from "./formatters";
 import { PowerPointBoxEntity } from "../classes/PowerPointInfoBlocks";
-import { PowerPointValue } from "../types/powerpoint.types";
+import {
+  PowerPointValue,
+  PowerPointValueFormatter,
+} from "../types/powerpoint.types";
 import {
   PowerPointTableCell,
   PowerPointTablePayload,
@@ -83,17 +86,44 @@ export function extractInfoBlockData<Data = Record<string, unknown>>(
 export function extractTableData<
   Data extends Record<string, unknown> = Record<string, unknown>
 >(
-  entities: (PowerPointTableTableHeader &
-    Pick<PowerPointTableCell, "format"> & {
-      fieldExtractor: (v: Data) => PowerPointValue | null;
-    })[],
+  entities: {
+    text: string;
+    heatMapColor?: string;
+    format?: PowerPointValueFormatter;
+    fieldExtractor: (v: Data) => PowerPointValue | null;
+  }[],
   data: Data[]
 ): PowerPointTablePayload {
-  const headers: PowerPointTableTableHeader[] = entities.map((v) => {
-    return {
+  const headers = entities.map((v) => {
+    const result: PowerPointTableTableHeader = {
       text: v.text,
-      heatMap: v.heatMap,
     };
+
+    // Add heat map field
+    if (v.heatMapColor) {
+      const values = data.map((entity) => {
+        const value = v.fieldExtractor(entity);
+
+        if (isNumber(value)) {
+          return value;
+        }
+
+        return 0;
+      });
+
+      const colorPalette: [string, string] = [
+        chroma(v.heatMapColor).brighten(3).hex(),
+        v.heatMapColor,
+      ];
+
+      result.heatMap = {
+        colorPalette,
+        maxValue: Math.max(...values),
+        minValue: Math.min(...values),
+      };
+    }
+
+    return result;
   });
 
   const values: PowerPointTableCell[][] = data.map((v) => {
