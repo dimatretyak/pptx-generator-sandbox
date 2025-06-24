@@ -34,23 +34,11 @@ import {
   extractInfoBlockData,
   extractMonthLabels,
   extractTableData,
-  getMinMax,
   preparePercentageValues,
 } from "../utils/common";
-import chroma from "chroma-js";
 
 const builder = new PowerPointBuilder();
 const footer = "06/23/2025-06/23/2025";
-
-const displayProductPerformanceClicks = getMinMax(
-  displayProduct.result.data,
-  "clicks"
-);
-
-const displayProductPerformanceConversions = getMinMax(
-  displayProduct.result.data,
-  "conversions"
-);
 
 builder.addMultipleToSlide(
   [
@@ -145,16 +133,6 @@ builder.addBarChartSlide(
       },
     },
   }
-);
-
-const videoProductPerformanceVideoCompletions = getMinMax(
-  videoProduct.result.data,
-  "videoCompletions"
-);
-
-const videoProductPerformanceClicks = getMinMax(
-  videoProduct.result.data,
-  "clicks"
 );
 
 builder.addMultipleToSlide(
@@ -271,11 +249,6 @@ builder.addBarChartSlide(
   }
 );
 
-const STVProductPerformanceVideoCompletes = getMinMax(
-  stvProduct.result.data,
-  "videoCompletions"
-);
-
 builder.addMultipleToSlide(
   [
     [
@@ -377,11 +350,6 @@ builder.addBarChartSlide(
   }
 );
 
-const productPerformanceDisplayImpressions = getMinMax(
-  socialDisplayProduct.result.data,
-  "impressions"
-);
-
 builder.addMultipleToSlide(
   [
     [
@@ -462,11 +430,6 @@ builder.addMultipleToSlide(
       },
     },
   }
-);
-
-const productPerformanceVideoCompletes = getMinMax(
-  socialVideoProduct.result.data,
-  "videoCompletions"
 );
 
 builder.addMultipleToSlide(
@@ -757,8 +720,6 @@ builder.addMultipleToSlide(
   }
 );
 
-const linkClicks = getMinMax(endorsementProduct.result.data, "clicks");
-
 builder.addMultipleToSlide(
   [
     [
@@ -843,8 +804,6 @@ builder.addBarChartSlide(
     },
   }
 );
-
-const ampedClicks = getMinMax(ampedProduct.result.data, "clicks");
 
 builder.addMultipleToSlide(
   [
