@@ -3,7 +3,9 @@ import colors, { palette } from "../data/constants";
 import { displayPeriod6Month } from "../data/displayPeriod6Month";
 import { displayProduct } from "../data/displayProduct";
 import { displayTopKpi } from "../data/displayTopKpi";
+import { semPeriod6Month } from "../data/responses/semPeriod6Month";
 import { semTopKpi } from "../data/responses/semTopKpi";
+import { socialDisplayPeriod6Month } from "../data/responses/socialDisplayPeriod6Month";
 import { socialDisplayProduct } from "../data/responses/socialDisplayProduct";
 import { socialDisplayTopKpi } from "../data/responses/socialDisplayTopKpi";
 import { socialVideoProduct } from "../data/responses/socialVideoProduct";
@@ -492,26 +494,19 @@ builder.addBarChartSlide(
       {
         name: "VCR(%)",
         color: palette.color1,
-        labels: [
-          "2024-12",
-          "2025-01",
-          "2025-02",
-          "2025-03",
-          "2025-04",
-          "2025-05",
-        ],
-        values: preparePercentageValues([
-          8.866294889650362, 7.708495898713394, 11.743684470634875,
-          8.29194127148263, 10.63266858275892, 9.170772034317999,
-        ]),
+        labels: socialDisplayPeriod6Month.result.data.map(
+          (v) => v._id.monthYearNumbers
+        ),
+        values: preparePercentageValues(
+          socialDisplayPeriod6Month.result.data.map((v) => v.vcr)
+        ),
       },
       {
-        name: "VCR(%)",
+        name: "CTR(%)",
         color: palette.color3,
-        values: preparePercentageValues([
-          0.7450343140856002, 0.7981875225279288, 0.6589656700743536,
-          0.5626097200782556, 0.9106276903916111, 0.9885322684522666,
-        ]),
+        values: preparePercentageValues(
+          socialDisplayPeriod6Month.result.data.map((v) => v.ctr)
+        ),
       },
     ],
   },
@@ -575,24 +570,16 @@ builder.addMultipleToSlide(
     [
       {
         type: "bar",
-        title: "SEM -CTR Last 6 Months",
+        title: "SEM - CTR Last 6 Months",
         payload: {
           data: [
             {
               name: "SEM - CTR Last 6 Months",
               color: colors.chartBar1,
-              labels: [
-                "2024-12",
-                "2025-01",
-                "2025-02",
-                "2025-03",
-                "2025-04",
-                "2025-05",
-              ],
-              values: [
-                6.1911727729106465, 5.66177018744267, 6.653441364119759,
-                8.047542372827401, 7.751307703102387, 7.339709814383512,
-              ],
+              labels: semPeriod6Month.result.data.map(
+                (v) => v._id.monthYearNumbers
+              ),
+              values: semPeriod6Month.result.data.map((v) => v.ctr),
             },
           ],
         },
