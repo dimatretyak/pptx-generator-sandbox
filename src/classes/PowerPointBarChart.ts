@@ -1,9 +1,14 @@
 import pptxgen from "pptxgenjs";
 import { PowerPointSlideConfig } from "../types/powerpoint.types";
 import { normalizeBarsChartData } from "../utils/powerpoint/charts";
+import { preparePercentageValues } from "../utils/common";
+
+const TEXT_FONT_SIZE = 10;
+const TEXT_COLOR = "666666";
+const TEXT_VALUE_COLOR = "000000";
 
 export type PowerPointBarChartDataEntity = {
-  labels: string[];
+  labels?: string[];
   values: number[];
   name: string;
   color: string;
@@ -14,6 +19,7 @@ export type PowerPointBarChartPayload = {
   lines?: Pick<PowerPointBarChartDataEntity, "values" | "name" | "color">[];
   labelFormatCode?: string;
   normalizeData?: boolean;
+  rotateBottomLabels?: boolean;
 };
 
 export class PowerPointBarChart {
@@ -38,9 +44,16 @@ export class PowerPointBarChart {
       },
       showLegend: true,
       legendPos: "b",
-      legendFontSize: 12,
+      legendFontSize: TEXT_FONT_SIZE,
+      legendColor: TEXT_VALUE_COLOR,
       showValue: !shouldRenderLines,
       dataLabelFormatCode: payload.labelFormatCode,
+      dataLabelFontSize: TEXT_FONT_SIZE,
+      catAxisLabelFontSize: TEXT_FONT_SIZE,
+      catAxisLabelColor: TEXT_COLOR,
+      valAxisLabelFontSize: TEXT_FONT_SIZE,
+      valAxisLabelColor: TEXT_COLOR,
+      catAxisLabelRotate: payload.rotateBottomLabels ? -45 : undefined,
     };
 
     let entities: pptxgen.IChartMulti[] = [
@@ -50,7 +63,7 @@ export class PowerPointBarChart {
           return {
             name: entity.name,
             values: entity.values,
-            labels: entity.labels,
+            labels: entity.labels ?? [],
           };
         }),
         options: {
@@ -79,6 +92,15 @@ export class PowerPointBarChart {
           },
         });
       }
+    }
+
+    // The values are in decimal format (e.g., 0.75 = 75%)
+    if (payload.labelFormatCode?.includes("%")) {
+      entities.forEach((entity) => {
+        entity.data.forEach((dataEntity) => {
+          dataEntity.values = preparePercentageValues(dataEntity.values!);
+        });
+      });
     }
 
     if (payload.normalizeData) {

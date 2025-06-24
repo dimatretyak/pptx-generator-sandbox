@@ -4,6 +4,8 @@ import {
   PowerPointValueFormatter,
 } from "../types/powerpoint.types";
 
+export const FALLBACK_POWERPOINT_VALUE = "-";
+
 export const formatNumber = (value: number) => {
   const formatter = new Intl.NumberFormat("en-US", {
     maximumFractionDigits: 2,
@@ -78,5 +80,5 @@ export const formatValue = (
     return value;
   }
 
-  return "-";
+  return FALLBACK_POWERPOINT_VALUE;
 };

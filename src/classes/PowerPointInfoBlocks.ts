@@ -11,6 +11,13 @@ import { determineChangeIndicator, isNumber } from "../utils/common";
 import { config } from "../config";
 import path from "node:path";
 
+const TEXT_FONT_SIZE = 10;
+const TEXT_COLOR = "000000";
+const TEXT_VALUE_FONT_SIZE = 14;
+const COMPARE_TEXT_COLOR = "9e9e9e";
+const DECREASE_INDICATOR_COLOR = "d32f2f";
+const INCREASE_INDICATOR_COLOR = "2e7d32";
+
 export type PowerPointBoxEntity = {
   title: string;
   value: PowerPointValue;
@@ -37,8 +44,9 @@ export class PowerPointInfoBlocks {
       {
         text: entity.title,
         options: {
-          fontSize: 12,
+          fontSize: TEXT_FONT_SIZE,
           breakLine: true,
+          color: TEXT_COLOR,
         },
       },
       {
@@ -46,9 +54,10 @@ export class PowerPointInfoBlocks {
           formatter: entity.format,
         }),
         options: {
-          fontSize: 18,
+          fontSize: TEXT_VALUE_FONT_SIZE,
           bold: true,
           breakLine: true,
+          color: TEXT_COLOR,
         },
       },
     ];
@@ -60,22 +69,22 @@ export class PowerPointInfoBlocks {
       const changeIndicator = determineChangeIndicator(entity.changePercentage);
 
       let text = `${value}`;
-      let color = "000000";
+      let color = TEXT_COLOR;
 
       if (changeIndicator === "decrease") {
         text = `${value} ▼`;
-        color = "d32f2f";
+        color = DECREASE_INDICATOR_COLOR;
       }
 
       if (changeIndicator === "increase") {
         text = `${value} ▲`;
-        color = "2e7d32";
+        color = INCREASE_INDICATOR_COLOR;
       }
 
       texts.push({
         text,
         options: {
-          fontSize: 12,
+          fontSize: TEXT_FONT_SIZE,
           breakLine: true,
           color,
         },
@@ -90,8 +99,8 @@ export class PowerPointInfoBlocks {
       texts.push({
         text: `vs ${value} prev.`,
         options: {
-          fontSize: 10,
-          color: "9e9e9e",
+          fontSize: TEXT_FONT_SIZE,
+          color: COMPARE_TEXT_COLOR,
         },
       });
     }
@@ -130,7 +139,6 @@ export class PowerPointInfoBlocks {
           w: info.width,
           h: info.height,
           align: "center",
-          fontSize: 14,
           rectRadius: this.config.roundess,
           line: {
             color: this.config.border.color,
@@ -163,8 +171,8 @@ export class PowerPointInfoBlocks {
           },
         });
 
-        const size = Math.min(1.75, info.height);
-        const offset = 0.15;
+        const size = Math.min(1.25, info.height);
+        const offset = 0.1;
         const totalWidth =
           row.length * size + (row.length - 1) * this.config.spacer;
         const leftOffset = slideConfig.x + (slideConfig.width - totalWidth) / 2;

@@ -13,7 +13,7 @@ import {
 import { formatValue } from "../utils/formatters";
 import { stripHexHash } from "../utils/powerpoint/common";
 
-type PowerPointTableTableHeader = {
+export type PowerPointTableTableHeader = {
   text: string;
   heatMap?: {
     colorPalette: [string, string];
@@ -121,7 +121,7 @@ export class PowerPointTable {
           color: this.config.border.color,
         },
         margin: 0.1,
-        fontSize: 14,
+        fontSize: 10,
       }
     );
   }

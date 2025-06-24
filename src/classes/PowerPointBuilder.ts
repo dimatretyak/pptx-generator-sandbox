@@ -70,14 +70,14 @@ class PowerPointBuilder {
     this.config = {
       border: {
         size: 1,
-        color: "cccccc",
+        color: "e0e0e0",
       },
       roundess: 0.025,
       margin: {
-        top: 0.25,
-        left: 0.25,
-        right: 0.25,
-        bottom: 0.25,
+        top: 0.15,
+        left: 0.15,
+        right: 0.15,
+        bottom: 0.15,
       },
       slide: {
         width: SLIDE_WIDTH,

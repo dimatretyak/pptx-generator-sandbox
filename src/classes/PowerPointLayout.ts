@@ -5,14 +5,17 @@ import {
 } from "../types/powerpoint.types";
 import pptxgen from "pptxgenjs";
 import { isNumber } from "../utils/common";
+import { config } from "../config";
+import path from "node:path";
 
-const HEADER_HEIGHT = 0.5;
-const FOOTER_HEIGHT = 0.35;
-const CONTENT_TITLE_HEIGHT = 0.35;
-const HORIZONTAL_OFFSET = 0.15;
+const HEADER_HEIGHT = 0.4;
+const FOOTER_HEIGHT = 0.3;
+const HORIZONTAL_OFFSET = 0.1;
+const CONTENT_TITLE_HEIGHT = 0.25;
+const CONTENT_TITLE_HORIZONTAL_OFFSET = 0.05;
 
 // Slide title size + bottom offset
-export const SLIDE_TITLE_FULL_HEIGHT = CONTENT_TITLE_HEIGHT + 0.25;
+export const SLIDE_TITLE_FULL_HEIGHT = CONTENT_TITLE_HEIGHT + 0.15;
 
 export class PowerPointLayout {
   private config: PowerPointConfig;
@@ -104,14 +107,14 @@ export class PowerPointLayout {
   }
 
   private renderHeader(slide: pptxgen.Slide, text: string) {
-    slide.addShape("rect", {
+    const bg = path.join(config.path.images, "markup-bg.png");
+
+    slide.addImage({
       x: 0,
       y: 0,
       h: HEADER_HEIGHT,
       w: this.config.slide.width,
-      fill: {
-        color: "FF0000",
-      },
+      path: bg,
     });
 
     slide.addText(text, {
@@ -120,25 +123,24 @@ export class PowerPointLayout {
       w: this.config.slide.width - HORIZONTAL_OFFSET * 2,
       h: HEADER_HEIGHT,
       valign: "middle",
-      bold: true,
-      fontSize: 18,
+      bold: false,
+      fontSize: 16,
       margin: 0,
       color: "FFFFFF",
     });
   }
 
   renderFooter(slide: pptxgen.Slide, text: string) {
+    const bg = path.join(config.path.images, "markup-bg.png");
     const width = this.config.slide.width;
     const height = this.config.slide.height - FOOTER_HEIGHT;
 
-    slide.addShape("rect", {
+    slide.addImage({
       x: 0,
       y: height,
       w: this.config.slide.width,
       h: FOOTER_HEIGHT,
-      fill: {
-        color: "0000FF",
-      },
+      path: bg,
     });
 
     slide.addText(text, {
@@ -148,7 +150,8 @@ export class PowerPointLayout {
       h: FOOTER_HEIGHT,
       valign: "middle",
       align: "right",
-      fontSize: 14,
+      fontSize: 10,
+      bold: false,
       margin: 0,
       color: "FFFFFF",
     });
@@ -186,18 +189,18 @@ export class PowerPointLayout {
       w: slideConfig.width,
       h: CONTENT_TITLE_HEIGHT,
       fill: {
-        color: "e7e6e6",
+        color: "eeeeee",
       },
     });
 
     slide.addText(title, {
-      x: slideConfig.x + HORIZONTAL_OFFSET,
+      x: slideConfig.x + CONTENT_TITLE_HORIZONTAL_OFFSET,
       y: slideConfig.y,
       w: slideConfig.width - HORIZONTAL_OFFSET * 2,
       h: CONTENT_TITLE_HEIGHT,
       valign: "middle",
       bold: true,
-      fontSize: 14,
+      fontSize: 12,
       margin: 0,
     });
   }

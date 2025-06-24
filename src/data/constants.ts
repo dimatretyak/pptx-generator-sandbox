@@ -226,3 +226,36 @@ export const videoProductPerformance = [
     vcr: 48.6713326343827,
   },
 ];
+
+// TODO: Reuse from lumina in the future
+export const palette = {
+  green: "#0392a3",
+  red: "#d72d8d",
+  color1: "#0062a8",
+  color2: "#3054ba",
+  color3: "#5465d5",
+  color4: "#6d4dd3",
+  color5: "#a146db",
+};
+
+// TODO: Reuse from lumina in the future
+export const colors = {
+  tableHighlight1: palette.color2,
+  tableHighlight2: palette.color1,
+  tableHighlight3: palette.color5,
+  tableHighlight4: palette.color4,
+  chartBar1: palette.color1,
+  chartBar2: palette.color3,
+  chartLine1: palette.color5,
+  chartLine2: palette.green,
+  arrowUp: palette.green,
+  arrowDown: palette.red,
+  tableCellUp: palette.green,
+  tableCellDown: palette.red,
+  chartPie1: palette.green,
+  chartPie2: palette.color2,
+  chartPie3: palette.color4,
+  chartPie4: palette.red,
+};
+
+export default colors;
