@@ -264,6 +264,12 @@ class PowerPointBuilder {
       const coords = this.layout.getContentCoords(options);
       const fallbackHeight = this.calculateRowHeight(data, sizes.height);
 
+      if (fallbackHeight < 0.4) {
+        throw new Error(
+          "The total size of the custom height is greater than the allowed height"
+        );
+      }
+
       const heightPerRow = data.reduce(
         (acc, row, index) => {
           const parsedHeight = this.parseSizeNumber(
