@@ -18,6 +18,8 @@ import {
   PowerPointPieChart,
   PowerPointPieChartPayload,
 } from "./PowerPointPieChart";
+import path from "node:path";
+import { config } from "../config";
 
 // 16:9 aspect ratio
 const LAYOUT_NAME = "APP";
@@ -251,10 +253,38 @@ class PowerPointBuilder {
     return this;
   }
 
+  addMasterSlide(title: string) {
+    this.slideGenerators.push((slide) => {
+      slide.addImage({
+        w: this.config.slide.width,
+        h: this.config.slide.height,
+        x: 0,
+        y: 0,
+        path: path.join(config.path.images, "master-slide-bg.svg"),
+      });
+
+      slide.addText(title, {
+        x: 0,
+        y: 0,
+        w: this.config.slide.width,
+        h: this.config.slide.height,
+        align: "center",
+        rectRadius: this.config.roundess,
+        fontSize: 30,
+        bold: true,
+        color: "ffffff",
+      });
+    });
+  }
+
   buildAndSave(fileName: string) {
     for (const generateSlide of this.slideGenerators) {
-      const slide = this.presentation.addSlide();
-      generateSlide(slide);
+      try {
+        const slide = this.presentation.addSlide();
+        generateSlide(slide);
+      } catch (error) {
+        console.log("[buildAndSave]", error);
+      }
     }
 
     this.presentation.writeFile({ fileName });

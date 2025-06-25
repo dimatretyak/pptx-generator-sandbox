@@ -1,8 +1,41 @@
+import PowerPointBuilder from "./classes/PowerPointBuilder";
 import generateDemo from "./templates/demo";
 import generateOverview from "./templates/overview";
 
-const tasks = [generateDemo, generateOverview];
+const date = new Date();
+const builder = new PowerPointBuilder();
 
-for (const task of tasks) {
-  task();
-}
+const tasks = [
+  {
+    title: "Overview",
+    executer: generateOverview,
+  },
+  {
+    title: "Demo",
+    executer: generateDemo,
+  },
+];
+
+const generate = async () => {
+  // TODO: Add introduce slide
+
+  for (const task of tasks) {
+    try {
+      builder.addMasterSlide(task.title);
+
+      await task.executer({
+        builder,
+        dates: {
+          start: date,
+          end: date,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  builder.buildAndSave("output/all.pptx");
+};
+
+generate();
