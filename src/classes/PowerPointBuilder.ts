@@ -212,6 +212,43 @@ class PowerPointBuilder {
 
       const sizes = this.layout.getSlideSizes(options);
       const coords = this.layout.getContentCoords(options);
+      const heightByRow = data.map((row) => row.size?.height ?? 0);
+      const values = heightByRow.filter((h) => h === 0);
+
+      const totalCustomHeight = heightByRow.reduce((acc, cur) => {
+        if (cur > 0) {
+          return acc + cur;
+        }
+
+        return acc;
+      }, 0 as number);
+
+      const totalSpacers = this.config.spacer * (data.length - 1);
+      const fallbackHeight =
+        (sizes.height - totalCustomHeight - totalSpacers) / values.length;
+
+      const heightPerRow = data.reduce(
+        (acc, row, index) => {
+          const height = row.size?.height ?? fallbackHeight;
+          const prevRow = acc[index - 1];
+          let y = coords.y;
+
+          if (prevRow) {
+            y = prevRow.y + prevRow.height + this.config.spacer;
+          }
+
+          acc.push({
+            height,
+            y,
+          });
+
+          return acc;
+        },
+        [] as {
+          height: number;
+          y: number;
+        }[]
+      );
 
       data.forEach((row, rowIndex) => {
         row.entities.forEach((col, colIndex) => {
@@ -224,11 +261,13 @@ class PowerPointBuilder {
             coords,
           });
 
+          const entity = heightPerRow[rowIndex];
+
           const slideConfig: PowerPointSlideConfig = {
             width: info.width,
-            height: info.height - SLIDE_TITLE_FULL_HEIGHT,
+            height: entity.height - SLIDE_TITLE_FULL_HEIGHT,
             x: info.x,
-            y: info.y + SLIDE_TITLE_FULL_HEIGHT,
+            y: entity.y + SLIDE_TITLE_FULL_HEIGHT,
           };
 
           slide.addShape("rect", {
@@ -245,7 +284,7 @@ class PowerPointBuilder {
           this.layout.renderContentTitle(slide, col.title, {
             width: info.width,
             x: info.x,
-            y: info.y,
+            y: entity.y,
           });
 
           if (col.type === "pie") {

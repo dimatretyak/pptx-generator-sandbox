@@ -16,6 +16,9 @@ export default async (payload: TemplatePayload) => {
   builder.addMultipleToSlide(
     [
       {
+        size: {
+          height: 1,
+        },
         entities: [
           {
             type: "circles",
@@ -43,6 +46,44 @@ export default async (payload: TemplatePayload) => {
         ],
       },
       {
+        entities: [
+          {
+            type: "table",
+            title: "Display - Product Performance",
+            payload: extractTableData(
+              [
+                {
+                  text: "Product",
+                  fieldExtractor: (v) => v._id.subProduct,
+                },
+                {
+                  text: "Impressions",
+                  fieldExtractor: (v) => v.impressions,
+                },
+                {
+                  text: "Clicks",
+                  fieldExtractor: (v) => v.clicks,
+                  heatMapColor: colors.tableHighlight1,
+                },
+                {
+                  text: "CTR(%)",
+                  fieldExtractor: (v) => v.ctr,
+                },
+                {
+                  text: "Total Conversions",
+                  fieldExtractor: (v) => v.conversions,
+                  heatMapColor: colors.tableHighlight3,
+                },
+              ],
+              displayProduct.result.data
+            ),
+          },
+        ],
+      },
+      {
+        size: {
+          height: 1,
+        },
         entities: [
           {
             type: "table",
