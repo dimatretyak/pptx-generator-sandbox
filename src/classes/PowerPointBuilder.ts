@@ -207,15 +207,35 @@ class PowerPointBuilder {
 
   private calculateRowHeight(data: MultipleData, height: number) {
     const totalSpacersHeight = this.config.spacer * (data.length - 1);
-    const rowHeights = data.map((row) => row.size?.height ?? 0);
-    const customHeights = rowHeights.filter((h) => h > 0);
 
-    const totalCustomHeight = customHeights.reduce((acc, cur) => acc + cur);
+    const info = data.reduce(
+      (acc, cur) => {
+        const height = cur.size?.height ?? 0;
 
-    const rowsCountWithDefaultHeight = data.length - customHeights.length;
+        if (height > 0) {
+          acc.count.custom += 1;
+          acc.height.custom += height;
+          acc.height.default -= height;
+        } else {
+          acc.count.default += 1;
+        }
+
+        return acc;
+      },
+      {
+        height: {
+          custom: 0,
+          default: 0,
+        },
+        count: {
+          custom: 0,
+          default: 0,
+        },
+      }
+    );
+
     const fallbackHeight =
-      (height - totalCustomHeight - totalSpacersHeight) /
-      rowsCountWithDefaultHeight;
+      (height - info.height.custom - totalSpacersHeight) / info.count.default;
 
     return fallbackHeight;
   }
