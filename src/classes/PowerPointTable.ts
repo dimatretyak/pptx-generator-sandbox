@@ -112,9 +112,9 @@ export class PowerPointTable {
         x: slideConfig.x,
         y: slideConfig.y,
         w: slideConfig.width,
-        autoPage: true,
-        autoPageSlideStartY: this.config.margin.bottom,
-        autoPageLineWeight: 0.65,
+        // autoPage: true,
+        // autoPageSlideStartY: this.config.margin.bottom,
+        // autoPageLineWeight: 0.65,
         valign: "middle",
         border: {
           pt: this.config.border.size,
