@@ -191,17 +191,18 @@ export class PowerPointInfoBlocks {
           path: backgroundImage,
         });
 
-        // TODO: For debug purposes
-        // slide.addShape("ellipse", {
-        //   x,
-        //   y,
-        //   w: size,
-        //   h: size,
-        //   line: {
-        //     color: this.config.border.color,
-        //     size: this.config.border.size,
-        //   },
-        // });
+        if (this.config.debug) {
+          slide.addShape("ellipse", {
+            x,
+            y,
+            w: size,
+            h: size,
+            line: {
+              color: "FF0000",
+              size: this.config.border.size,
+            },
+          });
+        }
 
         slide.addText(texts, {
           x: leftOffset + (size + this.config.spacer) * colIndex,

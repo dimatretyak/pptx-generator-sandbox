@@ -87,6 +87,7 @@ class PowerPointBuilder {
     this.presentation = new pptxgen();
 
     this.config = {
+      debug: true,
       border: {
         size: 1,
         color: "e0e0e0",
@@ -317,16 +318,18 @@ class PowerPointBuilder {
             y: entity.y + SLIDE_TITLE_FULL_HEIGHT,
           };
 
-          slide.addShape("rect", {
-            x: slideConfig.x,
-            y: slideConfig.y,
-            w: slideConfig.width,
-            h: slideConfig.height,
-            line: {
-              color: "FF0000",
-              size: this.config.border.size,
-            },
-          });
+          if (this.config.debug) {
+            slide.addShape("rect", {
+              x: slideConfig.x,
+              y: slideConfig.y,
+              w: slideConfig.width,
+              h: slideConfig.height,
+              line: {
+                color: "FF0000",
+                size: this.config.border.size,
+              },
+            });
+          }
 
           this.layout.renderContentTitle(slide, col.title, {
             width: info.width,
