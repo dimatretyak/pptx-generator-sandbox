@@ -20,6 +20,7 @@ import {
 } from "./PowerPointPieChart";
 import path from "node:path";
 import { config } from "../config";
+import { isNumber, isString } from "../utils/common";
 
 // 16:9 aspect ratio
 const LAYOUT_NAME = "APP";
@@ -64,7 +65,7 @@ type PowerPointMultipleEntity =
 
 type MultipleData = {
   size?: {
-    height: number;
+    height: number | string;
   };
   entities: PowerPointMultipleEntity[];
 }[];
@@ -205,17 +206,32 @@ class PowerPointBuilder {
     return this;
   }
 
+  private parseSizeNumber(value: string | number | undefined, height: number) {
+    if (isNumber(value)) {
+      return value;
+    }
+
+    if (isString(value)) {
+      const percent = parseFloat(value);
+      const result = (height * percent) / 100;
+
+      return result;
+    }
+
+    return null;
+  }
+
   private calculateRowHeight(data: MultipleData, height: number) {
     const totalSpacersHeight = this.config.spacer * (data.length - 1);
 
     const info = data.reduce(
       (acc, cur) => {
-        const height = cur.size?.height ?? 0;
+        const result = this.parseSizeNumber(cur.size?.height, height);
 
-        if (height > 0) {
+        if (result !== null) {
           acc.count.custom += 1;
-          acc.height.custom += height;
-          acc.height.default -= height;
+          acc.height.custom += result;
+          acc.height.default -= result;
         } else {
           acc.count.default += 1;
         }
@@ -250,7 +266,11 @@ class PowerPointBuilder {
 
       const heightPerRow = data.reduce(
         (acc, row, index) => {
-          const height = row.size?.height ?? fallbackHeight;
+          const parsedHeight = this.parseSizeNumber(
+            row.size?.height,
+            sizes.height
+          );
+          const height = parsedHeight ?? fallbackHeight;
           const prevRow = acc[index - 1];
           let y = coords.y;
 
