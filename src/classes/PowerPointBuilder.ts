@@ -279,8 +279,12 @@ class PowerPointBuilder {
 
   buildAndSave(fileName: string) {
     for (const generateSlide of this.slideGenerators) {
-      const slide = this.presentation.addSlide();
-      generateSlide(slide);
+      try {
+        const slide = this.presentation.addSlide();
+        generateSlide(slide);
+      } catch (error) {
+        console.log("[buildAndSave]", error);
+      }
     }
 
     this.presentation.writeFile({ fileName });
