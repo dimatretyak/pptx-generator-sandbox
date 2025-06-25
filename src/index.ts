@@ -4,14 +4,24 @@ import generateOverview from "./templates/overview";
 
 const date = new Date();
 const builder = new PowerPointBuilder();
-const tasks = [generateOverview, generateDemo];
+
+const tasks = [
+  {
+    title: "Overview",
+    executer: generateOverview,
+  },
+  {
+    title: "Demo",
+    executer: generateDemo,
+  },
+];
 
 const generate = async () => {
   for (const task of tasks) {
     try {
-      builder.addMasterSlide("Hello World");
+      builder.addMasterSlide(task.title);
 
-      await task({
+      await task.executer({
         builder,
         dates: {
           start: date,
