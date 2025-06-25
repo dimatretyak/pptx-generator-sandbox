@@ -1,18 +1,23 @@
 import PowerPointBuilder from "./classes/PowerPointBuilder";
 import generateDemo from "./templates/demo";
 import generateOverview from "./templates/overview";
+import generateDebug from "./templates/debug";
 
 const date = new Date();
 const builder = new PowerPointBuilder();
 
 const tasks = [
+  // {
+  //   title: "Overview",
+  //   executer: generateOverview,
+  // },
+  // {
+  //   title: "Demo",
+  //   executer: generateDemo,
+  // },
   {
-    title: "Overview",
-    executer: generateOverview,
-  },
-  {
-    title: "Demo",
-    executer: generateDemo,
+    title: "Debug",
+    executer: generateDebug,
   },
 ];
 
