@@ -1,4 +1,3 @@
-import PowerPointBuilder from "../classes/PowerPointBuilder";
 import colors, { palette } from "../data/constants";
 import {
   extractInfoBlockData,
@@ -37,12 +36,13 @@ import { stvTopKpi } from "../data/responses/stvTopKpi";
 import { videoPeriod6Month } from "../data/responses/videoPeriod6Month";
 import { videoProduct } from "../data/responses/videoProduct";
 import { videoTopKpi } from "../data/responses/videoTopKpi";
+import { TemplatePayload } from "../types/powerpoint.types";
 
-export default () => {
+export default (payload: TemplatePayload) => {
   // TODO: Fetch data from api endpoints
   // TODO: Dynamically show or hide slides depending on the report menu
 
-  const builder = new PowerPointBuilder();
+  const { builder } = payload;
   const footer = "06/23/2025-06/23/2025";
 
   builder.addMultipleToSlide(
@@ -1028,5 +1028,5 @@ export default () => {
     }
   );
 
-  builder.buildAndSave("output/overview.pptx");
+  return builder;
 };

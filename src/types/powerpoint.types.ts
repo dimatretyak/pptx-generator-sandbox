@@ -1,3 +1,5 @@
+import PowerPointBuilder from "../classes/PowerPointBuilder";
+
 export type PowerPointValue = string | number | undefined;
 export type PowerPointValueFormatter = (value: PowerPointValue) => string;
 
@@ -52,4 +54,12 @@ export type PowerPointMarkup = {
 
 export type PowerPointSlideOptions = {
   markup: PowerPointMarkup;
+};
+
+export type TemplatePayload = {
+  builder: PowerPointBuilder;
+  dates: {
+    start: Date;
+    end: Date;
+  };
 };
