@@ -566,6 +566,9 @@ export default async (payload: TemplatePayload) => {
   builder.addMultipleToSlide(
     [
       {
+        size: {
+          height: 2.5,
+        },
         entities: [
           {
             type: "circles",
@@ -604,7 +607,7 @@ export default async (payload: TemplatePayload) => {
                 ],
                 semTopKpi.result.data,
                 {
-                  perChunk: 8,
+                  perChunk: 4,
                 }
               ),
             },
