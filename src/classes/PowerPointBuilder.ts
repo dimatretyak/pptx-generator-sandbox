@@ -199,7 +199,12 @@ class PowerPointBuilder {
   }
 
   addMultipleToSlide(
-    entities: PowerPointMultipleEntity[][],
+    data: {
+      size?: {
+        height: number;
+      };
+      entities: PowerPointMultipleEntity[];
+    }[],
     options: PowerPointSlideOptions
   ) {
     this.slideGenerators.push((slide) => {
@@ -208,13 +213,13 @@ class PowerPointBuilder {
       const sizes = this.layout.getSlideSizes(options);
       const coords = this.layout.getContentCoords(options);
 
-      entities.forEach((row, rowIndex) => {
-        row.forEach((col, colIndex) => {
+      data.forEach((row, rowIndex) => {
+        row.entities.forEach((col, colIndex) => {
           const info = this.layout.getCardSizeByRowCol({
             rowIndex,
             colIndex,
-            rowsCount: row.length,
-            colsCount: entities.length,
+            rowsCount: row.entities.length,
+            colsCount: data.length,
             sizes,
             coords,
           });
