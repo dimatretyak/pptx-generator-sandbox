@@ -231,6 +231,17 @@ class PowerPointBuilder {
             y: info.y + SLIDE_TITLE_FULL_HEIGHT,
           };
 
+          slide.addShape("rect", {
+            x: slideConfig.x,
+            y: slideConfig.y,
+            w: slideConfig.width,
+            h: slideConfig.height,
+            line: {
+              color: "FF0000",
+              size: this.config.border.size,
+            },
+          });
+
           this.layout.renderContentTitle(slide, col.title, {
             width: info.width,
             x: info.x,
