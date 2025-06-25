@@ -7,7 +7,7 @@ import splitArrayIntoChunks from "../utils/splitArrayIntoChunks";
 import { PowerPointTableCell } from "../classes/PowerPointTable";
 import { TemplatePayload } from "../types/powerpoint.types";
 
-export default (payload: TemplatePayload) => {
+export default async (payload: TemplatePayload) => {
   const { builder } = payload;
 
   // Render charts

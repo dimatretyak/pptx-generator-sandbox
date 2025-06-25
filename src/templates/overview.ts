@@ -38,7 +38,7 @@ import { videoProduct } from "../data/responses/videoProduct";
 import { videoTopKpi } from "../data/responses/videoTopKpi";
 import { TemplatePayload } from "../types/powerpoint.types";
 
-export default (payload: TemplatePayload) => {
+export default async (payload: TemplatePayload) => {
   // TODO: Fetch data from api endpoints
   // TODO: Dynamically show or hide slides depending on the report menu
 
