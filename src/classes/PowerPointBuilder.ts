@@ -62,6 +62,13 @@ type PowerPointMultipleEntity =
       payload: PowerPointTablePayload;
     };
 
+type MultipleData = {
+  size?: {
+    height: number;
+  };
+  entities: PowerPointMultipleEntity[];
+}[];
+
 class PowerPointBuilder {
   private slideGenerators: Array<(slide: pptxgen.Slide) => void> = [];
   private presentation: pptxgen;
@@ -198,33 +205,28 @@ class PowerPointBuilder {
     return this;
   }
 
-  addMultipleToSlide(
-    data: {
-      size?: {
-        height: number;
-      };
-      entities: PowerPointMultipleEntity[];
-    }[],
-    options: PowerPointSlideOptions
-  ) {
+  private calculateRowHeight(data: MultipleData, height: number) {
+    const totalSpacersHeight = this.config.spacer * (data.length - 1);
+    const rowHeights = data.map((row) => row.size?.height ?? 0);
+    const customHeights = rowHeights.filter((h) => h > 0);
+
+    const totalCustomHeight = customHeights.reduce((acc, cur) => acc + cur);
+
+    const rowsCountWithDefaultHeight = data.length - customHeights.length;
+    const fallbackHeight =
+      (height - totalCustomHeight - totalSpacersHeight) /
+      rowsCountWithDefaultHeight;
+
+    return fallbackHeight;
+  }
+
+  addMultipleToSlide(data: MultipleData, options: PowerPointSlideOptions) {
     this.slideGenerators.push((slide) => {
       this.addMarkup(slide, options);
 
       const sizes = this.layout.getSlideSizes(options);
       const coords = this.layout.getContentCoords(options);
-      const totalSpacersHeight = this.config.spacer * (data.length - 1);
-      const rowHeights = data.map((row) => row.size?.height ?? 0);
-      const customHeights = rowHeights.filter((h) => h > 0);
-
-      const totalCustomHeight = customHeights.reduce(
-        (acc, cur) => acc + cur,
-        0 as number
-      );
-
-      const defaultHeightRowsCount = data.length - customHeights.length;
-      const fallbackHeight =
-        (sizes.height - totalCustomHeight - totalSpacersHeight) /
-        defaultHeightRowsCount;
+      const fallbackHeight = this.calculateRowHeight(data, sizes.height);
 
       const heightPerRow = data.reduce(
         (acc, row, index) => {
