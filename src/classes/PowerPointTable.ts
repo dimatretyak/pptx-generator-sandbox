@@ -30,6 +30,7 @@ export type PowerPointTableCell = {
 export type PowerPointTablePayload = {
   headers: PowerPointTableTableHeader[];
   data: PowerPointTableCell[][];
+  autoPagination?: boolean;
 };
 
 export class PowerPointTable {
@@ -100,6 +101,25 @@ export class PowerPointTable {
       });
     });
 
+    const options: pptxgen.TableProps = {
+      x: slideConfig.x,
+      y: slideConfig.y,
+      w: slideConfig.width,
+      valign: "middle",
+      border: {
+        pt: this.config.border.size,
+        color: this.config.border.color,
+      },
+      margin: 0.1,
+      fontSize: 10,
+    };
+
+    if (payload.autoPagination) {
+      options.autoPage = true;
+      options.autoPageSlideStartY = this.config.margin.bottom;
+      options.autoPageLineWeight = 0.65;
+    }
+
     slide.addTable(
       [
         // Header
@@ -108,21 +128,7 @@ export class PowerPointTable {
         // Content
         ...content,
       ],
-      {
-        x: slideConfig.x,
-        y: slideConfig.y,
-        w: slideConfig.width,
-        // autoPage: true,
-        // autoPageSlideStartY: this.config.margin.bottom,
-        // autoPageLineWeight: 0.65,
-        valign: "middle",
-        border: {
-          pt: this.config.border.size,
-          color: this.config.border.color,
-        },
-        margin: 0.1,
-        fontSize: 10,
-      }
+      options
     );
   }
 }

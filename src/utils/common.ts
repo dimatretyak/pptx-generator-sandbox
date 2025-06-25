@@ -92,7 +92,8 @@ export function extractTableData<
     format?: PowerPointValueFormatter;
     fieldExtractor: (v: Data) => PowerPointValue | null;
   }[],
-  data: Data[]
+  data: Data[],
+  options: Pick<PowerPointTablePayload, "autoPagination"> = {}
 ): PowerPointTablePayload {
   const headers = entities.map((entity) => {
     const result: PowerPointTableTableHeader = {
@@ -141,6 +142,7 @@ export function extractTableData<
   return {
     headers,
     data: values.slice(0, 5),
+    ...options,
   };
 }
 

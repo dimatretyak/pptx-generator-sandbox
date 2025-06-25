@@ -287,6 +287,7 @@ export default async (payload: TemplatePayload) => {
         ...entities,
         ...entities,
       ],
+      autoPagination: true,
     },
     {
       markup: {
