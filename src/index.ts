@@ -9,7 +9,8 @@ const tasks = [generateOverview, generateDemo];
 const generate = async () => {
   for (const task of tasks) {
     try {
-      // TODO: Add master-slide
+      builder.addMasterSlide("Hello World");
+
       await task({
         builder,
         dates: {

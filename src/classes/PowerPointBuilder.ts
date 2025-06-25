@@ -251,6 +251,23 @@ class PowerPointBuilder {
     return this;
   }
 
+  addMasterSlide(title: string) {
+    this.slideGenerators.push((slide) => {
+      slide.addText(title, {
+        x: 0,
+        y: 0,
+        w: this.config.slide.width,
+        h: this.config.slide.height,
+        align: "center",
+        rectRadius: this.config.roundess,
+        line: {
+          color: this.config.border.color,
+          size: this.config.border.size,
+        },
+      });
+    });
+  }
+
   buildAndSave(fileName: string) {
     for (const generateSlide of this.slideGenerators) {
       const slide = this.presentation.addSlide();
