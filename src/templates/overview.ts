@@ -47,64 +47,71 @@ export default async (payload: TemplatePayload) => {
 
   builder.addMultipleToSlide(
     [
-      [
-        {
-          type: "circles",
-          title: "Display - Top KPIs",
-          payload: {
-            data: extractInfoBlockData(
+      {
+        size: {
+          height: 1.5,
+        },
+        entities: [
+          {
+            type: "circles",
+            title: "Display - Top KPIs",
+            payload: {
+              data: extractInfoBlockData(
+                [
+                  {
+                    text: "Impressions",
+                    fieldExtract: (v) => v.impressions,
+                  },
+                  {
+                    text: "Clicks",
+                    fieldExtract: (v) => v.clicks,
+                  },
+                  {
+                    text: "CTR(%)",
+                    fieldExtract: (v) => v.ctr,
+                  },
+                ],
+                displayTopKpi.result.data
+              ),
+            },
+          },
+        ],
+      },
+      {
+        entities: [
+          {
+            type: "table",
+            title: "Display - Product Performance",
+            payload: extractTableData(
               [
                 {
+                  text: "Product",
+                  fieldExtractor: (v) => v._id.subProduct,
+                },
+                {
                   text: "Impressions",
-                  fieldExtract: (v) => v.impressions,
+                  fieldExtractor: (v) => v.impressions,
                 },
                 {
                   text: "Clicks",
-                  fieldExtract: (v) => v.clicks,
+                  fieldExtractor: (v) => v.clicks,
+                  heatMapColor: colors.tableHighlight1,
                 },
                 {
                   text: "CTR(%)",
-                  fieldExtract: (v) => v.ctr,
+                  fieldExtractor: (v) => v.ctr,
+                },
+                {
+                  text: "Total Conversions",
+                  fieldExtractor: (v) => v.conversions,
+                  heatMapColor: colors.tableHighlight3,
                 },
               ],
-              displayTopKpi.result.data
+              displayProduct.result.data
             ),
           },
-        },
-      ],
-      [
-        {
-          type: "table",
-          title: "Display - Product Performance",
-          payload: extractTableData(
-            [
-              {
-                text: "Product",
-                fieldExtractor: (v) => v._id.subProduct,
-              },
-              {
-                text: "Impressions",
-                fieldExtractor: (v) => v.impressions,
-              },
-              {
-                text: "Clicks",
-                fieldExtractor: (v) => v.clicks,
-                heatMapColor: colors.tableHighlight1,
-              },
-              {
-                text: "CTR(%)",
-                fieldExtractor: (v) => v.ctr,
-              },
-              {
-                text: "Total Conversions",
-                fieldExtractor: (v) => v.conversions,
-                heatMapColor: colors.tableHighlight3,
-              },
-            ],
-            displayProduct.result.data
-          ),
-        },
-      ],
+        ],
+      },
     ],
     {
       markup: {
@@ -141,76 +148,83 @@ export default async (payload: TemplatePayload) => {
 
   builder.addMultipleToSlide(
     [
-      [
-        {
-          type: "circles",
-          title: "Video - Top KPIs",
-          payload: {
-            data: extractInfoBlockData(
+      {
+        size: {
+          height: 1.5,
+        },
+        entities: [
+          {
+            type: "circles",
+            title: "Video - Top KPIs",
+            payload: {
+              data: extractInfoBlockData(
+                [
+                  {
+                    text: "Impressions",
+                    fieldExtract: (v) => v.impressions,
+                  },
+                  {
+                    text: "Video Completes",
+                    fieldExtract: (v) => v.videoCompletions,
+                  },
+                  {
+                    text: "VCR(%)",
+                    fieldExtract: (v) => v.vcr,
+                  },
+                  {
+                    text: "Clicks",
+                    fieldExtract: (v) => v.clicks,
+                  },
+                  {
+                    text: "CTR(%)",
+                    fieldExtract: (v) => v.ctr,
+                  },
+                ],
+                videoTopKpi.result.data
+              ),
+            },
+          },
+        ],
+      },
+      {
+        entities: [
+          {
+            type: "table",
+            title: "Video - Product Performance",
+            payload: extractTableData(
               [
                 {
+                  text: "Product",
+                  fieldExtractor: (v) => v._id.subProduct,
+                },
+                {
                   text: "Impressions",
-                  fieldExtract: (v) => v.impressions,
+                  fieldExtractor: (v) => v.impressions,
                 },
                 {
                   text: "Video Completes",
-                  fieldExtract: (v) => v.videoCompletions,
+                  fieldExtractor: (v) => v.videoCompletions,
+                  heatMapColor: colors.tableHighlight3,
                 },
                 {
                   text: "VCR(%)",
-                  fieldExtract: (v) => v.vcr,
+                  fieldExtractor: (v) => v.vcr,
                 },
                 {
                   text: "Clicks",
-                  fieldExtract: (v) => v.clicks,
+                  fieldExtractor: (v) => v.clicks,
+                  heatMapColor: colors.tableHighlight1,
                 },
                 {
                   text: "CTR(%)",
-                  fieldExtract: (v) => v.ctr,
+                  fieldExtractor: (v) => v.ctr,
                 },
               ],
-              videoTopKpi.result.data
+              videoProduct.result.data
             ),
           },
-        },
-      ],
-      [
-        {
-          type: "table",
-          title: "Video - Product Performance",
-          payload: extractTableData(
-            [
-              {
-                text: "Product",
-                fieldExtractor: (v) => v._id.subProduct,
-              },
-              {
-                text: "Impressions",
-                fieldExtractor: (v) => v.impressions,
-              },
-              {
-                text: "Video Completes",
-                fieldExtractor: (v) => v.videoCompletions,
-                heatMapColor: colors.tableHighlight3,
-              },
-              {
-                text: "VCR(%)",
-                fieldExtractor: (v) => v.vcr,
-              },
-              {
-                text: "Clicks",
-                fieldExtractor: (v) => v.clicks,
-                heatMapColor: colors.tableHighlight1,
-              },
-              {
-                text: "CTR(%)",
-                fieldExtractor: (v) => v.ctr,
-              },
-            ],
-            videoProduct.result.data
-          ),
-        },
-      ],
+        ],
+      },
     ],
     {
       markup: {
@@ -251,71 +265,78 @@ export default async (payload: TemplatePayload) => {
 
   builder.addMultipleToSlide(
     [
-      [
-        {
-          type: "circles",
-          title: "STV - Top KPIs",
-          payload: {
-            data: extractInfoBlockData(
+      {
+        size: {
+          height: 1.5,
+        },
+        entities: [
+          {
+            type: "circles",
+            title: "STV - Top KPIs",
+            payload: {
+              data: extractInfoBlockData(
+                [
+                  {
+                    text: "Impressions",
+                    fieldExtract: (v) => v.impressions,
+                  },
+                  {
+                    text: "Video Completes",
+                    fieldExtract: (v) => v.videoCompletions,
+                  },
+                  {
+                    text: "VCR(%)",
+                    fieldExtract: (v) => v.vcr,
+                  },
+                  {
+                    text: "Clicks",
+                    fieldExtract: (v) => v.clicks,
+                  },
+                  {
+                    text: "Total Conversions",
+                    fieldExtract: (v) => v.conversions,
+                  },
+                ],
+                stvTopKpi.result.data
+              ),
+            },
+          },
+        ],
+      },
+      {
+        entities: [
+          {
+            type: "table",
+            title: "STV - Product Performance",
+            payload: extractTableData(
               [
                 {
+                  text: "Product",
+                  fieldExtractor: (v) => v._id.subProduct,
+                },
+                {
                   text: "Impressions",
-                  fieldExtract: (v) => v.impressions,
+                  fieldExtractor: (v) => v.impressions,
                 },
                 {
                   text: "Video Completes",
-                  fieldExtract: (v) => v.videoCompletions,
+                  fieldExtractor: (v) => v.videoCompletions,
+                  heatMapColor: colors.tableHighlight3,
                 },
                 {
                   text: "VCR(%)",
-                  fieldExtract: (v) => v.vcr,
-                },
-                {
-                  text: "Clicks",
-                  fieldExtract: (v) => v.clicks,
+                  fieldExtractor: (v) => v.vcr,
                 },
                 {
                   text: "Total Conversions",
-                  fieldExtract: (v) => v.conversions,
+                  fieldExtractor: (v) => v.conversions,
                 },
               ],
-              stvTopKpi.result.data
+              stvProduct.result.data
             ),
           },
-        },
-      ],
-      [
-        {
-          type: "table",
-          title: "STV - Product Performance",
-          payload: extractTableData(
-            [
-              {
-                text: "Product",
-                fieldExtractor: (v) => v._id.subProduct,
-              },
-              {
-                text: "Impressions",
-                fieldExtractor: (v) => v.impressions,
-              },
-              {
-                text: "Video Completes",
-                fieldExtractor: (v) => v.videoCompletions,
-                heatMapColor: colors.tableHighlight3,
-              },
-              {
-                text: "VCR(%)",
-                fieldExtractor: (v) => v.vcr,
-              },
-              {
-                text: "Total Conversions",
-                fieldExtractor: (v) => v.conversions,
-              },
-            ],
-            stvProduct.result.data
-          ),
-        },
-      ],
+        ],
+      },
     ],
     {
       markup: {
@@ -353,75 +374,82 @@ export default async (payload: TemplatePayload) => {
 
   builder.addMultipleToSlide(
     [
-      [
-        {
-          type: "circles",
-          title: "Key Performance Indicators (Display)",
-          payload: {
-            data: extractInfoBlockData(
+      {
+        size: {
+          height: 1.5,
+        },
+        entities: [
+          {
+            type: "circles",
+            title: "Key Performance Indicators (Display)",
+            payload: {
+              data: extractInfoBlockData(
+                [
+                  {
+                    text: "Impressions",
+                    fieldExtract: (v) => v.impressions,
+                  },
+                  {
+                    text: "Clicks",
+                    fieldExtract: (v) => v.clicks,
+                  },
+                  {
+                    text: "CTR(%)",
+                    fieldExtract: (v) => v.ctr,
+                  },
+                  {
+                    text: "Engagement",
+                    fieldExtract: (v) => v.pageengagements,
+                  },
+                  {
+                    text: "Total Conversions/Leads",
+                    fieldExtract: (v) => v.conversions,
+                  },
+                ],
+                socialDisplayTopKpi.result.data
+              ),
+            },
+          },
+        ],
+      },
+      {
+        entities: [
+          {
+            type: "table",
+            title: "Product Performance (Display)",
+            payload: extractTableData(
               [
                 {
+                  text: "Product",
+                  fieldExtractor: (v) => v._id.subProduct,
+                },
+                {
                   text: "Impressions",
-                  fieldExtract: (v) => v.impressions,
+                  fieldExtractor: (v) => v.impressions,
+                  heatMapColor: colors.tableHighlight1,
                 },
                 {
                   text: "Clicks",
-                  fieldExtract: (v) => v.clicks,
+                  fieldExtractor: (v) => v.clicks,
                 },
                 {
                   text: "CTR(%)",
-                  fieldExtract: (v) => v.ctr,
+                  fieldExtractor: (v) => v.ctr,
                 },
                 {
                   text: "Engagement",
-                  fieldExtract: (v) => v.pageengagements,
+                  fieldExtractor: (v) => v.pageengagements,
                 },
                 {
-                  text: "Total Conversions/Leads",
-                  fieldExtract: (v) => v.conversions,
+                  text: "Conversions/Leads",
+                  fieldExtractor: (v) => v.conversions,
                 },
               ],
-              socialDisplayTopKpi.result.data
+              socialDisplayProduct.result.data
             ),
           },
-        },
-      ],
-      [
-        {
-          type: "table",
-          title: "Product Performance (Display)",
-          payload: extractTableData(
-            [
-              {
-                text: "Product",
-                fieldExtractor: (v) => v._id.subProduct,
-              },
-              {
-                text: "Impressions",
-                fieldExtractor: (v) => v.impressions,
-                heatMapColor: colors.tableHighlight1,
-              },
-              {
-                text: "Clicks",
-                fieldExtractor: (v) => v.clicks,
-              },
-              {
-                text: "CTR(%)",
-                fieldExtractor: (v) => v.ctr,
-              },
-              {
-                text: "Engagement",
-                fieldExtractor: (v) => v.pageengagements,
-              },
-              {
-                text: "Conversions/Leads",
-                fieldExtractor: (v) => v.conversions,
-              },
-            ],
-            socialDisplayProduct.result.data
-          ),
-        },
-      ],
+        ],
+      },
     ],
     {
       markup: {
@@ -435,59 +463,66 @@ export default async (payload: TemplatePayload) => {
 
   builder.addMultipleToSlide(
     [
-      [
-        {
-          type: "circles",
-          title: "Key Performance Indicators (Video)",
-          payload: {
-            data: extractInfoBlockData(
+      {
+        size: {
+          height: 1.5,
+        },
+        entities: [
+          {
+            type: "circles",
+            title: "Key Performance Indicators (Video)",
+            payload: {
+              data: extractInfoBlockData(
+                [
+                  {
+                    text: "Video Start(s)",
+                    fieldExtract: (v) => v.videoStarts,
+                  },
+                  {
+                    text: "Video Complete(s)",
+                    fieldExtract: (v) => v.videoCompletions,
+                  },
+                  {
+                    text: "VCR(%)",
+                    fieldExtract: (v) => v.vcr,
+                  },
+                ],
+                socialVideoTopKpi.result.data
+              ),
+            },
+          },
+        ],
+      },
+      {
+        entities: [
+          {
+            type: "table",
+            title: "Product Performance (Video)",
+            payload: extractTableData(
               [
                 {
+                  text: "Product",
+                  fieldExtractor: (v) => v._id.subProduct,
+                },
+                {
                   text: "Video Start(s)",
-                  fieldExtract: (v) => v.videoStarts,
+                  fieldExtractor: (v) => v.videoStarts,
                 },
                 {
                   text: "Video Complete(s)",
-                  fieldExtract: (v) => v.videoCompletions,
+                  fieldExtractor: (v) => v.videoCompletions,
+                  heatMapColor: colors.tableHighlight4,
                 },
                 {
                   text: "VCR(%)",
-                  fieldExtract: (v) => v.vcr,
+                  fieldExtractor: (v) => v.vcr,
                 },
               ],
-              socialVideoTopKpi.result.data
+              socialVideoProduct.result.data
             ),
           },
-        },
-      ],
-      [
-        {
-          type: "table",
-          title: "Product Performance (Video)",
-          payload: extractTableData(
-            [
-              {
-                text: "Product",
-                fieldExtractor: (v) => v._id.subProduct,
-              },
-              {
-                text: "Video Start(s)",
-                fieldExtractor: (v) => v.videoStarts,
-              },
-              {
-                text: "Video Complete(s)",
-                fieldExtractor: (v) => v.videoCompletions,
-                heatMapColor: colors.tableHighlight4,
-              },
-              {
-                text: "VCR(%)",
-                fieldExtractor: (v) => v.vcr,
-              },
-            ],
-            socialVideoProduct.result.data
-          ),
-        },
-      ],
+        ],
+      },
     ],
     {
       markup: {
@@ -530,67 +565,71 @@ export default async (payload: TemplatePayload) => {
 
   builder.addMultipleToSlide(
     [
-      [
-        {
-          type: "circles",
-          title: "Search Engine Marketing",
-          payload: {
-            data: extractInfoBlockData(
-              [
+      {
+        entities: [
+          {
+            type: "circles",
+            title: "Search Engine Marketing",
+            payload: {
+              data: extractInfoBlockData(
+                [
+                  {
+                    text: "Impressions",
+                    fieldExtract: (v) => v.impressions,
+                  },
+                  {
+                    text: "Clicks",
+                    fieldExtract: (v) => v.clicks,
+                  },
+                  {
+                    text: "CTR(%)",
+                    fieldExtract: (v) => v.ctr,
+                  },
+                  {
+                    text: "Primary Conversions",
+                    fieldExtract: (v) => v.conversions,
+                  },
+                  {
+                    text: "Primary Conv. Rate",
+                    fieldExtract: (v) => v.conversionsRate,
+                  },
+                  {
+                    text: "All Conversions",
+                    fieldExtract: (v) => v.allConversions,
+                  },
+                  {
+                    text: "All Conv. Rate",
+                    fieldExtract: (v) => v.allconversionsRate,
+                  },
+                ],
+                semTopKpi.result.data,
                 {
-                  text: "Impressions",
-                  fieldExtract: (v) => v.impressions,
-                },
+                  perChunk: 8,
+                }
+              ),
+            },
+          },
+        ],
+      },
+      {
+        entities: [
+          {
+            type: "bar",
+            title: "SEM - CTR Last 6 Months",
+            payload: {
+              rotateBottomLabels: true,
+              data: [
                 {
-                  text: "Clicks",
-                  fieldExtract: (v) => v.clicks,
-                },
-                {
-                  text: "CTR(%)",
-                  fieldExtract: (v) => v.ctr,
-                },
-                {
-                  text: "Primary Conversions",
-                  fieldExtract: (v) => v.conversions,
-                },
-                {
-                  text: "Primary Conv. Rate",
-                  fieldExtract: (v) => v.conversionsRate,
-                },
-                {
-                  text: "All Conversions",
-                  fieldExtract: (v) => v.allConversions,
-                },
-                {
-                  text: "All Conv. Rate",
-                  fieldExtract: (v) => v.allconversionsRate,
+                  name: "SEM - CTR Last 6 Months",
+                  color: colors.chartBar1,
+                  labels: extractMonthLabels(semPeriod6Month.result.data),
+                  values: semPeriod6Month.result.data.map((v) => v.ctr),
                 },
               ],
-              semTopKpi.result.data,
-              {
-                perChunk: 8,
-              }
-            ),
+            },
           },
-        },
-      ],
-      [
-        {
-          type: "bar",
-          title: "SEM - CTR Last 6 Months",
-          payload: {
-            rotateBottomLabels: true,
-            data: [
-              {
-                name: "SEM - CTR Last 6 Months",
-                color: colors.chartBar1,
-                labels: extractMonthLabels(semPeriod6Month.result.data),
-                values: semPeriod6Month.result.data.map((v) => v.ctr),
-              },
-            ],
-          },
-        },
-      ],
+        ],
+      },
     ],
     {
       markup: {
@@ -604,52 +643,56 @@ export default async (payload: TemplatePayload) => {
 
   builder.addMultipleToSlide(
     [
-      [
-        {
-          type: "circles",
-          title: "SPARK - Top KPIs",
-          payload: {
-            data: extractInfoBlockData(
-              [
+      {
+        entities: [
+          {
+            type: "circles",
+            title: "SPARK - Top KPIs",
+            payload: {
+              data: extractInfoBlockData(
+                [
+                  {
+                    text: "Impressions",
+                    fieldExtract: (v) => v.impressions,
+                  },
+                  {
+                    text: "Clicks",
+                    fieldExtract: (v) => v.clicks,
+                  },
+                  {
+                    text: "CTR(%)",
+                    fieldExtract: (v) => v.ctr,
+                  },
+                  {
+                    text: "Conversions",
+                    fieldExtract: (v) => v.conversions,
+                  },
+                ],
+                sparkTopKpi.result.data
+              ),
+            },
+          },
+        ],
+      },
+      {
+        entities: [
+          {
+            type: "bar",
+            title: "SPARK - CTR Last 6 Months",
+            payload: {
+              rotateBottomLabels: true,
+              data: [
                 {
-                  text: "Impressions",
-                  fieldExtract: (v) => v.impressions,
-                },
-                {
-                  text: "Clicks",
-                  fieldExtract: (v) => v.clicks,
-                },
-                {
-                  text: "CTR(%)",
-                  fieldExtract: (v) => v.ctr,
-                },
-                {
-                  text: "Conversions",
-                  fieldExtract: (v) => v.conversions,
+                  name: "SPARK - CTR Last 6 Months",
+                  color: colors.chartBar1,
+                  labels: extractMonthLabels(sparkPeriod6Month.result.data),
+                  values: sparkPeriod6Month.result.data.map((v) => v.ctr),
                 },
               ],
-              sparkTopKpi.result.data
-            ),
+            },
           },
-        },
-      ],
-      [
-        {
-          type: "bar",
-          title: "SPARK - CTR Last 6 Months",
-          payload: {
-            rotateBottomLabels: true,
-            data: [
-              {
-                name: "SPARK - CTR Last 6 Months",
-                color: colors.chartBar1,
-                labels: extractMonthLabels(sparkPeriod6Month.result.data),
-                values: sparkPeriod6Month.result.data.map((v) => v.ctr),
-              },
-            ],
-          },
-        },
-      ],
+        ],
+      },
     ],
     {
       markup: {
@@ -663,51 +706,55 @@ export default async (payload: TemplatePayload) => {
 
   builder.addMultipleToSlide(
     [
-      [
-        {
-          type: "circles",
-          title: "E-mail Marketing - Top KPIs",
-          payload: {
-            data: extractInfoBlockData(
-              [
+      {
+        entities: [
+          {
+            type: "circles",
+            title: "E-mail Marketing - Top KPIs",
+            payload: {
+              data: extractInfoBlockData(
+                [
+                  {
+                    text: "Opens",
+                    fieldExtract: (v) => v.opens,
+                  },
+                  {
+                    text: "Clicks",
+                    fieldExtract: (v) => v.clicks,
+                  },
+                  {
+                    text: "Click Rate(%)",
+                    fieldExtract: (v) => v.clickRate,
+                  },
+                ],
+                emailMarketingTopKpi.result.data
+              ),
+            },
+          },
+        ],
+      },
+      {
+        entities: [
+          {
+            type: "bar",
+            title: "E-mail Marketing - CTR Last 6 Months",
+            payload: {
+              labelFormatCode: "0.00",
+              rotateBottomLabels: true,
+              data: [
                 {
-                  text: "Opens",
-                  fieldExtract: (v) => v.opens,
-                },
-                {
-                  text: "Clicks",
-                  fieldExtract: (v) => v.clicks,
-                },
-                {
-                  text: "Click Rate(%)",
-                  fieldExtract: (v) => v.clickRate,
+                  name: "E-mail Marketing -CTR Last 6 Months",
+                  color: palette.color1,
+                  labels: extractMonthLabels(sparkPeriod6Month.result.data),
+                  values: emailMarketingPeriod6Month.result.data.map(
+                    (v) => v.clickRate
+                  ),
                 },
               ],
-              emailMarketingTopKpi.result.data
-            ),
+            },
           },
-        },
-      ],
-      [
-        {
-          type: "bar",
-          title: "E-mail Marketing - CTR Last 6 Months",
-          payload: {
-            labelFormatCode: "0.00",
-            rotateBottomLabels: true,
-            data: [
-              {
-                name: "E-mail Marketing -CTR Last 6 Months",
-                color: palette.color1,
-                labels: extractMonthLabels(sparkPeriod6Month.result.data),
-                values: emailMarketingPeriod6Month.result.data.map(
-                  (v) => v.clickRate
-                ),
-              },
-            ],
-          },
-        },
-      ],
+        ],
+      },
     ],
     {
       markup: {
@@ -721,55 +768,59 @@ export default async (payload: TemplatePayload) => {
 
   builder.addMultipleToSlide(
     [
-      [
-        {
-          type: "circles",
-          title: "Digital Endorsements - Top KPIs",
-          payload: {
-            data: extractInfoBlockData(
+      {
+        entities: [
+          {
+            type: "circles",
+            title: "Digital Endorsements - Top KPIs",
+            payload: {
+              data: extractInfoBlockData(
+                [
+                  {
+                    text: "Impressions",
+                    fieldExtract: (v) => v.impressions,
+                  },
+                  {
+                    text: "Link Clicks",
+                    fieldExtract: (v) => v.clicks,
+                  },
+                  {
+                    text: "CTR(%)",
+                    fieldExtract: (v) => v.ctr,
+                  },
+                ],
+                endorsementTopKpi.result.data
+              ),
+            },
+          },
+        ],
+      },
+      {
+        entities: [
+          {
+            type: "table",
+            title: "Digital Endorsements - Product Performance",
+            payload: extractTableData(
               [
                 {
+                  text: "Product",
+                  fieldExtractor: (v) => v._id.subProduct,
+                },
+                {
                   text: "Impressions",
-                  fieldExtract: (v) => v.impressions,
+                  fieldExtractor: (v) => v.impressions,
                 },
                 {
                   text: "Link Clicks",
-                  fieldExtract: (v) => v.clicks,
-                },
-                {
-                  text: "CTR(%)",
-                  fieldExtract: (v) => v.ctr,
+                  fieldExtractor: (v) => v.clicks,
+                  heatMapColor: colors.tableHighlight3,
                 },
               ],
-              endorsementTopKpi.result.data
+              endorsementProduct.result.data
             ),
           },
-        },
-      ],
-      [
-        {
-          type: "table",
-          title: "Digital Endorsements - Product Performance",
-          payload: extractTableData(
-            [
-              {
-                text: "Product",
-                fieldExtractor: (v) => v._id.subProduct,
-              },
-              {
-                text: "Impressions",
-                fieldExtractor: (v) => v.impressions,
-              },
-              {
-                text: "Link Clicks",
-                fieldExtractor: (v) => v.clicks,
-                heatMapColor: colors.tableHighlight3,
-              },
-            ],
-            endorsementProduct.result.data
-          ),
-        },
-      ],
+        ],
+      },
     ],
     {
       markup: {
@@ -807,59 +858,63 @@ export default async (payload: TemplatePayload) => {
 
   builder.addMultipleToSlide(
     [
-      [
-        {
-          type: "circles",
-          title: "Local Display (AMPED) - Top KPIs",
-          payload: {
-            data: extractInfoBlockData(
+      {
+        entities: [
+          {
+            type: "circles",
+            title: "Local Display (AMPED) - Top KPIs",
+            payload: {
+              data: extractInfoBlockData(
+                [
+                  {
+                    text: "Impressions",
+                    fieldExtract: (v) => v.impressions,
+                  },
+                  {
+                    text: "Clicks",
+                    fieldExtract: (v) => v.clicks,
+                  },
+                  {
+                    text: "CTR(%)",
+                    fieldExtract: (v) => v.ctr,
+                  },
+                ],
+                ampedTopKpi.result.data
+              ),
+            },
+          },
+        ],
+      },
+      {
+        entities: [
+          {
+            type: "table",
+            title: "Local Display (AMPED) - Product Performance",
+            payload: extractTableData(
               [
                 {
+                  text: "Product",
+                  fieldExtractor: (v) => v._id.subProduct,
+                },
+                {
                   text: "Impressions",
-                  fieldExtract: (v) => v.impressions,
+                  fieldExtractor: (v) => v.impressions,
                 },
                 {
                   text: "Clicks",
-                  fieldExtract: (v) => v.clicks,
+                  fieldExtractor: (v) => v.clicks,
+                  heatMapColor: colors.tableHighlight1,
                 },
                 {
                   text: "CTR(%)",
-                  fieldExtract: (v) => v.ctr,
+                  fieldExtractor: (v) => v.ctr,
                 },
               ],
-              ampedTopKpi.result.data
+              ampedProduct.result.data
             ),
           },
-        },
-      ],
-      [
-        {
-          type: "table",
-          title: "Local Display (AMPED) - Product Performance",
-          payload: extractTableData(
-            [
-              {
-                text: "Product",
-                fieldExtractor: (v) => v._id.subProduct,
-              },
-              {
-                text: "Impressions",
-                fieldExtractor: (v) => v.impressions,
-              },
-              {
-                text: "Clicks",
-                fieldExtractor: (v) => v.clicks,
-                heatMapColor: colors.tableHighlight1,
-              },
-              {
-                text: "CTR(%)",
-                fieldExtractor: (v) => v.ctr,
-              },
-            ],
-            ampedProduct.result.data
-          ),
-        },
-      ],
+        ],
+      },
     ],
     {
       markup: {
@@ -896,63 +951,67 @@ export default async (payload: TemplatePayload) => {
 
   builder.addMultipleToSlide(
     [
-      [
-        {
-          type: "circles",
-          title: "Programmatic Audio Marketing - Top KPIs",
-          payload: {
-            data: extractInfoBlockData(
-              [
+      {
+        entities: [
+          {
+            type: "circles",
+            title: "Programmatic Audio Marketing - Top KPIs",
+            payload: {
+              data: extractInfoBlockData(
+                [
+                  {
+                    text: "Impressions",
+                    fieldExtract: (v) => v.impressions,
+                  },
+                  {
+                    text: "Audio Start(s)",
+                    fieldExtract: (v) => v.videoStarts,
+                  },
+                  {
+                    text: "Audio Complete(s)",
+                    fieldExtract: (v) => v.videoCompletions,
+                  },
+                  {
+                    text: "ACR(%)",
+                    fieldExtract: (v) => v.vcr,
+                  },
+                  {
+                    text: "Clicks",
+                    fieldExtract: (v) => v.clicks,
+                  },
+                ],
+                programmaticAudioTopKpi.result.data,
                 {
-                  text: "Impressions",
-                  fieldExtract: (v) => v.impressions,
-                },
+                  perChunk: 6,
+                }
+              ),
+            },
+          },
+        ],
+      },
+      {
+        entities: [
+          {
+            type: "bar",
+            title: "ACR(%)(Last 6 Months)",
+            payload: {
+              rotateBottomLabels: true,
+              data: [
                 {
-                  text: "Audio Start(s)",
-                  fieldExtract: (v) => v.videoStarts,
-                },
-                {
-                  text: "Audio Complete(s)",
-                  fieldExtract: (v) => v.videoCompletions,
-                },
-                {
-                  text: "ACR(%)",
-                  fieldExtract: (v) => v.vcr,
-                },
-                {
-                  text: "Clicks",
-                  fieldExtract: (v) => v.clicks,
+                  name: "ACR(%)(Last 6 Months)",
+                  color: colors.chartBar1,
+                  labels: extractMonthLabels(
+                    programmaticAudioPeriod6Month.result.data
+                  ),
+                  values: programmaticAudioPeriod6Month.result.data.map(
+                    (v) => v.vcr
+                  ),
                 },
               ],
-              programmaticAudioTopKpi.result.data,
-              {
-                perChunk: 6,
-              }
-            ),
+            },
           },
-        },
-      ],
-      [
-        {
-          type: "bar",
-          title: "ACR(%)(Last 6 Months)",
-          payload: {
-            rotateBottomLabels: true,
-            data: [
-              {
-                name: "ACR(%)(Last 6 Months)",
-                color: colors.chartBar1,
-                labels: extractMonthLabels(
-                  programmaticAudioPeriod6Month.result.data
-                ),
-                values: programmaticAudioPeriod6Month.result.data.map(
-                  (v) => v.vcr
-                ),
-              },
-            ],
-          },
-        },
-      ],
+        ],
+      },
     ],
     {
       markup: {
@@ -966,57 +1025,59 @@ export default async (payload: TemplatePayload) => {
 
   builder.addMultipleToSlide(
     [
-      [
-        {
-          type: "circles",
-          title: "Call Performance - Top KPIs",
-          payload: {
-            data: extractInfoBlockData(
-              [
+      {
+        entities: [
+          {
+            type: "circles",
+            title: "Call Performance - Top KPIs",
+            payload: {
+              data: extractInfoBlockData(
+                [
+                  {
+                    text: "Total Calls",
+                    fieldExtract: (v) => v.callCount,
+                  },
+                  {
+                    text: "First Calls",
+                    fieldExtract: (v) => v.firstCall,
+                  },
+                  {
+                    text: "Answered Calls",
+                    fieldExtract: (v) => v.answeredCalls,
+                  },
+                  {
+                    text: "Answered(%)",
+                    fieldExtract: (v) => v.answeredRate,
+                  },
+                ],
+                callTrackingTopKpi.result.data,
                 {
-                  text: "Total Calls",
-                  fieldExtract: (v) => v.callCount,
-                },
+                  perChunk: 2,
+                }
+              ),
+            },
+          },
+          {
+            type: "bar",
+            title: "ACR(%)(Last 6 Months)",
+            payload: {
+              rotateBottomLabels: true,
+              data: [
                 {
-                  text: "First Calls",
-                  fieldExtract: (v) => v.firstCall,
-                },
-                {
-                  text: "Answered Calls",
-                  fieldExtract: (v) => v.answeredCalls,
-                },
-                {
-                  text: "Answered(%)",
-                  fieldExtract: (v) => v.answeredRate,
+                  name: "Call Performance Tracking - Last 6 Months",
+                  color: colors.chartBar1,
+                  labels: extractMonthLabels(
+                    callTrackingPeriod6Month.result.data
+                  ),
+                  values: callTrackingPeriod6Month.result.data.map(
+                    (v) => v.callCount
+                  ),
                 },
               ],
-              callTrackingTopKpi.result.data,
-              {
-                perChunk: 2,
-              }
-            ),
+            },
           },
-        },
-        {
-          type: "bar",
-          title: "ACR(%)(Last 6 Months)",
-          payload: {
-            rotateBottomLabels: true,
-            data: [
-              {
-                name: "Call Performance Tracking - Last 6 Months",
-                color: colors.chartBar1,
-                labels: extractMonthLabels(
-                  callTrackingPeriod6Month.result.data
-                ),
-                values: callTrackingPeriod6Month.result.data.map(
-                  (v) => v.callCount
-                ),
-              },
-            ],
-          },
-        },
-      ],
+        ],
+      },
     ],
     {
       markup: {

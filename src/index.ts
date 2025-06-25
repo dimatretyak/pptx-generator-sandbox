@@ -7,14 +7,14 @@ const date = new Date();
 const builder = new PowerPointBuilder();
 
 const tasks = [
-  // {
-  //   title: "Overview",
-  //   executer: generateOverview,
-  // },
-  // {
-  //   title: "Demo",
-  //   executer: generateDemo,
-  // },
+  {
+    title: "Overview",
+    executer: generateOverview,
+  },
+  {
+    title: "Demo",
+    executer: generateDemo,
+  },
   {
     title: "Debug",
     executer: generateDebug,

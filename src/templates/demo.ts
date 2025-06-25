@@ -553,82 +553,88 @@ export default async (payload: TemplatePayload) => {
 
   builder.addMultipleToSlide(
     [
-      [
-        {
-          type: "pie",
-          title: "Pie",
-          payload: {
-            data: {
-              name: "Project Status",
-              labels: [
-                "mobile_app",
-                "mobile_web",
-                "desktop",
-                "Smartphone",
-                "Desktop",
-              ],
-              values: [2265852, 12640, 33414, 40621, 1953],
-              colors: ["0088FE", "00C49F", "FFBB28", "FF8042"],
+      {
+        entities: [
+          {
+            type: "pie",
+            title: "Pie",
+            payload: {
+              data: {
+                name: "Project Status",
+                labels: [
+                  "mobile_app",
+                  "mobile_web",
+                  "desktop",
+                  "Smartphone",
+                  "Desktop",
+                ],
+                values: [2265852, 12640, 33414, 40621, 1953],
+                colors: ["0088FE", "00C49F", "FFBB28", "FF8042"],
+              },
             },
           },
-        },
-        {
-          type: "bar",
-          title: "Bar",
-          payload: {
-            labelFormatCode: "0.00%",
-            data: [
-              {
-                name: "Display - CTR Last 6 Months",
-                color: "cdd8f2",
-                labels: [
-                  "2024-12",
-                  "2025-01",
-                  "2025-02",
-                  "2025-03",
-                  "2025-04",
-                  "2025-05",
+          {
+            type: "bar",
+            title: "Bar",
+            payload: {
+              labelFormatCode: "0.00%",
+              data: [
+                {
+                  name: "Display - CTR Last 6 Months",
+                  color: "cdd8f2",
+                  labels: [
+                    "2024-12",
+                    "2025-01",
+                    "2025-02",
+                    "2025-03",
+                    "2025-04",
+                    "2025-05",
+                  ],
+                  values: [
+                    0.00093, 0.00127, 0.00127, 0.00115, 0.00145, 0.00145,
+                  ],
+                },
+              ],
+            },
+          },
+        ],
+      },
+      {
+        entities: [
+          {
+            type: "boxes",
+            title: "Boxes",
+            payload: {
+              data: [
+                [
+                  {
+                    title: "Impressions",
+                    value: 177000000,
+                  },
+                  {
+                    title: "Clicks",
+                    value: 269000,
+                  },
+                  {
+                    title: "CTR(%)",
+                    value: 0.15261760710334837,
+                  },
                 ],
-                values: [0.00093, 0.00127, 0.00127, 0.00115, 0.00145, 0.00145],
-              },
-            ],
-          },
-        },
-      ],
-      [
-        {
-          type: "boxes",
-          title: "Boxes",
-          payload: {
-            data: [
-              [
-                {
-                  title: "Impressions",
-                  value: 177000000,
-                },
-                {
-                  title: "Clicks",
-                  value: 269000,
-                },
-                {
-                  title: "CTR(%)",
-                  value: 0.15261760710334837,
-                },
+                [
+                  {
+                    title: "Impressions",
+                    value: 33300000,
+                  },
+                  {
+                    title: "Site Conversions",
+                    value: 2700,
+                  },
+                ],
               ],
-              [
-                {
-                  title: "Impressions",
-                  value: 33300000,
-                },
-                {
-                  title: "Site Conversions",
-                  value: 2700,
-                },
-              ],
-            ],
+            },
           },
-        },
-      ],
+        ],
+      },
     ],
     {
       markup: {
@@ -642,48 +648,52 @@ export default async (payload: TemplatePayload) => {
 
   builder.addMultipleToSlide(
     [
-      [
-        {
-          type: "pie",
-          title: "Pie",
-          payload: {
-            data: {
-              name: "Project Status",
-              labels: [
-                "mobile_app",
-                "mobile_web",
-                "desktop",
-                "Smartphone",
-                "Desktop",
-              ],
-              values: [2265852, 12640, 33414, 40621, 1953],
-              colors: ["0088FE", "00C49F", "FFBB28", "FF8042"],
+      {
+        entities: [
+          {
+            type: "pie",
+            title: "Pie",
+            payload: {
+              data: {
+                name: "Project Status",
+                labels: [
+                  "mobile_app",
+                  "mobile_web",
+                  "desktop",
+                  "Smartphone",
+                  "Desktop",
+                ],
+                values: [2265852, 12640, 33414, 40621, 1953],
+                colors: ["0088FE", "00C49F", "FFBB28", "FF8042"],
+              },
             },
           },
-        },
-        {
-          type: "bar",
-          title: "Bar",
-          payload: {
-            labelFormatCode: "0.00%",
-            data: [
-              {
-                name: "Display - CTR Last 6 Months",
-                color: "cdd8f2",
-                labels: [
-                  "2024-12",
-                  "2025-01",
-                  "2025-02",
-                  "2025-03",
-                  "2025-04",
-                  "2025-05",
-                ],
-                values: [0.00093, 0.00127, 0.00127, 0.00115, 0.00145, 0.00145],
-              },
-            ],
+          {
+            type: "bar",
+            title: "Bar",
+            payload: {
+              labelFormatCode: "0.00%",
+              data: [
+                {
+                  name: "Display - CTR Last 6 Months",
+                  color: "cdd8f2",
+                  labels: [
+                    "2024-12",
+                    "2025-01",
+                    "2025-02",
+                    "2025-03",
+                    "2025-04",
+                    "2025-05",
+                  ],
+                  values: [
+                    0.00093, 0.00127, 0.00127, 0.00115, 0.00145, 0.00145,
+                  ],
+                },
+              ],
+            },
           },
-        },
-      ],
+        ],
+      },
     ],
     {
       markup: {
@@ -697,50 +707,56 @@ export default async (payload: TemplatePayload) => {
 
   builder.addMultipleToSlide(
     [
-      [
-        {
-          type: "pie",
-          title: "Pie",
-          payload: {
-            data: {
-              name: "Project Status",
-              labels: [
-                "mobile_app",
-                "mobile_web",
-                "desktop",
-                "Smartphone",
-                "Desktop",
-              ],
-              values: [2265852, 12640, 33414, 40621, 1953],
-              colors: ["0088FE", "00C49F", "FFBB28", "FF8042"],
+      {
+        entities: [
+          {
+            type: "pie",
+            title: "Pie",
+            payload: {
+              data: {
+                name: "Project Status",
+                labels: [
+                  "mobile_app",
+                  "mobile_web",
+                  "desktop",
+                  "Smartphone",
+                  "Desktop",
+                ],
+                values: [2265852, 12640, 33414, 40621, 1953],
+                colors: ["0088FE", "00C49F", "FFBB28", "FF8042"],
+              },
             },
           },
-        },
-      ],
-      [
-        {
-          type: "bar",
-          title: "Bar",
-          payload: {
-            labelFormatCode: "0.00%",
-            data: [
-              {
-                name: "Display - CTR Last 6 Months",
-                color: "cdd8f2",
-                labels: [
-                  "2024-12",
-                  "2025-01",
-                  "2025-02",
-                  "2025-03",
-                  "2025-04",
-                  "2025-05",
-                ],
-                values: [0.00093, 0.00127, 0.00127, 0.00115, 0.00145, 0.00145],
-              },
-            ],
+        ],
+      },
+      {
+        entities: [
+          {
+            type: "bar",
+            title: "Bar",
+            payload: {
+              labelFormatCode: "0.00%",
+              data: [
+                {
+                  name: "Display - CTR Last 6 Months",
+                  color: "cdd8f2",
+                  labels: [
+                    "2024-12",
+                    "2025-01",
+                    "2025-02",
+                    "2025-03",
+                    "2025-04",
+                    "2025-05",
+                  ],
+                  values: [
+                    0.00093, 0.00127, 0.00127, 0.00115, 0.00145, 0.00145,
+                  ],
+                },
+              ],
+            },
           },
-        },
-      ],
+        ],
+      },
     ],
     {
       markup: {
@@ -754,55 +770,57 @@ export default async (payload: TemplatePayload) => {
 
   builder.addMultipleToSlide(
     [
-      [
-        {
-          type: "pie",
-          title: "Pie",
-          payload: {
-            data: {
-              name: "Project Status",
-              labels: [
-                "mobile_app",
-                "mobile_web",
-                "desktop",
-                "Smartphone",
-                "Desktop",
-              ],
-              values: [2265852, 12640, 33414, 40621, 1953],
-              colors: ["0088FE", "00C49F", "FFBB28", "FF8042"],
+      {
+        entities: [
+          {
+            type: "pie",
+            title: "Pie",
+            payload: {
+              data: {
+                name: "Project Status",
+                labels: [
+                  "mobile_app",
+                  "mobile_web",
+                  "desktop",
+                  "Smartphone",
+                  "Desktop",
+                ],
+                values: [2265852, 12640, 33414, 40621, 1953],
+                colors: ["0088FE", "00C49F", "FFBB28", "FF8042"],
+              },
             },
           },
-        },
-        {
-          type: "table",
-          title: "Table",
-          payload: {
-            headers: [
-              { text: "Product" },
-              { text: "Impressions" },
-              {
-                text: "Clicks",
-                heatMap: {
-                  colorPalette: ["#e3f2fd", "#0d47a1"],
-                  maxValue: clicks.max,
-                  minValue: clicks.min,
-                },
-              },
-            ],
-            data: displayProductPerformance.slice(0, 5).map((entity) => {
-              const result: PowerPointTableCell[] = [
-                { value: entity._id.subProduct },
+          {
+            type: "table",
+            title: "Table",
+            payload: {
+              headers: [
+                { text: "Product" },
+                { text: "Impressions" },
                 {
-                  value: entity.impressions,
+                  text: "Clicks",
+                  heatMap: {
+                    colorPalette: ["#e3f2fd", "#0d47a1"],
+                    maxValue: clicks.max,
+                    minValue: clicks.min,
+                  },
                 },
-                { value: entity.clicks },
-              ];
+              ],
+              data: displayProductPerformance.slice(0, 5).map((entity) => {
+                const result: PowerPointTableCell[] = [
+                  { value: entity._id.subProduct },
+                  {
+                    value: entity.impressions,
+                  },
+                  { value: entity.clicks },
+                ];
 
-              return result;
-            }),
+                return result;
+              }),
+            },
           },
-        },
-      ],
+        ],
+      },
     ],
     {
       markup: {
@@ -816,97 +834,103 @@ export default async (payload: TemplatePayload) => {
 
   builder.addMultipleToSlide(
     [
-      [
-        {
-          type: "pie",
-          title: "Pie",
-          payload: {
-            data: {
-              name: "Project Status",
-              labels: [
-                "mobile_app",
-                "mobile_web",
-                "desktop",
-                "Smartphone",
-                "Desktop",
-              ],
-              values: [2265852, 12640, 33414, 40621, 1953],
-              colors: ["0088FE", "00C49F", "FFBB28", "FF8042"],
+      {
+        entities: [
+          {
+            type: "pie",
+            title: "Pie",
+            payload: {
+              data: {
+                name: "Project Status",
+                labels: [
+                  "mobile_app",
+                  "mobile_web",
+                  "desktop",
+                  "Smartphone",
+                  "Desktop",
+                ],
+                values: [2265852, 12640, 33414, 40621, 1953],
+                colors: ["0088FE", "00C49F", "FFBB28", "FF8042"],
+              },
             },
           },
-        },
-        {
-          type: "table",
-          title: "Table",
-          payload: {
-            headers: [
-              { text: "Product" },
-              { text: "Impressions" },
-              {
-                text: "Clicks",
-                heatMap: {
-                  colorPalette: ["#e3f2fd", "#0d47a1"],
-                  maxValue: clicks.max,
-                  minValue: clicks.min,
-                },
-              },
-            ],
-            data: displayProductPerformance.slice(0, 2).map((entity) => {
-              const result: PowerPointTableCell[] = [
-                { value: entity._id.subProduct },
+          {
+            type: "table",
+            title: "Table",
+            payload: {
+              headers: [
+                { text: "Product" },
+                { text: "Impressions" },
                 {
-                  value: entity.impressions,
-                },
-                { value: entity.clicks },
-              ];
-
-              return result;
-            }),
-          },
-        },
-      ],
-      [
-        {
-          type: "boxes",
-          title: "Boxes",
-          payload: {
-            data: [
-              [
-                {
-                  title: "Impressions",
-                  value: 177000000,
-                },
-                {
-                  title: "Clicks",
-                  value: 269000,
+                  text: "Clicks",
+                  heatMap: {
+                    colorPalette: ["#e3f2fd", "#0d47a1"],
+                    maxValue: clicks.max,
+                    minValue: clicks.min,
+                  },
                 },
               ],
-            ],
+              data: displayProductPerformance.slice(0, 2).map((entity) => {
+                const result: PowerPointTableCell[] = [
+                  { value: entity._id.subProduct },
+                  {
+                    value: entity.impressions,
+                  },
+                  { value: entity.clicks },
+                ];
+
+                return result;
+              }),
+            },
           },
-        },
-        {
-          type: "bar",
-          title: "Bar",
-          payload: {
-            labelFormatCode: "0.00%",
-            data: [
-              {
-                name: "Display - CTR Last 6 Months",
-                color: "cdd8f2",
-                labels: [
-                  "2024-12",
-                  "2025-01",
-                  "2025-02",
-                  "2025-03",
-                  "2025-04",
-                  "2025-05",
+        ],
+      },
+      {
+        entities: [
+          {
+            type: "boxes",
+            title: "Boxes",
+            payload: {
+              data: [
+                [
+                  {
+                    title: "Impressions",
+                    value: 177000000,
+                  },
+                  {
+                    title: "Clicks",
+                    value: 269000,
+                  },
                 ],
-                values: [0.00093, 0.00127, 0.00127, 0.00115, 0.00145, 0.00145],
-              },
-            ],
+              ],
+            },
           },
-        },
-      ],
+          {
+            type: "bar",
+            title: "Bar",
+            payload: {
+              labelFormatCode: "0.00%",
+              data: [
+                {
+                  name: "Display - CTR Last 6 Months",
+                  color: "cdd8f2",
+                  labels: [
+                    "2024-12",
+                    "2025-01",
+                    "2025-02",
+                    "2025-03",
+                    "2025-04",
+                    "2025-05",
+                  ],
+                  values: [
+                    0.00093, 0.00127, 0.00127, 0.00115, 0.00145, 0.00145,
+                  ],
+                },
+              ],
+            },
+          },
+        ],
+      },
     ],
     {
       markup: {
@@ -920,72 +944,78 @@ export default async (payload: TemplatePayload) => {
 
   builder.addMultipleToSlide(
     [
-      [
-        {
-          type: "pie",
-          title: "Pie",
-          payload: {
-            data: {
-              name: "Project Status",
-              labels: [
-                "mobile_app",
-                "mobile_web",
-                "desktop",
-                "Smartphone",
-                "Desktop",
-              ],
-              values: [2265852, 12640, 33414, 40621, 1953],
-              colors: ["0088FE", "00C49F", "FFBB28", "FF8042"],
+      {
+        entities: [
+          {
+            type: "pie",
+            title: "Pie",
+            payload: {
+              data: {
+                name: "Project Status",
+                labels: [
+                  "mobile_app",
+                  "mobile_web",
+                  "desktop",
+                  "Smartphone",
+                  "Desktop",
+                ],
+                values: [2265852, 12640, 33414, 40621, 1953],
+                colors: ["0088FE", "00C49F", "FFBB28", "FF8042"],
+              },
             },
           },
-        },
-        {
-          type: "bar",
-          title: "Bar",
-          payload: {
-            labelFormatCode: "0.00%",
-            data: [
-              {
-                name: "Display - CTR Last 6 Months",
-                color: "cdd8f2",
-                labels: [
-                  "2024-12",
-                  "2025-01",
-                  "2025-02",
-                  "2025-03",
-                  "2025-04",
-                  "2025-05",
-                ],
-                values: [0.00093, 0.00127, 0.00127, 0.00115, 0.00145, 0.00145],
-              },
-            ],
-          },
-        },
-      ],
-      [
-        {
-          type: "circles",
-          title: "Circles",
-          payload: {
-            data: [
-              [
+          {
+            type: "bar",
+            title: "Bar",
+            payload: {
+              labelFormatCode: "0.00%",
+              data: [
                 {
-                  title: "Impressions",
-                  value: 177000000,
-                },
-                {
-                  title: "Clicks",
-                  value: 269000,
-                },
-                {
-                  title: "CTR(%)",
-                  value: 0.15261760710334837,
+                  name: "Display - CTR Last 6 Months",
+                  color: "cdd8f2",
+                  labels: [
+                    "2024-12",
+                    "2025-01",
+                    "2025-02",
+                    "2025-03",
+                    "2025-04",
+                    "2025-05",
+                  ],
+                  values: [
+                    0.00093, 0.00127, 0.00127, 0.00115, 0.00145, 0.00145,
+                  ],
                 },
               ],
-            ],
+            },
           },
-        },
-      ],
+        ],
+      },
+      {
+        entities: [
+          {
+            type: "circles",
+            title: "Circles",
+            payload: {
+              data: [
+                [
+                  {
+                    title: "Impressions",
+                    value: 177000000,
+                  },
+                  {
+                    title: "Clicks",
+                    value: 269000,
+                  },
+                  {
+                    title: "CTR(%)",
+                    value: 0.15261760710334837,
+                  },
+                ],
+              ],
+            },
+          },
+        ],
+      },
     ],
     {
       markup: {
@@ -999,78 +1029,84 @@ export default async (payload: TemplatePayload) => {
 
   builder.addMultipleToSlide(
     [
-      [
-        {
-          type: "pie",
-          title: "Pie",
-          payload: {
-            data: {
-              name: "Project Status",
-              labels: [
-                "mobile_app",
-                "mobile_web",
-                "desktop",
-                "Smartphone",
-                "Desktop",
-              ],
-              values: [2265852, 12640, 33414, 40621, 1953],
-              colors: ["0088FE", "00C49F", "FFBB28", "FF8042"],
+      {
+        entities: [
+          {
+            type: "pie",
+            title: "Pie",
+            payload: {
+              data: {
+                name: "Project Status",
+                labels: [
+                  "mobile_app",
+                  "mobile_web",
+                  "desktop",
+                  "Smartphone",
+                  "Desktop",
+                ],
+                values: [2265852, 12640, 33414, 40621, 1953],
+                colors: ["0088FE", "00C49F", "FFBB28", "FF8042"],
+              },
             },
           },
-        },
-        {
-          type: "bar",
-          title: "Bar",
-          payload: {
-            labelFormatCode: "0.00%",
-            data: [
-              {
-                name: "Display - CTR Last 6 Months",
-                color: "cdd8f2",
-                labels: [
-                  "2024-12",
-                  "2025-01",
-                  "2025-02",
-                  "2025-03",
-                  "2025-04",
-                  "2025-05",
-                ],
-                values: [0.00093, 0.00127, 0.00127, 0.00115, 0.00145, 0.00145],
-              },
-            ],
-          },
-        },
-      ],
-      [
-        {
-          type: "circles",
-          title: "Circles",
-          payload: {
-            data: [
-              [
+          {
+            type: "bar",
+            title: "Bar",
+            payload: {
+              labelFormatCode: "0.00%",
+              data: [
                 {
-                  title: "Impressions",
-                  value: 175200392,
-                  prevValue: 185352006,
-                  changePercentage: -5.476937757015697,
-                },
-                {
-                  title: "Clicks",
-                  value: 269417,
-                  prevValue: 275696,
-                  changePercentage: -2.2775085601532123,
-                },
-                {
-                  title: "CTR(%)",
-                  value: 0.15377648241791605,
-                  prevValue: 0.14874184852361405,
-                  changePercentage: 3.384813315334529,
+                  name: "Display - CTR Last 6 Months",
+                  color: "cdd8f2",
+                  labels: [
+                    "2024-12",
+                    "2025-01",
+                    "2025-02",
+                    "2025-03",
+                    "2025-04",
+                    "2025-05",
+                  ],
+                  values: [
+                    0.00093, 0.00127, 0.00127, 0.00115, 0.00145, 0.00145,
+                  ],
                 },
               ],
-            ],
+            },
           },
-        },
-      ],
+        ],
+      },
+      {
+        entities: [
+          {
+            type: "circles",
+            title: "Circles",
+            payload: {
+              data: [
+                [
+                  {
+                    title: "Impressions",
+                    value: 175200392,
+                    prevValue: 185352006,
+                    changePercentage: -5.476937757015697,
+                  },
+                  {
+                    title: "Clicks",
+                    value: 269417,
+                    prevValue: 275696,
+                    changePercentage: -2.2775085601532123,
+                  },
+                  {
+                    title: "CTR(%)",
+                    value: 0.15377648241791605,
+                    prevValue: 0.14874184852361405,
+                    changePercentage: 3.384813315334529,
+                  },
+                ],
+              ],
+            },
+          },
+        ],
+      },
     ],
     {
       markup: {
@@ -1084,48 +1120,50 @@ export default async (payload: TemplatePayload) => {
 
   builder.addMultipleToSlide(
     [
-      [
-        {
-          type: "pie",
-          title: "Pie",
-          payload: {
-            data: {
-              name: "Project Status",
-              labels: [
-                "mobile_app",
-                "mobile_web",
-                "desktop",
-                "Smartphone",
-                "Desktop",
-              ],
-              values: [2265852, 12640, 33414, 40621, 1953],
-              colors: ["0088FE", "00C49F", "FFBB28", "FF8042"],
+      {
+        entities: [
+          {
+            type: "pie",
+            title: "Pie",
+            payload: {
+              data: {
+                name: "Project Status",
+                labels: [
+                  "mobile_app",
+                  "mobile_web",
+                  "desktop",
+                  "Smartphone",
+                  "Desktop",
+                ],
+                values: [2265852, 12640, 33414, 40621, 1953],
+                colors: ["0088FE", "00C49F", "FFBB28", "FF8042"],
+              },
             },
           },
-        },
-        {
-          type: "circles",
-          title: "Circles",
-          payload: {
-            data: [
-              [
-                {
-                  title: "Impressions",
-                  value: 175200392,
-                  prevValue: 185352006,
-                  changePercentage: -5.476937757015697,
-                },
-                {
-                  title: "Clicks",
-                  value: 269417,
-                  prevValue: 275696,
-                  changePercentage: -2.2775085601532123,
-                },
+          {
+            type: "circles",
+            title: "Circles",
+            payload: {
+              data: [
+                [
+                  {
+                    title: "Impressions",
+                    value: 175200392,
+                    prevValue: 185352006,
+                    changePercentage: -5.476937757015697,
+                  },
+                  {
+                    title: "Clicks",
+                    value: 269417,
+                    prevValue: 275696,
+                    changePercentage: -2.2775085601532123,
+                  },
+                ],
               ],
-            ],
+            },
           },
-        },
-      ],
+        ],
+      },
     ],
     {
       markup: {
@@ -1139,58 +1177,60 @@ export default async (payload: TemplatePayload) => {
 
   builder.addMultipleToSlide(
     [
-      [
-        {
-          type: "circles",
-          title: "Circles",
-          payload: {
-            data: [
-              [
-                {
-                  title: "Impressions",
-                  value: 175200392,
-                  prevValue: 185352006,
-                  changePercentage: -5.476937757015697,
-                },
-                {
-                  title: "Clicks",
-                  value: 269417,
-                  prevValue: 275696,
-                  changePercentage: -2.2775085601532123,
-                },
+      {
+        entities: [
+          {
+            type: "circles",
+            title: "Circles",
+            payload: {
+              data: [
+                [
+                  {
+                    title: "Impressions",
+                    value: 175200392,
+                    prevValue: 185352006,
+                    changePercentage: -5.476937757015697,
+                  },
+                  {
+                    title: "Clicks",
+                    value: 269417,
+                    prevValue: 275696,
+                    changePercentage: -2.2775085601532123,
+                  },
+                ],
               ],
-            ],
+            },
           },
-        },
-        {
-          type: "circles",
-          title: "Circles",
-          payload: {
-            data: [
-              [
-                {
-                  title: "Impressions",
-                  value: 175200392,
-                },
-                {
-                  title: "Clicks",
-                  value: 269417,
-                },
+          {
+            type: "circles",
+            title: "Circles",
+            payload: {
+              data: [
+                [
+                  {
+                    title: "Impressions",
+                    value: 175200392,
+                  },
+                  {
+                    title: "Clicks",
+                    value: 269417,
+                  },
+                ],
+                [
+                  {
+                    title: "Impressions",
+                    value: 175200392,
+                  },
+                  {
+                    title: "Clicks",
+                    value: 269417,
+                  },
+                ],
               ],
-              [
-                {
-                  title: "Impressions",
-                  value: 175200392,
-                },
-                {
-                  title: "Clicks",
-                  value: 269417,
-                },
-              ],
-            ],
+            },
           },
-        },
-      ],
+        ],
+      },
     ],
     {
       markup: {
