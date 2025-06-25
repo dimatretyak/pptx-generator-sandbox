@@ -17,6 +17,8 @@ const tasks = [
 ];
 
 const generate = async () => {
+  // TODO: Add introduce slide
+
   for (const task of tasks) {
     try {
       builder.addMasterSlide(task.title);
