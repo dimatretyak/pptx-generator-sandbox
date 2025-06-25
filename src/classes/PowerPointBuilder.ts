@@ -212,20 +212,19 @@ class PowerPointBuilder {
 
       const sizes = this.layout.getSlideSizes(options);
       const coords = this.layout.getContentCoords(options);
-      const heightByRow = data.map((row) => row.size?.height ?? 0);
-      const values = heightByRow.filter((h) => h === 0);
+      const totalSpacersHeight = this.config.spacer * (data.length - 1);
+      const rowHeights = data.map((row) => row.size?.height ?? 0);
+      const customHeights = rowHeights.filter((h) => h > 0);
 
-      const totalCustomHeight = heightByRow.reduce((acc, cur) => {
-        if (cur > 0) {
-          return acc + cur;
-        }
+      const totalCustomHeight = customHeights.reduce(
+        (acc, cur) => acc + cur,
+        0 as number
+      );
 
-        return acc;
-      }, 0 as number);
-
-      const totalSpacers = this.config.spacer * (data.length - 1);
+      const defaultHeightRowsCount = data.length - customHeights.length;
       const fallbackHeight =
-        (sizes.height - totalCustomHeight - totalSpacers) / values.length;
+        (sizes.height - totalCustomHeight - totalSpacersHeight) /
+        defaultHeightRowsCount;
 
       const heightPerRow = data.reduce(
         (acc, row, index) => {
