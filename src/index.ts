@@ -9,14 +9,17 @@ const builder = new PowerPointBuilder();
 const tasks = [
   {
     title: "Overview",
+    report: "overall",
     executer: generateOverview,
   },
   {
     title: "Demo",
+    report: "demo",
     executer: generateDemo,
   },
   {
     title: "Debug",
+    report: "debug",
     executer: generateDebug,
   },
 ];
