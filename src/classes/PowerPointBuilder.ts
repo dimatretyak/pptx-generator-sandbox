@@ -98,7 +98,7 @@ class PowerPointBuilder {
         height: SLIDE_HEIGHT,
       },
       spacer: 0.25,
-      fontFamily: "Arial Narrow",
+      fontFamily: "Calibri",
     };
 
     this.layout = new PowerPointLayout(this.config);
