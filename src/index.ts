@@ -42,6 +42,7 @@ const generate = async () => {
 
   for (const task of tasks) {
     try {
+      // TODO: Do not add a master slide when exporting only the current view
       builder.addMasterSlide(task.title);
 
       await task.executer({
