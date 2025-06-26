@@ -21,6 +21,8 @@ import {
 import path from "node:path";
 import { config } from "../config";
 import { isNumber, isString } from "../utils/common";
+import { S3Client } from "@aws-sdk/client-s3";
+import { Upload } from "@aws-sdk/lib-storage";
 
 // 16:9 aspect ratio
 const LAYOUT_NAME = "APP";
@@ -393,6 +395,43 @@ class PowerPointBuilder {
     }
 
     this.presentation.writeFile({ fileName });
+  }
+
+  async uploadToAWS({
+    Bucket,
+    Key,
+    s3Config,
+  }: {
+    Bucket: string;
+    Key: string;
+    s3Config: {
+      region: string;
+      credentials: {
+        accessKeyId: string;
+        secretAccessKey: string;
+      };
+    };
+  }) {
+    const s3 = new S3Client(s3Config);
+    const pptxStream = await this.presentation.stream();
+
+    const upload = new Upload({
+      client: s3,
+      params: {
+        Bucket,
+        Key,
+        Body: Buffer.from(pptxStream as any, "binary"),
+        ContentType:
+          "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+      },
+    });
+
+    try {
+      return await upload.done();
+    } catch (err) {
+      console.error("S3 upload error:", err);
+      throw err;
+    }
   }
 }
 

@@ -48,6 +48,18 @@ const generate = async () => {
   }
 
   builder.buildAndSave("output/all.pptx");
+
+  // builder.uploadToAWS({
+  //   Bucket: process.env.AWS_BUCKET!,
+  //   Key: `vitals/sandbox/all-${Date.now()}.pptx`,
+  //   s3Config: {
+  //     region: process.env.AWS_REGION!,
+  //     credentials: {
+  //       accessKeyId: process.env.AWS_ACCESS_KEY!,
+  //       secretAccessKey: process.env.AWS_SECRET_KEY!,
+  //     },
+  //   },
+  // });
 };
 
 generate();
