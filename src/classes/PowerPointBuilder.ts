@@ -35,31 +35,26 @@ type PowerPointMultipleEntity =
   | {
       type: "pie";
       title: string;
-      size?: Size;
       payload: PowerPointPieChartPayload;
     }
   | {
       type: "bar";
       title: string;
-      size?: Size;
       payload: PowerPointBarChartPayload;
     }
   | {
       type: "boxes";
       title: string;
-      size?: Size;
       payload: PowerPointInfoBlockPayload;
     }
   | {
       type: "circles";
       title: string;
-      size?: Size;
       payload: PowerPointInfoBlockPayload;
     }
   | {
       type: "table";
       title: string;
-      size?: Size;
       payload: PowerPointTablePayload;
     };
 
