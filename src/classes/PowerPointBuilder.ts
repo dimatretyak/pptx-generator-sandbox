@@ -27,10 +27,6 @@ const LAYOUT_NAME = "APP";
 const SLIDE_WIDTH = 10;
 const SLIDE_HEIGHT = 5.625;
 
-type Size = {
-  height: number;
-};
-
 type PowerPointMultipleEntity =
   | {
       type: "pie";
