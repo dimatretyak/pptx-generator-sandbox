@@ -18,6 +18,7 @@ export type PowerPointPieChartData = {
 };
 
 export type PowerPointConfig = {
+  debug: boolean;
   margin: {
     top: number;
     left: number;

@@ -20,11 +20,16 @@ import {
 } from "./PowerPointPieChart";
 import path from "node:path";
 import { config } from "../config";
+import { isNumber, isString } from "../utils/common";
 
 // 16:9 aspect ratio
 const LAYOUT_NAME = "APP";
 const SLIDE_WIDTH = 10;
 const SLIDE_HEIGHT = 5.625;
+
+type Size = {
+  height: number;
+};
 
 type PowerPointMultipleEntity =
   | {
@@ -53,6 +58,13 @@ type PowerPointMultipleEntity =
       payload: PowerPointTablePayload;
     };
 
+type MultipleData = {
+  size?: {
+    height: number | string;
+  };
+  entities: PowerPointMultipleEntity[];
+}[];
+
 class PowerPointBuilder {
   private slideGenerators: Array<(slide: pptxgen.Slide) => void> = [];
   private presentation: pptxgen;
@@ -70,6 +82,7 @@ class PowerPointBuilder {
     this.presentation = new pptxgen();
 
     this.config = {
+      debug: false,
       border: {
         size: 1,
         color: "e0e0e0",
@@ -189,38 +202,134 @@ class PowerPointBuilder {
     return this;
   }
 
-  addMultipleToSlide(
-    entities: PowerPointMultipleEntity[][],
-    options: PowerPointSlideOptions
-  ) {
+  private parseSizeNumber(value: string | number | undefined, height: number) {
+    if (isNumber(value)) {
+      return value;
+    }
+
+    if (isString(value)) {
+      const percent = parseFloat(value);
+      const result = (height * percent) / 100;
+
+      return result;
+    }
+
+    return null;
+  }
+
+  private calculateRowHeight(data: MultipleData, height: number) {
+    const totalSpacersHeight = this.config.spacer * (data.length - 1);
+
+    const info = data.reduce(
+      (acc, cur) => {
+        const result = this.parseSizeNumber(cur.size?.height, height);
+
+        if (result !== null) {
+          acc.count.custom += 1;
+          acc.height.custom += result;
+          acc.height.default -= result;
+        } else {
+          acc.count.default += 1;
+        }
+
+        return acc;
+      },
+      {
+        height: {
+          custom: 0,
+          default: 0,
+        },
+        count: {
+          custom: 0,
+          default: 0,
+        },
+      }
+    );
+
+    const fallbackHeight =
+      (height - info.height.custom - totalSpacersHeight) / info.count.default;
+
+    return fallbackHeight;
+  }
+
+  addMultipleToSlide(data: MultipleData, options: PowerPointSlideOptions) {
     this.slideGenerators.push((slide) => {
       this.addMarkup(slide, options);
 
       const sizes = this.layout.getSlideSizes(options);
       const coords = this.layout.getContentCoords(options);
+      const fallbackHeight = this.calculateRowHeight(data, sizes.height);
 
-      entities.forEach((row, rowIndex) => {
-        row.forEach((col, colIndex) => {
+      if (fallbackHeight < 0.4) {
+        throw new Error(
+          "The total size of the custom height is greater than the allowed height"
+        );
+      }
+
+      const heightPerRow = data.reduce(
+        (acc, row, index) => {
+          const parsedHeight = this.parseSizeNumber(
+            row.size?.height,
+            sizes.height
+          );
+          const height = parsedHeight ?? fallbackHeight;
+          const prevRow = acc[index - 1];
+          let y = coords.y;
+
+          if (prevRow) {
+            y = prevRow.y + prevRow.height + this.config.spacer;
+          }
+
+          acc.push({
+            height,
+            y,
+          });
+
+          return acc;
+        },
+        [] as {
+          height: number;
+          y: number;
+        }[]
+      );
+
+      data.forEach((row, rowIndex) => {
+        row.entities.forEach((col, colIndex) => {
           const info = this.layout.getCardSizeByRowCol({
             rowIndex,
             colIndex,
-            rowsCount: row.length,
-            colsCount: entities.length,
+            rowsCount: row.entities.length,
+            colsCount: data.length,
             sizes,
             coords,
           });
 
+          const entity = heightPerRow[rowIndex];
+
           const slideConfig: PowerPointSlideConfig = {
             width: info.width,
-            height: info.height - SLIDE_TITLE_FULL_HEIGHT,
+            height: entity.height - SLIDE_TITLE_FULL_HEIGHT,
             x: info.x,
-            y: info.y + SLIDE_TITLE_FULL_HEIGHT,
+            y: entity.y + SLIDE_TITLE_FULL_HEIGHT,
           };
+
+          if (this.config.debug) {
+            slide.addShape("rect", {
+              x: slideConfig.x,
+              y: slideConfig.y,
+              w: slideConfig.width,
+              h: slideConfig.height,
+              line: {
+                color: "FF0000",
+                size: this.config.border.size,
+              },
+            });
+          }
 
           this.layout.renderContentTitle(slide, col.title, {
             width: info.width,
             x: info.x,
-            y: info.y,
+            y: entity.y,
           });
 
           if (col.type === "pie") {
