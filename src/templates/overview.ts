@@ -42,8 +42,7 @@ export default async (payload: TemplatePayload) => {
   // TODO: Fetch data from api endpoints
   // TODO: Dynamically show or hide slides depending on the report menu
 
-  const { builder } = payload;
-  const footer = "06/23/2025-06/23/2025";
+  const { builder, footerText } = payload;
 
   builder.addMultipleToSlide(
     [
@@ -117,7 +116,7 @@ export default async (payload: TemplatePayload) => {
       markup: {
         text: {
           header: "Display Ads - Overall Performance",
-          footer,
+          footer: footerText,
         },
       },
     }
@@ -140,7 +139,7 @@ export default async (payload: TemplatePayload) => {
       markup: {
         text: {
           header: "Display Ads - Overall Performance",
-          footer,
+          footer: footerText,
         },
       },
     }
@@ -230,7 +229,7 @@ export default async (payload: TemplatePayload) => {
       markup: {
         text: {
           header: "Video Ads - Overall Performance",
-          footer,
+          footer: footerText,
         },
       },
     }
@@ -257,7 +256,7 @@ export default async (payload: TemplatePayload) => {
         text: {
           header: "Video Ads - Overall Performance",
           content: "Video - CTR & VCR Last 6 Months",
-          footer,
+          footer: footerText,
         },
       },
     }
@@ -342,7 +341,7 @@ export default async (payload: TemplatePayload) => {
       markup: {
         text: {
           header: "STV Ads - Overall Performance",
-          footer,
+          footer: footerText,
         },
       },
     }
@@ -366,7 +365,7 @@ export default async (payload: TemplatePayload) => {
         text: {
           header: "STV Ads - Overall Performance",
           content: "STV - VCR Last 6 Months",
-          footer,
+          footer: footerText,
         },
       },
     }
@@ -455,7 +454,7 @@ export default async (payload: TemplatePayload) => {
       markup: {
         text: {
           header: "Social Ads - Overall Performance",
-          footer,
+          footer: footerText,
         },
       },
     }
@@ -528,7 +527,7 @@ export default async (payload: TemplatePayload) => {
       markup: {
         text: {
           header: "Social Ads - Overall Performance",
-          footer,
+          footer: footerText,
         },
       },
     }
@@ -557,7 +556,7 @@ export default async (payload: TemplatePayload) => {
         text: {
           header: "Social Ads - Overall Performance",
           content: "Social - CTR & VCR Last 6 Months",
-          footer,
+          footer: footerText,
         },
       },
     }
@@ -638,7 +637,7 @@ export default async (payload: TemplatePayload) => {
       markup: {
         text: {
           header: "SEM Ads - Overall Performance",
-          footer,
+          footer: footerText,
         },
       },
     }
@@ -701,7 +700,7 @@ export default async (payload: TemplatePayload) => {
       markup: {
         text: {
           header: "SPARK Ads - Overall Performance",
-          footer,
+          footer: footerText,
         },
       },
     }
@@ -763,7 +762,7 @@ export default async (payload: TemplatePayload) => {
       markup: {
         text: {
           header: "E-mail Marketing - Overall Performance",
-          footer,
+          footer: footerText,
         },
       },
     }
@@ -829,7 +828,7 @@ export default async (payload: TemplatePayload) => {
       markup: {
         text: {
           header: "Digital and Local Endorsements - Overall Performance",
-          footer,
+          footer: footerText,
         },
       },
     }
@@ -853,7 +852,7 @@ export default async (payload: TemplatePayload) => {
         text: {
           header: "Digital and Local Endorsements - Overall Performance",
           content: "Digital Endorsements - CTR Last 6 Months",
-          footer,
+          footer: footerText,
         },
       },
     }
@@ -923,7 +922,7 @@ export default async (payload: TemplatePayload) => {
       markup: {
         text: {
           header: "AMPED Ads - Overall Performance",
-          footer,
+          footer: footerText,
         },
       },
     }
@@ -946,7 +945,7 @@ export default async (payload: TemplatePayload) => {
         text: {
           header: "AMPED Ads - Overall Performance",
           content: "Local Display - CTR Last 6 Months",
-          footer,
+          footer: footerText,
         },
       },
     }
@@ -1020,7 +1019,7 @@ export default async (payload: TemplatePayload) => {
       markup: {
         text: {
           header: "Programmatic Audio Marketing Ads - Overall Performance",
-          footer,
+          footer: footerText,
         },
       },
     }
@@ -1086,7 +1085,7 @@ export default async (payload: TemplatePayload) => {
       markup: {
         text: {
           header: "Call Tracking - Overall Performance",
-          footer,
+          footer: footerText,
         },
       },
     }

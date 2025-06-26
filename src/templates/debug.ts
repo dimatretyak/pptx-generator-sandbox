@@ -10,8 +10,7 @@ export default async (payload: TemplatePayload) => {
   // TODO: Fetch data from api endpoints
   // TODO: Dynamically show or hide slides depending on the report menu
 
-  const { builder } = payload;
-  const footer = "06/23/2025-06/23/2025";
+  const { builder, footerText } = payload;
 
   builder.addMultipleToSlide(
     [
@@ -108,7 +107,7 @@ export default async (payload: TemplatePayload) => {
       markup: {
         text: {
           header: "Display Ads - Overall Performance",
-          footer,
+          footer: footerText,
         },
       },
     }

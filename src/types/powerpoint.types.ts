@@ -59,8 +59,5 @@ export type PowerPointSlideOptions = {
 
 export type TemplatePayload = {
   builder: PowerPointBuilder;
-  dates: {
-    start: Date;
-    end: Date;
-  };
+  footerText: string;
 };

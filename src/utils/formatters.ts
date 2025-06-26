@@ -3,6 +3,7 @@ import {
   PowerPointValue,
   PowerPointValueFormatter,
 } from "../types/powerpoint.types";
+import { DateTime } from "luxon";
 
 export const FALLBACK_POWERPOINT_VALUE = "-";
 
@@ -81,4 +82,11 @@ export const formatValue = (
   }
 
   return FALLBACK_POWERPOINT_VALUE;
+};
+
+export const formateFooterDate = (date: Date) => {
+  const d = DateTime.fromJSDate(date);
+  const formatted = d.toFormat("MM/dd/yyyy");
+
+  return formatted;
 };

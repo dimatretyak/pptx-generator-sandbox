@@ -2,6 +2,7 @@ import PowerPointBuilder from "./classes/PowerPointBuilder";
 import generateDemo from "./templates/demo";
 import generateOverview from "./templates/overview";
 import generateDebug from "./templates/debug";
+import { formateFooterDate } from "./utils/formatters";
 
 const date = new Date();
 const builder = new PowerPointBuilder();
@@ -27,16 +28,19 @@ const tasks = [
 const generate = async () => {
   // TODO: Add introduce slide
 
+  const startDate = new Date("05/27/2025");
+  const formattedStartDate = formateFooterDate(startDate);
+
+  const endDate = new Date("06/27/2025");
+  const formattedEndDate = formateFooterDate(endDate);
+
   for (const task of tasks) {
     try {
       builder.addMasterSlide(task.title);
 
       await task.executer({
         builder,
-        dates: {
-          start: date,
-          end: date,
-        },
+        footerText: `${formattedStartDate}-${formattedEndDate}`,
       });
     } catch (error) {
       console.log(error);

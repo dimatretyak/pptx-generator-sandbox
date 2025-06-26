@@ -15,6 +15,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/chroma-js": "^3.1.1",
+    "@types/luxon": "^3.6.2",
     "@types/node": "^22.15.30",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
@@ -22,6 +23,7 @@
   },
   "dependencies": {
     "chroma-js": "^3.1.2",
+    "luxon": "^3.6.1",
     "pptxgenjs": "^4.0.0"
   }
 }

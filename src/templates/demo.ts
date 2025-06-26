@@ -8,7 +8,7 @@ import { PowerPointTableCell } from "../classes/PowerPointTable";
 import { TemplatePayload } from "../types/powerpoint.types";
 
 export default async (payload: TemplatePayload) => {
-  const { builder } = payload;
+  const { builder, footerText } = payload;
 
   // Render charts
   builder.addPieChartSlide(
@@ -31,7 +31,7 @@ export default async (payload: TemplatePayload) => {
         text: {
           header: "Device Performance",
           content: "Impressions by Device",
-          footer: "05/12 - 06/01 2025",
+          footer: footerText,
         },
       },
     }
@@ -61,7 +61,7 @@ export default async (payload: TemplatePayload) => {
         text: {
           header: "Display Ads - Overall Performance",
           content: "Display - CTR Last 6 Months",
-          footer: "05/12 - 06/01 2025",
+          footer: footerText,
         },
       },
     }
@@ -96,7 +96,7 @@ export default async (payload: TemplatePayload) => {
         text: {
           header: "Video Ads - Overall Performance",
           content: "Video - CTR & VCR Last 6 Months",
-          footer: "05/12 - 06/01 2025",
+          footer: footerText,
         },
       },
     }
@@ -138,7 +138,7 @@ export default async (payload: TemplatePayload) => {
         text: {
           header: "Addressable Display Overview",
           content: "Weekly Performance Trend(s)",
-          footer: "05/12 - 06/01 2025",
+          footer: footerText,
         },
       },
     }
@@ -181,7 +181,7 @@ export default async (payload: TemplatePayload) => {
         text: {
           header: "Campaign Performance",
           content: "Campaign Performance",
-          footer: "05/12 - 06/01 2025",
+          footer: footerText,
         },
       },
     }
@@ -221,7 +221,7 @@ export default async (payload: TemplatePayload) => {
         text: {
           header: "Display Ads - Overall Performance",
           content: "Display - Product Performance",
-          footer: "05/12 - 06/01 2025",
+          footer: footerText,
         },
       },
     }
@@ -270,7 +270,7 @@ export default async (payload: TemplatePayload) => {
         text: {
           header: "Display Ads - Overall Performance",
           content: "Display - Product Performance",
-          footer: "05/12 - 06/01 2025",
+          footer: footerText,
         },
       },
     }
@@ -334,7 +334,7 @@ export default async (payload: TemplatePayload) => {
         text: {
           header: "Video Ads - Overall Performance",
           content: "Video - Product Performance",
-          footer: "05/12 - 06/01 2025",
+          footer: footerText,
         },
       },
     }
@@ -364,7 +364,7 @@ export default async (payload: TemplatePayload) => {
         text: {
           header: "Display Ads - Overall Performance",
           content: "Display - Top KPIs",
-          footer: "05/12 - 06/01 2025",
+          footer: footerText,
         },
       },
     }
@@ -418,7 +418,7 @@ export default async (payload: TemplatePayload) => {
         text: {
           header: "Display Ads - Overall Performance",
           content: "Display - Top KPIs",
-          footer: "05/12 - 06/01 2025",
+          footer: footerText,
         },
       },
     }
@@ -468,7 +468,7 @@ export default async (payload: TemplatePayload) => {
         text: {
           header: "Display Ads - Overall Performance",
           content: "Display - Top KPIs",
-          footer: "05/12 - 06/01 2025",
+          footer: footerText,
         },
       },
     }
@@ -506,7 +506,7 @@ export default async (payload: TemplatePayload) => {
         text: {
           header: "Video Ads - Overall Performance",
           content: "Video - Top KPIs",
-          footer: "05/12 - 06/01 2025",
+          footer: footerText,
         },
       },
     }
@@ -536,7 +536,7 @@ export default async (payload: TemplatePayload) => {
         text: {
           header: "Display Ads - Overall Performance",
           content: "Display - Top KPIs",
-          footer: "05/12 - 06/01 2025",
+          footer: footerText,
         },
       },
     }
@@ -586,7 +586,7 @@ export default async (payload: TemplatePayload) => {
         text: {
           header: "Display Ads - Overall Performance",
           content: "Display - Top KPIs",
-          footer: "05/12 - 06/01 2025",
+          footer: footerText,
         },
       },
     }
@@ -681,7 +681,7 @@ export default async (payload: TemplatePayload) => {
       markup: {
         text: {
           header: "Multiple - 2 rows and 1 col",
-          footer: "05/12 - 06/01 2025",
+          footer: footerText,
         },
       },
     }
@@ -740,7 +740,7 @@ export default async (payload: TemplatePayload) => {
       markup: {
         text: {
           header: "Multiple - 2 cols",
-          footer: "05/12 - 06/01 2025",
+          footer: footerText,
         },
       },
     }
@@ -803,7 +803,7 @@ export default async (payload: TemplatePayload) => {
       markup: {
         text: {
           header: "Multiple - 2 rows",
-          footer: "05/12 - 06/01 2025",
+          footer: footerText,
         },
       },
     }
@@ -867,7 +867,7 @@ export default async (payload: TemplatePayload) => {
       markup: {
         text: {
           header: "Multiple - 2 cols with table",
-          footer: "05/12 - 06/01 2025",
+          footer: footerText,
         },
       },
     }
@@ -977,7 +977,7 @@ export default async (payload: TemplatePayload) => {
       markup: {
         text: {
           header: "Multiple - 2 rows and 2 cols",
-          footer: "05/12 - 06/01 2025",
+          footer: footerText,
         },
       },
     }
@@ -1062,7 +1062,7 @@ export default async (payload: TemplatePayload) => {
       markup: {
         text: {
           header: "Multiple - 2 rows and 1 col",
-          footer: "05/12 - 06/01 2025",
+          footer: footerText,
         },
       },
     }
@@ -1153,7 +1153,7 @@ export default async (payload: TemplatePayload) => {
       markup: {
         text: {
           header: "Multiple - 2 rows and 1 col",
-          footer: "05/12 - 06/01 2025",
+          footer: footerText,
         },
       },
     }
@@ -1210,7 +1210,7 @@ export default async (payload: TemplatePayload) => {
       markup: {
         text: {
           header: "Multiple - 2 rows",
-          footer: "05/12 - 06/01 2025",
+          footer: footerText,
         },
       },
     }
@@ -1277,7 +1277,7 @@ export default async (payload: TemplatePayload) => {
       markup: {
         text: {
           header: "Multiple - 2 rows",
-          footer: "05/12 - 06/01 2025",
+          footer: footerText,
         },
       },
     }
