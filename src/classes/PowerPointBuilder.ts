@@ -87,7 +87,7 @@ class PowerPointBuilder {
     this.presentation = new pptxgen();
 
     this.config = {
-      debug: true,
+      debug: false,
       border: {
         size: 1,
         color: "e0e0e0",
