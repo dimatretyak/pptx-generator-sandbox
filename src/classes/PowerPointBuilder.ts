@@ -393,6 +393,7 @@ class PowerPointBuilder {
     this.slideGenerators.push((slide) => {
       const startDate = formateFooterDate(payload.startDate);
       const endDate = formateFooterDate(payload.endDate);
+      const x = "58%";
 
       // Add background
       slide.addImage({
@@ -427,8 +428,8 @@ class PowerPointBuilder {
           },
         ],
         {
-          x: 5.75,
-          y: 2.25,
+          x,
+          y: "40%",
           w: 4,
           h: 2,
           fontFace: "Arial Narrow",
@@ -454,8 +455,8 @@ class PowerPointBuilder {
             },
           ],
           {
-            x: 5.75,
-            y: 4.25,
+            x,
+            y: "75%",
             h: 1,
             w: 5,
             fontSize: 18,
