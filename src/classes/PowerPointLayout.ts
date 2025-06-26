@@ -125,6 +125,7 @@ export class PowerPointLayout {
       valign: "middle",
       bold: false,
       fontSize: 16,
+      fontFace: this.config.fontFamily,
       margin: 0,
       color: "FFFFFF",
     });
@@ -151,6 +152,7 @@ export class PowerPointLayout {
       valign: "middle",
       align: "right",
       fontSize: 10,
+      fontFace: this.config.fontFamily,
       bold: false,
       margin: 0,
       color: "FFFFFF",
@@ -201,6 +203,7 @@ export class PowerPointLayout {
       valign: "middle",
       bold: true,
       fontSize: 12,
+      fontFace: this.config.fontFamily,
       margin: 0,
     });
   }

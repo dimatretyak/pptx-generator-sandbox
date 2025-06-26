@@ -35,6 +35,7 @@ export type PowerPointConfig = {
     height: number;
   };
   spacer: number;
+  fontFamily: string;
 };
 
 export type PowerPointSlideConfig = {

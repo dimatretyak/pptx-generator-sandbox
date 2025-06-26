@@ -98,6 +98,7 @@ class PowerPointBuilder {
         height: SLIDE_HEIGHT,
       },
       spacer: 0.25,
+      fontFamily: "Arial Narrow",
     };
 
     this.layout = new PowerPointLayout(this.config);
@@ -114,8 +115,8 @@ class PowerPointBuilder {
     this.infoBlock = new PowerPointInfoBlocks(this.config, this.layout);
 
     this.charts = {
-      bar: new PowerPointBarChart(),
-      pie: new PowerPointPieChart(),
+      bar: new PowerPointBarChart(this.config),
+      pie: new PowerPointPieChart(this.config),
     };
   }
 
@@ -379,6 +380,7 @@ class PowerPointBuilder {
         align: "center",
         rectRadius: this.config.roundess,
         fontSize: 30,
+        fontFace: this.config.fontFamily,
         bold: true,
         color: "ffffff",
       });
@@ -423,7 +425,6 @@ class PowerPointBuilder {
             text: `${startDate} - ${endDate}`,
             options: {
               fontSize: 18,
-              fontFace: "Arial",
             },
           },
         ],
@@ -432,7 +433,7 @@ class PowerPointBuilder {
           y: "40%",
           w: 4,
           h: 2,
-          fontFace: "Arial Narrow",
+          fontFace: this.config.fontFamily,
           color: "FFFFFF",
           autoFit: true,
         }
@@ -460,7 +461,7 @@ class PowerPointBuilder {
             h: 1,
             w: 5,
             fontSize: 18,
-            fontFace: "Arial",
+            fontFace: this.config.fontFamily,
             color: "FFFFFF",
             autoFit: true,
           }

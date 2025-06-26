@@ -123,6 +123,7 @@ export class PowerPointTable {
       },
       margin: 0.1,
       fontSize: 10,
+      fontFace: this.config.fontFamily,
     };
 
     if (payload.autoPagination) {

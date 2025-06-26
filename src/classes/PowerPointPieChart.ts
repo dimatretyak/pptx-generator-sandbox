@@ -1,5 +1,8 @@
 import pptxgen from "pptxgenjs";
-import { PowerPointSlideConfig } from "../types/powerpoint.types";
+import {
+  PowerPointConfig,
+  PowerPointSlideConfig,
+} from "../types/powerpoint.types";
 
 export type PowerPointPieChartData = {
   name: string;
@@ -13,6 +16,8 @@ export type PowerPointPieChartPayload = {
 };
 
 export class PowerPointPieChart {
+  constructor(private config: PowerPointConfig) {}
+
   render(
     slide: pptxgen.Slide,
     payload: PowerPointPieChartPayload,
@@ -49,6 +54,16 @@ export class PowerPointPieChart {
         showLegend: true,
         showLeaderLines: true,
         showValue: false,
+        fontFace: this.config.fontFamily,
+        titleFontFace: this.config.fontFamily,
+        legendFontFace: this.config.fontFamily,
+        dataLabelFontFace: this.config.fontFamily,
+        catAxisLabelFontFace: this.config.fontFamily,
+        catAxisTitleFontFace: this.config.fontFamily,
+        serAxisLabelFontFace: this.config.fontFamily,
+        serAxisTitleFontFace: this.config.fontFamily,
+        valAxisLabelFontFace: this.config.fontFamily,
+        valAxisTitleFontFace: this.config.fontFamily,
       }
     );
   }

@@ -140,6 +140,7 @@ export class PowerPointInfoBlocks {
           h: info.height,
           align: "center",
           rectRadius: this.config.roundess,
+          fontFace: this.config.fontFamily,
           line: {
             color: this.config.border.color,
             size: this.config.border.size,
@@ -210,6 +211,7 @@ export class PowerPointInfoBlocks {
           w: size,
           h: size,
           align: "center",
+          fontFace: this.config.fontFamily,
         });
       });
     });
