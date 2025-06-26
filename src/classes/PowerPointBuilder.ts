@@ -367,7 +367,7 @@ class PowerPointBuilder {
         h: this.config.slide.height,
         x: 0,
         y: 0,
-        path: path.join(config.path.images, "master-slide-bg.svg"),
+        path: path.join(config.path.images, "master-slide-bg.png"),
       });
 
       slide.addText(title, {

@@ -181,7 +181,7 @@ export class PowerPointInfoBlocks {
         const y = topOffset;
 
         const texts = this.getTexts(col);
-        const backgroundImage = path.join(config.path.images, "circle-bg.svg");
+        const backgroundImage = path.join(config.path.images, "circle-bg.png");
 
         slide.addImage({
           x: x - offset / 2,
