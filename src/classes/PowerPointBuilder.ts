@@ -23,6 +23,7 @@ import { config } from "../config";
 import { isNumber, isString } from "../utils/common";
 import { S3Client } from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
+import { formateFooterDate } from "../utils/formatters";
 
 // 16:9 aspect ratio
 const LAYOUT_NAME = "APP";
@@ -381,6 +382,89 @@ class PowerPointBuilder {
         bold: true,
         color: "ffffff",
       });
+    });
+  }
+
+  addIntroSlide(payload: {
+    startDate: Date;
+    endDate: Date;
+    preparedFor?: string;
+  }) {
+    this.slideGenerators.push((slide) => {
+      const startDate = formateFooterDate(payload.startDate);
+      const endDate = formateFooterDate(payload.endDate);
+
+      // Add background
+      slide.addImage({
+        path: path.join(config.path.images, "intro-bg.png"),
+        w: this.config.slide.width,
+        h: this.config.slide.height,
+      });
+
+      // Add text
+      slide.addText(
+        [
+          {
+            text: "Pulse",
+            options: {
+              fontSize: 60,
+              bold: true,
+            },
+          },
+          {
+            text: "Max",
+            options: {
+              fontSize: 60,
+              breakLine: true,
+            },
+          },
+          {
+            text: `${startDate} - ${endDate}`,
+            options: {
+              fontSize: 18,
+              fontFace: "Arial",
+            },
+          },
+        ],
+        {
+          x: 5.75,
+          y: 2.25,
+          w: 4,
+          h: 2,
+          fontFace: "Arial Narrow",
+          color: "FFFFFF",
+          autoFit: true,
+        }
+      );
+
+      if (payload.preparedFor) {
+        slide.addText(
+          [
+            {
+              text: "Prepared For:",
+              options: {
+                breakLine: true,
+              },
+            },
+            {
+              text: payload.preparedFor,
+              options: {
+                bold: true,
+              },
+            },
+          ],
+          {
+            x: 5.75,
+            y: 4.25,
+            h: 1,
+            w: 5,
+            fontSize: 18,
+            fontFace: "Arial",
+            color: "FFFFFF",
+            autoFit: true,
+          }
+        );
+      }
     });
   }
 

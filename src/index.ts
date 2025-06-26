@@ -34,6 +34,12 @@ const generate = async () => {
   const endDate = new Date("06/27/2025");
   const formattedEndDate = formateFooterDate(endDate);
 
+  builder.addIntroSlide({
+    startDate,
+    endDate,
+    preparedFor: "Auto Inc",
+  });
+
   for (const task of tasks) {
     try {
       builder.addMasterSlide(task.title);
