@@ -22,15 +22,11 @@ export type PowerPointTableTableHeader = {
   };
 };
 
-export type PowerPointTableCell =
-  | {
-      value: PowerPointValue;
-      format?: PowerPointValueFormatter;
-    }
-  | {
-      value: string;
-      link: string;
-    };
+export type PowerPointTableCell = {
+  value: PowerPointValue;
+  format?: PowerPointValueFormatter;
+  link?: string;
+};
 
 export type PowerPointTablePayload = {
   headers: PowerPointTableTableHeader[];
@@ -63,24 +59,21 @@ export class PowerPointTable {
       return row.map((column, columnIndex) => {
         const heatMap = payload.headers[columnIndex].heatMap;
 
-        let text: string;
         let options: pptxgen.TableCellProps = {};
 
-        if ("link" in column) {
-          text = column.value;
+        if (column.link) {
+          options.color = "6879d4";
+
           options.hyperlink = {
             url: column.link,
-            tooltip: column.value,
           };
-        } else {
-          text = formatValue(column.value, {
-            formatter: column.format,
-            compactNumber: false,
-          });
         }
 
         const entity: pptxgen.TableCell = {
-          text,
+          text: formatValue(column.value, {
+            formatter: column.format,
+            compactNumber: false,
+          }),
           options,
         };
 
