@@ -25,6 +25,7 @@ export type PowerPointTableTableHeader = {
 export type PowerPointTableCell = {
   value: PowerPointValue;
   format?: PowerPointValueFormatter;
+  link?: string;
 };
 
 export type PowerPointTablePayload = {
@@ -58,12 +59,22 @@ export class PowerPointTable {
       return row.map((column, columnIndex) => {
         const heatMap = payload.headers[columnIndex].heatMap;
 
+        let options: pptxgen.TableCellProps = {};
+
+        if (column.link) {
+          options.color = "6879d4";
+
+          options.hyperlink = {
+            url: column.link,
+          };
+        }
+
         const entity: pptxgen.TableCell = {
           text: formatValue(column.value, {
             formatter: column.format,
             compactNumber: false,
           }),
-          options: {},
+          options,
         };
 
         // Apply background color for odd rows
