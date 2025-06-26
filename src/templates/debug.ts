@@ -16,7 +16,7 @@ export default async (payload: TemplatePayload) => {
     [
       {
         size: {
-          height: "84%",
+          height: 1.5,
         },
         entities: [
           {
