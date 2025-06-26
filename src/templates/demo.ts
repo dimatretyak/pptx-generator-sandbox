@@ -187,6 +187,46 @@ export default async (payload: TemplatePayload) => {
     }
   );
 
+  builder.addTableSlide(
+    {
+      headers: [
+        { text: "Product" },
+        { text: "Impressions" },
+        {
+          text: "Clicks",
+        },
+        { text: "CTR(%)" },
+        {
+          text: "Total Conversions",
+        },
+        {
+          text: "Preview",
+        },
+      ],
+      data: displayProductPerformance.map((entity) => {
+        const result: PowerPointTableCell[] = [
+          { value: entity._id.subProduct },
+          { value: entity.impressions },
+          { value: entity.clicks },
+          { value: entity.ctr },
+          { value: entity.conversions },
+          { link: "https://google.com", value: "Click to View" },
+        ];
+
+        return result;
+      }),
+    },
+    {
+      markup: {
+        text: {
+          header: "Display Ads - Overall Performance",
+          content: "Display - Product Performance",
+          footer: "05/12 - 06/01 2025",
+        },
+      },
+    }
+  );
+
   const clicks = getMinMax(displayProductPerformance, "clicks");
   const totalConversions = getMinMax(displayProductPerformance, "conversions");
 

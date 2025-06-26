@@ -22,10 +22,15 @@ export type PowerPointTableTableHeader = {
   };
 };
 
-export type PowerPointTableCell = {
-  value: PowerPointValue;
-  format?: PowerPointValueFormatter;
-};
+export type PowerPointTableCell =
+  | {
+      value: PowerPointValue;
+      format?: PowerPointValueFormatter;
+    }
+  | {
+      value: string;
+      link: string;
+    };
 
 export type PowerPointTablePayload = {
   headers: PowerPointTableTableHeader[];
@@ -58,12 +63,25 @@ export class PowerPointTable {
       return row.map((column, columnIndex) => {
         const heatMap = payload.headers[columnIndex].heatMap;
 
-        const entity: pptxgen.TableCell = {
-          text: formatValue(column.value, {
+        let text: string;
+        let options: pptxgen.TableCellProps = {};
+
+        if ("link" in column) {
+          text = column.value;
+          options.hyperlink = {
+            url: column.link,
+            tooltip: column.value,
+          };
+        } else {
+          text = formatValue(column.value, {
             formatter: column.format,
             compactNumber: false,
-          }),
-          options: {},
+          });
+        }
+
+        const entity: pptxgen.TableCell = {
+          text,
+          options,
         };
 
         // Apply background color for odd rows
